@@ -1,0 +1,92 @@
+.lay-form {
+  width: 355px;
+  height: 534px;
+  padding: 10px 0;
+  border: 1px solid #005ca0;
+  border-top: none;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+.lay-form .layui-form-item {
+  padding: 0 12px;
+  box-sizing: border-box;
+  margin-bottom: 5px;
+}
+.lay-form .layui-form-label {
+  width: 90px;
+  padding: 5px;
+  color: #fff;
+  font-size: 14px;
+}
+.lay-form .layui-input-block {
+  width: 220px;
+  min-height: 30px;
+  font-size: 14px;
+  margin-left: 100px;
+}
+.lay-form .layui-input {
+  height: 30px;
+  line-height: 30px;
+  background: #112350;
+  border: none;
+  color: #fff;
+  overflow: hidden;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.hide-btm {
+  background: #000000;
+}
+
+.hide-tle {
+  height: 30px;
+  line-height: 30px;
+  text-indent: 20px;
+  color: #fff;
+  font-size: 16px;
+  font-family: MicrosoftYaHei;
+  letter-spacing: 1px;
+  background: #000000;
+  border-top: 1px solid #005ca0;
+  border-bottom: 1px solid #005ca0;
+  box-sizing: border-box;
+}
+
+.layui-form-select dl {
+  top: auto;
+  bottom: 30px;
+}
+.layui-textarea {
+  height: 60px;
+  min-height: 60px;
+  font-size: 14px;
+  resize: none;
+}
+.lay_sele {
+  color: #000 !important;
+}
+.lay_sele .layui-input {
+  color: #fff;
+  border: none;
+  background-color: #112350;
+}
+
+.lay_ipt {
+  color: #fff;
+  background-color: #112350;
+  border: none;
+}
+
+.lay_ipt .layui-input {
+  background-color: #112350;
+  color: #fff;
+  border: none;
+}
+.layui-form-item .subbtn {
+  height: 30px;
+  line-height: 30px;
+  font-size: 14px;
+  font-family: MicrosoftYaHeiLight;
+}

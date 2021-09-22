@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge,chrome=1" />
+    <title>海洋观测数据业务化应用平台</title>
+    <link rel="stylesheet" href="../assets/lib/layui/css/layui.css">
+    <link rel="stylesheet" href="../assets/css/lib.css">
+    <link rel="stylesheet" href="../assets/css/user.css">
+</head>
+
+<body>
+    <div class="layui-fluid">
+        <div class="layui-tab" lay-filter="tab">
+            <ul class="layui-tab-title">
+                <li class="layui-this">密码管理</li>
+                <li>故障分类增删</li>
+                <li>故障分类分配</li>
+            </ul>
+            <div class="layui-tab-content">
+                <!-- 密码管理 -->
+                <div class="layui-tab-item layui-show">
+                    <div class="layui-form userForm" id="form">
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">用户名:</label>
+                            <div class="layui-input-block">
+                                <input type="text" disabled id="user" class="layui-input" />
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">旧密码:</label>
+                            <div class="layui-input-block">
+                                <input type="password" name="passWord" autocomplete="off" placeholder="请输入旧密码"
+                                    class="layui-input" />
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">新密码:</label>
+                            <div class="layui-input-block">
+                                <input type="password" id="newPass" name="newPass" autocomplete="off"
+                                    placeholder="请输入新密码" class="layui-input" />
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">确认密码:</label>
+                            <div class="layui-input-block">
+                                <input type="password" name="newPass2" autocomplete="off" placeholder="请再次输入新密码"
+                                    class="layui-input" />
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">重置密码:</label>
+                            <div class="layui-input-block">
+                                <input type="password" name="reset" id="reset" autocomplete="off" placeholder="请输入重置密码"
+                                    class="layui-input" />
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <div class="layui-inline">
+                                <button class="layui-btn subbtn" lay-submit lay-filter="cBtn">
+                                    修改密码
+                                </button>
+                            </div>
+                            <div class="layui-inline layui-hide" id="rBtn">
+                                <button class="layui-btn subbtn" lay-submit lay-filter="rBtn">
+                                    设置重置密码
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- 故障类型增删 -->
+                <div class="layui-tab-item">
+                    <div class="layui-form addForm">
+                        <div class="layui-form-item">
+                            <div class="layui-inline">
+                                <input type="text" name="type" autocomplete="off" placeholder="请输入故障类型(仅支持汉字和英文)"
+                                    class="layui-input">
+                            </div>
+                            <div class="layui-inline">
+                                <button class="layui-btn subbtn" lay-submit lay-filter="aType">添加故障类型</button>
+                            </div>
+                        </div>
+
+                        <div class="layui-form-item lay-sele">
+                            <div class="layui-inline lay-seles">
+                                <select name="typeId" id="type"></select>
+                            </div>
+                            <div class="layui-inline">
+                                <input type="text" name="typeName" autocomplete="off" placeholder="请输入故障类型"
+                                    class="layui-input">
+                            </div>
+                            <div class="layui-inline">
+                                <button class="layui-btn subbtn" lay-submit lay-filter="cType">修改故障类型</button>
+                            </div>
+                        </div>
+
+                        <div class="layui-form-item">
+                            <div class="layui-inline">
+                                <input type="text" name="confirm" autocomplete="off" placeholder="请输入确认故障(仅支持汉字和英文)"
+                                    class="layui-input">
+                            </div>
+                            <div class="layui-inline">
+                                <button class="layui-btn subbtn" lay-submit lay-filter="aCon">添加确认故障</button>
+                            </div>
+                        </div>
+
+                        <div class="layui-form-item lay-sele">
+                            <div class="layui-inline lay-seles">
+                                <select name="conId" id="confirm"></select>
+                            </div>
+                            <div class="layui-inline">
+                                <input type="text" name="conName" autocomplete="off" placeholder="请输入确认故障"
+                                    class="layui-input">
+                            </div>
+                            <div class="layui-inline">
+                                <button class="layui-btn subbtn" lay-submit lay-filter="cCon">修改确认故障</button>
+                            </div>
+                        </div>
+
+                        <div class="layui-form-item">
+                            <div class="layui-inline">
+                                <div id="xmst" class="layui-input xmselect"></div>
+                            </div>
+                            <div class="layui-inline">
+                                <button class="layui-btn subbtn" lay-submit lay-filter="sBtn">删除故障类型</button>
+                            </div>
+                        </div>
+
+                        <div class="layui-form-item">
+                            <div class="layui-inline">
+                                <div id="xmsts" class="layui-input xmselect"></div>
+                            </div>
+                            <div class="layui-inline">
+                                <button class="layui-btn subbtn" lay-submit lay-filter="tBtn">删除确认故障</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-tab-item listForm">
+                    <div class="layui-form list">
+                        <select id="list" lay-filter="list"></select>
+                    </div>
+                    <div id="demo"></div>
+                    <button class="layui-btn subbtn" id="btn">确认分配</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+<script src="../assets/lib/xmselect.js"></script>
+<script src="../assets/lib/layui/layui.js"></script>
+<script>
+    layui
+        .config({
+            base: "../assets/",
+        })
+        .extend({
+            http: "api/http",
+            getFn: "lib/getFn",
+            user: "js/user",
+        }).use("user");
+</script>
+
+</html>
