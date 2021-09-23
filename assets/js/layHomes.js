@@ -158,7 +158,7 @@ layui.define(['http', "getFn"], function (e) {
             type: 'post',
             data: data,
             success: function (res) {
-                parent.childFn();
+                parent.vm.childFn();
             }
         });
     });

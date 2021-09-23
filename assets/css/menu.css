@@ -1,183 +1,3 @@
-* {
-  font-size: 16px;
-}
-
-body {
-  width: 100%;
-  height: 100%;
-  color: #227ba6;
-  background-color: rgba(214, 242, 255, 0.9);
-  overflow: hidden;
-}
-
-/* 中间大地图 */
-#maps {
-  position: absolute !important;
-  left: 0;
-  top: 0;
-  right: 0;
-  margin: auto;
-  width: 100%;
-  height: 100%;
-  background-size: 100% 100%;
-  z-index: 1;
-}
-
-/* 头部 */
-.head {
-  width: 100%;
-  height: 82px;
-  line-height: 82px;
-  text-align: center;
-  font-size: 40px;
-  font-family: MicrosoftYaHei-Bold, MicrosoftYaHei;
-  font-weight: bold;
-  background: url(../../static/t1.png) center no-repeat;
-  position: absolute;
-  left: 0;
-  top: 0;
-  z-index: 4;
-}
-
-.head-deta {
-  position: absolute;
-  top: 55px;
-  left: 0;
-  width: 100%;
-  height: 30px;
-  line-height: 30px;
-  padding: 0 40px;
-  box-sizing: border-box;
-  z-index: 4;
-  font-size: 16px;
-  font-weight: 400;
-}
-
-.head-deta .lt {
-  float: left;
-}
-
-.head-deta .lt span {
-  cursor: default;
-}
-
-.head-deta .rt {
-  float: right;
-}
-
-.head-deta .layui-input-inline {
-  width: auto;
-}
-
-.head-deta .layui-inline,
-.head-deta .layui-input-inline {
-  margin: 0;
-}
-
-.head-deta .lay-sele {
-  width: 150px;
-}
-
-.head-deta xm-select {
-  color: #227ba6;
-  background: #ebf9fe;
-  background-color: #ebf9fe !important;
-  border-color: #227ba6 !important;
-}
-.head-deta .xmSelect {
-  width: 100%;
-}
-.head-deta .head-btn {
-  width: 50px;
-  height: 38px;
-  line-height: 38px;
-  text-align: center;
-  color: #ffffff;
-  font-size: 14px;
-  border-radius: 4px;
-  background-color: #227ba6 !important;
-  box-sizing: border-box;
-  margin-left: 20px;
-  cursor: pointer;
-}
-
-.sub-head {
-  width: 100%;
-  height: 30px;
-  line-height: 30px;
-  text-indent: 26px;
-  margin: 10px 0;
-  display: flex;
-  position: relative;
-}
-
-.sub-head > img {
-  width: 9px;
-  height: 14px;
-  position: absolute;
-  left: 0;
-  top: 8px;
-}
-
-.sub-head p {
-  font-size: 24px;
-  font-family: MicrosoftYaHei;
-  letter-spacing: 2px;
-}
-
-.sub-head .sub-rt {
-  flex: 1;
-  text-align: right;
-  font-size: 16px;
-  font-family: TRENDS;
-  letter-spacing: 2px;
-  margin-left: 15px;
-  border-bottom: 2px solid #35a0c9;
-  padding-right: 40px;
-  box-sizing: border-box;
-  position: relative;
-}
-
-.sub-rt img {
-  position: absolute;
-  right: 3px;
-  bottom: 8px;
-  width: 30px;
-  height: 13px;
-}
-
-.sub-rt button {
-  width: 78px;
-  height: 30px;
-  line-height: 30px;
-  text-align: center;
-  color: #ffffff;
-  border-radius: 15px;
-  background: #227ba6;
-  font-size: 14px;
-  font-family: MicrosoftYaHei;
-  letter-spacing: 1px;
-  padding: 0;
-  position: absolute;
-  right: 0;
-  bottom: 3px;
-}
-
-.sub-rt span.type {
-  display: inline-block;
-  width: 80px;
-  height: 28px;
-  text-indent: 0;
-  text-align: center;
-  border: 2px solid #35a0c9;
-  border-bottom: none;
-  box-sizing: border-box;
-  cursor: default;
-}
-
-.sub-rt span.add {
-  box-shadow: 0px 1px 16px 0px #35a0c9 inset;
-}
 /* 左侧 */
 .menu-lt {
   width: 480px;
@@ -248,7 +68,7 @@ body {
 .menu-lt .menu-in li:nth-child(2) {
   text-align: right !important;
 }
-
+/* 左下角和右下角的图标介绍 */
 .menu-icon {
   width: 100%;
   height: 40px;
@@ -272,7 +92,6 @@ body {
   height: 18px;
   vertical-align: top;
 }
-
 /* 右侧 */
 .menu-rt {
   width: 480px;
@@ -434,7 +253,7 @@ body {
 }
 
 .el-line {
-  height: 440px;
+  height: 395px;
   position: relative;
   padding-top: 40px;
   box-sizing: border-box;
@@ -455,9 +274,21 @@ body {
 .el-line .lay_sele {
   width: 100px;
 }
+.el-line .lay_type {
+  width: 80px;
+  height: 40px;
+  line-height: 40px;
+  text-align: center;
+}
+.el-line .add {
+  color: #000;
+  border: 1px solid #35a0c9;
+  box-shadow: 0px 1px 16px 0px #35a0c9 inset;
+  box-sizing: border-box;
+}
 
 #line {
-  height: 400px;
+  height: 355px;
 }
 
 /* 右下站点 */
@@ -469,45 +300,49 @@ body {
   -moz-box-sizing: border-box;
 }
 
-.menu-rt .layui-form-item {
+.menu-rt .menu-btm .layui-form-item {
   margin-bottom: 0;
   padding: 0 10px;
   box-sizing: border-box;
 }
 
-.menu-rt .layui-form-item .layui-inline {
+.menu-rt .menu-btm .layui-form-item .layui-inline {
   height: 40px;
   margin: 0px;
 }
 
-.menu-rt .layui-form-item .layui-input-inline {
+.menu-rt .menu-btm .layui-form-item .layui-input-inline {
   width: 140px;
   margin-right: 0;
 }
 
-.menu-rt .layui-input-block {
+.menu-rt .menu-btm .layui-input-block {
   margin-left: 0;
 }
 
-.menu-rt .layui-form-item .layui-form-checkbox[lay-skin="primary"] {
+.menu-rt .menu-btm .layui-form-item .layui-form-checkbox[lay-skin="primary"] {
   width: 100%;
   margin-top: 0;
   padding-left: 30px;
 }
 
-.menu-rt .layui-form-item .layui-form-checkbox[lay-skin="primary"] span {
+.menu-rt
+  .menu-btm
+  .layui-form-item
+  .layui-form-checkbox[lay-skin="primary"]
+  span {
   width: 100px;
   line-height: 40px;
   color: #07a6ff;
   padding-right: 0;
 }
 
-.menu-rt .layui-form-item .layui-form-checkbox[lay-skin="primary"] i {
+.menu-rt .menu-btm .layui-form-item .layui-form-checkbox[lay-skin="primary"] i {
   left: 7px;
   top: 12px;
 }
 
-.menu-rt .layui-form-item .layui-form-checked[lay-skin="primary"] i {
+.menu-rt .menu-btm .layui-form-item .layui-form-checked[lay-skin="primary"] i {
   color: #ffffff;
   background-color: #227ba6;
   border-color: #07a6ff !important;
@@ -534,9 +369,7 @@ body {
   font-size: 18px;
   font-family: MicrosoftYaHei;
   letter-spacing: 1px;
-  /* box-shadow: 0px 1px 16px 0px #35a0c9 inset; */
   border-radius: 4px;
-  /* border: 1px solid #35a0c9; */
   margin: 0 10px;
   cursor: pointer;
   position: relative;
@@ -572,85 +405,4 @@ body {
 
 .menu_btn:hover .menu_hide {
   display: block;
-}
-
-/* 故障弹窗 */
-.iframe {
-  width: 355px;
-  display: none;
-}
-
-#iframe {
-  height: 290px;
-}
-
-#iframes {
-  height: 555px;
-}
-
-.iframe iframe {
-  width: 100%;
-  height: 100%;
-}
-
-body .drop-demo .layui-layer-title {
-  height: 42px;
-  line-height: 40px;
-  color: #fff;
-  font-size: 18px;
-  font-family: MicrosoftYaHei;
-  letter-spacing: 1px;
-  background: #000000;
-  border: 1px solid #005ca0;
-  box-sizing: border-box;
-}
-
-body .drop-demo .layui-layer-setwin {
-  top: 12px;
-  right: 10px;
-}
-
-body .drop-demo .layui-layer-content {
-  overflow: visible;
-  background: #000000;
-}
-
-body .drop-demo iframe {
-  background: #000000;
-}
-
-/* 月报下载 */
-.month-box {
-  width: 400px;
-  color: #fff;
-  background: #000000;
-  border: 1px solid #005ca0;
-  border-top: none;
-  padding: 30px 10px 10px 10px;
-  box-sizing: border-box;
-  display: none;
-}
-
-.month-box .layui-input {
-  color: #fff;
-  overflow: hidden;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  background: #112350;
-  border: none;
-}
-
-.month-box .lay_bg_color {
-  color: #000 !important;
-}
-
-.month-box .lay_bg_color .layui-input {
-  color: #fff;
-  border: none;
-  background-color: #112350;
-}
-
-.month-box .subbtn {
-  margin-left: 110px;
 }

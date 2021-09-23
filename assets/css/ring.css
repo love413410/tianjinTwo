@@ -1,6 +1,6 @@
 body {
   width: 1320px;
-  height: 635px;
+  /* height: 635px; */
   overflow: hidden;
   padding-top: 40px;
   box-sizing: border-box;
@@ -33,7 +33,7 @@ body {
 }
 .lay-line {
   width: 1300px;
-  height: 550px;
+  height: 545px;
   margin: 0 auto;
   margin-top: 10px;
 }

@@ -1,13 +1,10 @@
 layui.define(['http', 'getFn'], function (e) {
-    var $ = layui.jquery,
-        form = layui.form,
-        laydate = layui.laydate;
-    var http = layui.http,
-        urls = layui.urls,
-        getFn = layui.getFn;
+    var $ = layui.jquery, form = layui.form, laydate = layui.laydate;
+    var http = layui.http, urls = layui.urls, getFn = layui.getFn;
     // 监听站点异常
     var inspTime = null;
     function inspFn() {
+        clearTimeout(inspTime);
         http({
             url: urls.faultpush,
             type: 'get',

@@ -25,9 +25,9 @@ layui.define(["http"], function(e) {
 				sessionStorage.user = data.field.user;
 				sessionStorage.token = res.token;
 				sessionStorage.limit = res.limit;
-				// window.location.href = './pages/home.html';
-				window.location.href = './pages/test.html';
+				// window.location.href = './pages/test.html';
 				// window.location.href = './pages/map.html';
+				window.location.href = './pages/home.html';
 			}
 		});
 		return false;

@@ -1,7 +1,7 @@
 layui.define(function (exports) {
-	// var baseUrl = 'http://192.168.1.156:8004';
+	var baseUrl = 'http://192.168.1.156:8004';
 	// var baseUrl = 'http://192.168.73.247:8004';
-	var baseUrl = 'http://169.254.35.19:8004';
+	// var baseUrl = 'http://169.254.35.19:8004';
 	// var baseUrl = window.location.origin;
 	exports('urls', {
 		login: baseUrl + '/limit/login/',

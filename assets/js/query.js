@@ -1,5 +1,4 @@
 layui.define(["http", "load", "getFn"], function(e) {
-
 	//台站查询
 	function rateLayFn(id, style, startTime, endTime) {
 		var url = "./dataDeta.html?id=" + id + "&style=" + style + "&startTime=" + startTime + "&endTime=" + endTime;
@@ -39,18 +38,6 @@ layui.define(["http", "load", "getFn"], function(e) {
 			content: url
 		});
 	};
-
-	// function layFn(url) {
-	// 	layer.open({
-	// 		type: 2,
-	// 		title: "修改",
-	// 		resize: !1,
-	// 		skin: "lay-drop lay-drp",
-	// 		id: "id",
-	// 		area: ["860px", "595px"],
-	// 		content: url
-	// 	});
-	// };
 	e("query", {
 		layFn:layFn,
 		rateLayFn: rateLayFn,
@@ -58,5 +45,5 @@ layui.define(["http", "load", "getFn"], function(e) {
 		radarLayFn: radarLayFn,
 		gpsLayFn: gpsLayFn,
 		shpiLayFn: shpiLayFn
-	})
+	});
 });

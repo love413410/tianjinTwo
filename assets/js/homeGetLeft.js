@@ -36,8 +36,9 @@ layui.define(['http'], function (e) {
     };
 
     // 获取左侧各站报警信息
-    var rollTimeout, rollTime = null, rollIntrol = null, rollSh = 40, rollSpeed = 30;
+    var rollTimeout, rollTime = null, rollSh = 40, rollSpeed = 30;
     function getStateFn(type) {
+        clearTimeout(rollTime);
         clearTimeout(rollTimeout);
         $("#roll").empty();
         http({
@@ -60,7 +61,7 @@ layui.define(['http'], function (e) {
                 clearInterval(rollTime);
                 if ($("#roll").height() > $("#deta").height()) {
                     rollTime = setInterval(function () {
-                        setRollFn();
+                        setRollFn(type);
                     }, rollSpeed);
                 };
             },
@@ -69,7 +70,7 @@ layui.define(['http'], function (e) {
             }
         });
     };
-    function setRollFn() {
+    function setRollFn(type) {
         $("#roll").animate({
             marginTop: '-=1'
         }, 0, function () {
@@ -81,14 +82,16 @@ layui.define(['http'], function (e) {
         });
         $("#deta").hover(function () {
             clearTimeout(rollTime);
-            clearInterval(rollIntrol);
+            clearTimeout(rollTimeout);
         }, function () {
             clearInterval(rollTime);
-            clearTimeout(rollIntrol);
+            clearTimeout(rollTimeout);
             rollTime = setInterval(function () {
                 setRollFn();
             }, rollSpeed);
-            rollIntrol = setTimeout(getStateFn, 30000);
+            rollTimeout = setTimeout(function () {
+                getStateFn(type);
+            }, 30000);
         });
     };
 

@@ -1,776 +1,639 @@
-function load() {
-    window.location.reload();
-};
+/*
+    此类开发可能引起不适
+    layui里面套了arcgis、vue
+    想用vue的双向绑定
+    又想用layui的组件
+*/
+layui.define(["http", "getFn"], function (exports) {
+    require(
+        [
+            "esri/map", "esri/graphic", "esri/geometry/Point",
+            "esri/layers/GraphicsLayer", "esri/Color", "esri/symbols/TextSymbol",
+            "esri/symbols/SimpleLineSymbol", "esri/geometry/Polyline", "esri/symbols/PictureMarkerSymbol",
+            "esri/layers/ArcGISTiledMapServiceLayer", "dojo/domReady!",
+        ],
+        function (
+            Map, graphic, Point, GraphicsLayer, Color,
+            TextSymbol, SimpleLineSymbol, Polyline,
+            PictureMarkerSymbol, ArcGISTiledMapServiceLayer
+        ) {
+            var http = layui.http, urls = layui.urls, getFn = layui.getFn;
+            var $ = layui.$, form = layui.form, carousel = layui.carousel, laydate = layui.laydate;
+            window.vm = new Vue({
+                el: "#app",
+                data: {
+                    carIdex: 0, userName: null, xm: null, siteId: null,
 
-function outFn() {
-    window.location.href = '../index.html';
-};
+                    fileTime: null, fileData: { dir: 0, dunit: "个", size: 0, sunit: "MB", time: "2020-10-10", list: [] },
+                    stateTime: null, list: [], rollTime: null, rollTimeout: null,
 
-layui.define(['http', "getFn"], function (e) {
-    var http = layui.http,
-        urls = layui.urls,
-        getFn = layui.getFn;
+                    barTime: null, seaData: { type: 0, data: [] },
 
-    var $ = layui.jquery,
-        layForm = layui.form,
-        laydate = layui.laydate;
+                    map: null, zoom: 6, center: [120.81, 32.026], mapTime: null, type: "", checkArr: [],
+                    delaTime: null, mapInt: null, isClick: null, layDeta: null,
 
-    $("#user").html(sessionStorage.user);
-    var level = sessionStorage.limit;
-    $("[name=level" + level + "]").hide();
-
-    // 获取默认站点
-    var siteId = null;
-    var latlog = [];
-    function getSiteFn() {
-        http({
-            url: urls.search,
-            type: 'get',
-            data: {},
-            success: function (res) {
-                var data = res.data;
-                var str = '';
-                for (var i = 0; i < data.length; i++) {
-                    str += '<option value="' + data[i].id + '">' + data[i].station + '</option>';
-                };
-                $("#laySearch").html(str);
-
-                http({
-                    url: urls.sitedefault,
-                    type: 'get',
-                    data: {},
-                    success: function (res) {
-                        siteId = res.id;
-                        layForm.val("layForm", {
-                            site: siteId
+                    siteHtml: "水文", gaugeTimout: null,
+                    siteEl: "潮位", siteType: "年", lineTimout: null, gaugeArr: [],
+                    inspTime: null,
+                    hdate: getFn.initM(), index: null
+                },
+                methods: {
+                    initMapFn: function () {
+                        this.map = new Map("map", { zoom: this.zoom, minZoom: 3, maxZoom: 9, center: this.center });
+                        var baseUrl = "http://server.arcgisonline.com/ArcGIS/rest/services/ESRI_StreetMap_World_2D/MapServer";
+                        // var url = "http://71.3.251.104:8066/arcgis/rest/services/6199/0/MapServer?token=";
+                        // var token =
+                        // 	"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxNjN8NjE5OXw3MS4zLjAuMTB8fHx8MSIsImlhdCI6MTYyOTk0NDUyNywiZXhwIjoxNjMwMzA0NTI3fQ.qh-q9Xq66jwPqR1TatApz6f79Xe4mziSJvJ6Ehhm9dPXSR3T5yRuiFPcmfHEKxPLn2gJRR6htRRR75HfS1RyoQ";
+                        // var baseUrl = url + token;
+                        var layer = new ArcGISTiledMapServiceLayer(baseUrl);
+                        this.map.addLayer(layer);
+                        this.map.on("zoom-end", (e) => {
+                            clearTimeout(this.mapTime);
+                            this.zoom = e.level;
+                            this.mapTime = setTimeout(() => {
+                                this.mapDataFn();
+                            }, 500)
                         });
-                        fileFn();
-                        getTypeFn();
-                        getDetaFn();
-                    }
-                });
-            }
-        });
+                    },
 
-    };
-    getSiteFn();
-    // 获取站点详情
-    function getDetaFn() {
-        http({
-            url: urls.sitedeta,
-            type: 'post',
-            data: {
-                id: siteId
-            },
-            success: function (res) {
-                var data = res.data.fields;
-                latlog = [data.lon, data.lat];
-                setImgFn();
-            }
-        });
-    }
-    //监听选择
-    layForm.on('select(laySearch)', function (data) {
-        siteId = data.value;
-        getDetaFn();
-        fileFn();
-    });
+                    initXmFn: function () {
+                        http({
+                            url: urls.search,
+                            success: (res) => {
+                                var data = res.data;
+                                this.xm = xmSelect.render({
+                                    el: '#xmSelect',
+                                    radio: true, clickClose: true,
+                                    prop: { name: 'station', value: 'id' },
+                                    model: { icon: 'hidden', label: { type: 'text' } },
+                                    filterable: true, data: data,
+                                    on: (e) => { this.siteId = e.change[0].id; this.getEchartsFn(); this.clickFn() }
+                                });
+                                http({
+                                    url: urls.sitedefault,
+                                    type: 'get',
+                                    data: {},
+                                    success: (res) => {
+                                        this.siteId = res.id;
+                                        this.xm.setValue([res.id]);
+                                        this.getFileFn();
+                                        this.getTypeFn();
+                                    }
+                                });
+                            },
+                        });
+                    },
+                    //左侧数据:今日传输量和数据到报显示
+                    getFileFn: function () {
+                        clearTimeout(this.fileTime);
+                        http({
+                            url: urls.receive,
+                            data: { id: this.siteId },
+                            success: (res) => {
+                                this.fileData = res.data;
+                            },
+                            complete: () => {
+                                this.fileTime = setTimeout(() => { this.getFileFn() }, 60000);
+                            }
+                        });
+                    },
+                    // 获取站点类型
+                    getTypeFn: function () {
+                        http({
+                            url: urls.layer,
+                            success: (res) => {
+                                var data = res.data, str = '';
+                                for (let i = 0; i < data.length; i++) {
+                                    var id = data[i].id, title = data[i].title, is = data[i].checkd;
+                                    if (is == 1) {
+                                        str += '<div class="layui-inline">' +
+                                            '<div class="layui-input-inline">' +
+                                            '<input type="checkbox" value="' + id + '" lay-skin="primary" lay-filter="check" title="' +
+                                            title + '" checked />' +
+                                            '</div>' +
+                                            '</div>';
+                                        this.checkArr.push(id);
+                                    } else {
+                                        str += '<div class="layui-inline">' +
+                                            '<div class="layui-input-inline">' +
+                                            '<input type="checkbox" value="' + id + '" lay-skin="primary" lay-filter="check" title="' +
+                                            title + '"/>' +
+                                            '</div>' +
+                                            '</div>';
+                                    };
+                                };
+                                $("#check").html(str);
+                                form.render("checkbox");
+                                this.type = this.checkArr.join(',');
+                                this.mapDataFn();
+                                this.getStateFn();
+                            }
+                        });
+                    },
+                    // 左侧各站故障信息
+                    getStateFn: function () {
+                        clearTimeout(this.stateTime);
+                        http({
+                            url: urls.alarms,
+                            data: { type: this.type },
+                            success: (res) => {
+                                this.list = res.data;
+                            },
+                            complete: () => { this.stateTime = setTimeout(() => { this.getStateFn(); }, 60000); }
+                        })
+                    },
+                    DomResize(data) {
+                        clearInterval(this.rollTime);
+                        let { height } = data;
+                        let n = height.slice(0, -2);
+                        var h = $("#deta").height();
+                        if (n > h) {
+                            this.rollTime = setInterval(() => { this.setRollFn(); }, 30);
+                        };
+                    },
+                    setRollFn: function () {
+                        $("#roll").animate({
+                            marginTop: '-=1'
+                        }, 0, function () {
+                            var s = Math.abs(parseInt($("#roll").css("margin-top")));
+                            if (s >= 40) {
+                                $(this).find("ul").slice(0, 1).appendTo($("#roll"));
+                                $(this).css("margin-top", 0);
+                            }
+                        });
+                    },
+                    enter: function () {
+                        clearInterval(this.rollTime);
+                        clearTimeout(this.rollTimeout);
+                    },
+                    leave: function () {
+                        clearInterval(this.rollTime);
+                        clearTimeout(this.rollTimeout);
+                        this.rollTime = setInterval(() => {
+                            this.setRollFn();
+                        }, 30);
+                        this.rollTimeout = setTimeout(() => {
+                            this.getStateFn();
+                        }, 30000);
+                    },
+                    // 地图数据
+                    mapDataFn: function () {
+                        clearTimeout(this.mapInt);
+                        http({
+                            url: urls.homeindex,
+                            data: { type: this.type, num: this.zoom },
+                            success: (res) => {
+                                this.setLineDataFn(res.line);
+                                this.setMapDataFn(res.data);
+                            },
+                            complete: () => {
+                                this.mapInt = setTimeout(() => { this.mapDataFn() }, 60000);
+                            }
+                        });
+                    },
+                    setMapDataFn: function (data) {
+                        if (data.length <= 0) { return false; };
+                        var mapLayers = this.map.getLayer('mapLayer');
+                        if (mapLayers != undefined) { this.map.removeLayer(mapLayers); };
+                        var mapLayer = new GraphicsLayer({ id: "mapLayer" });
+                        this.map.addLayer(mapLayer, 9);
+                        for (var i = 0; i < data.length; i++) {
+                            var dataItem = data[i];
+                            var log = dataItem.from[0], lat = dataItem.from[1];
+                            var area = this.zoom * 3 >= 38 ? 38 : this.zoom * 3 <= 16 ? 16 : this.zoom * 3;
+                            var point = new Point(log, lat);
+                            var pic = new PictureMarkerSymbol({
+                                url: "../static/icon" + dataItem.type + dataItem.val + ".png",
+                                width: area, height: area, item: dataItem
+                            });
+                            var gp = new graphic(point, pic);
+                            mapLayer.add(gp);
 
-    var fileTime = null;
-    function fileFn() {
-        clearTimeout(fileTime);
-        http({
-            url: urls.receive,
-            type: 'get',
-            data: {
-                id: siteId
-            },
-            success: function (res) {
-                var data = res.data;
-                $("#dataTime").html(data.time);
-                $("#file").html(data.dir);
-                $("#fileNum").html(data.dunit);
-                $("#data").html(data.size);
-                $("#dataNum").html(data.sunit);
-                var list = data.list;
-                var str = '';
-                for (var i = 0; i < list.length; i++) {
-                    str += '<div>' +
-                        '<p>' + list[i].key + '</p>' +
-                        '<p>' + list[i].val + '</p>' +
-                        '</div>';
-                };
-                $("#rtTop").html(str);
-            },
-            complete: function () {
-                fileTime = setTimeout(function () {
-                    fileFn();
-                }, 60000);
-            }
-        });
-    };
+                            //添加站名
+                            /* 
+                                var text = new TextSymbol({
+                                    text: dataItem.name,
+                                    xoffset: 0,
+                                    yoffset: -20,
+                                    color: new Color("#000"),
+                                    item: dataItem
+                                });
+                                var siteName = new graphic(point, text);
+                                mapLayer.add(siteName);
+                            */
 
-    // 监听异常
-    var inspTime = null;
-    function inspFn() {
-        http({
-            url: urls.faultpush,
-            type: 'get',
-            data: {},
-            success: function (res) {
-                var data = res.data;
-                var stationId = data.stationId;
-                if (stationId > -1) {
-                    http({
-                        url: urls.homeclock,
-                        type: 'get',
-                        data: {
-                            id: stationId
-                        },
-                        success: function (res) {
-                            var data = res.data;
-                            var type = res.type;
-                            var title = data.station;
-                            if (type < 0) {
-                                var layHeight = "414px";
-                                var content = '../pages/layHome.html?id=' + stationId;
-                            } else {
-                                var layHeight = "576px";
-                                var content = '../pages/layHomes.html?id=' + stationId;
+                            mapLayer.on('click', (e) => {
+                                clearTimeout(this.isClick);
+                                this.isClick = setTimeout(() => {
+                                    var item = e.graphic.symbol.item;
+                                    this.siteId = item.id;
+                                    this.xm.setValue([this.siteId])
+                                    this.getEchartsFn();
+                                    this.clickFn();
+                                }, 250);
+                            });
+                        };
+                    },
+                    setLineDataFn: function (data) {
+                        if (data.length <= 0) {
+                            return false;
+                        };
+                        var mapLayers = this.map.getLayer('lineId');
+                        if (mapLayers != undefined) { this.map.removeLayer(mapLayers) };
+                        var layer = new GraphicsLayer({ id: "lineId" });
+                        this.map.addLayer(layer, 7);
+                        for (var i = 0; i < data.length; i++) {
+                            var dataItem = data[i].coords;
+                            var isShowLine = data[i].line;
+                            if (isShowLine != 100) {
+                                var paths = [dataItem[0], dataItem[1]];
+                                var geos = new Polyline({ "paths": [paths] });
+                                var line = data[i].line;
+                                var color = line == 0 ? new Color("#32CD32") : new Color("#f00");
+                                var lines = new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, color, 1);
+                                var sls = new graphic(geos, lines);
+                                layer.add(sls);
                             };
-                            layer.open({
-                                type: 2,
-                                shade: 0,
-                                resize: false,
-                                title: title,
-                                area: ["355px", layHeight],
-                                skin: 'drop-demo lay-drop',
-                                offset: "150px",
-                                id: "drop-demo",
-                                content: content,
-                                success: function (layero, index) {
-                                    clearTimeout(inspTime);
-                                },
-                                cancel: function () {
+                        };
+                    },
+                    // 判断是哪个轮播图页面
+                    getEchartsFn: function () {
+                        if (this.carIdex == 1) {
+                            this.getGaugeFn();
+                            this.getLineFn();
+                        } else {
+                            clearTimeout(this.gaugeTimout);
+                            clearTimeout(this.lineTimout);
+                            this.getFileFn();
+                        };
+                    },
+                    // 右侧数据:右侧海区到报显示
+                    getSeaDataFn: function () {
+                        clearTimeout(this.barTime);
+                        http({
+                            url: urls.bar,
+                            success: (res) => {
+                                this.seaData = res;
+                            },
+                            complete: () => {
+                                this.barTime = setTimeout(() => { this.getSeaDataFn() }, 60000);
+                            }
+                        });
+                    },
+                    gaugeFn: function (e) {
+                        this.siteHtml = e; this.getGaugeFn();
+                    },
+                    //仪表盘数据
+                    getGaugeFn: function () {
+                        clearTimeout(this.gaugeTimout);
+                        http({
+                            url: urls.homeEl,
+                            data: { id: this.siteId, type: this.siteHtml },
+                            success: (res) => {
+                                var arr = res.data, ec = '';
+                                for (var i = 0; i < arr.length; i++) {
+                                    ec += '<div class="gauge-item"></div>';
+                                };
+                                $("#gauge").html(ec);
+                                var gauge = document.getElementsByClassName("gauge-item");
+                                for (var g = 0; g < gauge.length; g++) {
+                                    this.gaugeArr[g] = echarts.init(gauge[g]);
+                                    this.gaugeArr[g].setOption(this.initGaugeFn(arr[g]));
+                                };
+                            },
+                            error: () => {
+                                for (var i = 0; i < this.gaugeArr.length; i++) {
+                                    this.gaugeArr[i].clear();
+                                };
+                            },
+                            complete: () => {
+                                this.gaugeTimout = setTimeout(() => { this.getGaugeFn() }, 60000);
+                            }
+                        });
+                    },
+                    initGaugeFn: function (data) {
+                        var min = data.min || 0, max = data.max || 0, value = data.value || 0, name = data.name || "", unit = data.unit || "";
+                        var str = name + value + unit;
+                        var option = {
+                            series: [{
+                                type: 'gauge',
+                                min: min, max: max,
+                                splitNumber: 4,
+                                axisLine: { lineStyle: { width: 5, color: [[0.3, "#33CC00"], [0.7, "#ffde00"], [1, "#f00"]], } },
+                                radius: '90%',
+                                pointer: { itemStyle: { color: 'auto' } },
+                                axisTick: { distance: 0, length: 10, lineStyle: { color: 'auto', width: 2 } },
+                                splitLine: { distance: 0, length: 15, lineStyle: { color: 'auto', width: 4 } },
+                                axisLabel: { color: '#227BA6', fontSize: 8 },
+                                detail: { valueAnimation: true, formatter: str, color: '#227BA6', fontSize: 16, offsetCenter: ['0%', '90%'] },
+                                data: [{ value: value }]
+                            },]
+                        };
+                        return option;
+                    },
+                    siteTypeFn: function (e) {
+                        this.siteType = e;
+                        this.getLineFn();
+                    },
+                    //折线图数据
+                    getLineFn: function () {
+                        clearTimeout(this.lineTimout);
+                        http({
+                            url: urls.homeEl,
+                            type: 'post',
+                            data: { id: this.siteId, name: this.siteEl, type: this.siteType },
+                            success: (res) => {
+                                var xData = res.title, data = res.data, unit = res.unit;
+                                var max = res.max, min = res.min;
+                                var max_mult = max > 0 ? 1.2 : max < 0 ? 0.8 : 0,
+                                    min_mult = min > 0 ? 0.8 : 1.2;
+                                var max_val = Math.floor(max * max_mult),
+                                    min_val = Math.ceil(min * min_mult);
+                                this.myLine = echarts.init(document.getElementById("line"));
+                                let option = this.initLineFn(this.siteEl, xData, data, unit, max_val, min_val);
+                                this.myLine.setOption(option);
+                            },
+                            error: () => {
+                                this.myLine.clear();
+                            },
+                            complete: () => {
+                                this.lineTimout = setTimeout(() => { this.getLineFn(); }, 60000);
+                            }
+                        });
+                    },
+                    initLineFn: function (siteEl, xData, data, unit, max, min) {
+                        var option = {
+                            grid: { top: 20, bottom: 40, right: 10 },
+                            tooltip: {
+                                trigger: "axis",
+                                formatter: function (item) {
+                                    var item = item[0];
+                                    var html = item.marker + "<span>" + item.data.time + "</span>" + "<p>" + siteEl + ":" + item.data.value + unit +
+                                        "</p>"
+                                    return html;
+                                }
+                            },
+                            xAxis: [{
+                                type: 'category',
+                                data: xData,
+                                axisLine: { onZero: false, lineStyle: { color: "#227BA6" } },
+                                axisTick: { show: false },
+                                axisLabel: { interval: "auto", textStyle: { color: "#227BA6" }, fontSize: 12, margin: 15, rotate: 45 },
+                                axisPointer: { label: { padding: [0, 0, 10, 0], margin: 15, fontSize: 12 } },
+                                boundaryGap: false
+                            }],
+                            yAxis: [{
+                                type: 'value',
+                                min: min,
+                                max: max,
+                                axisTick: { show: false },
+                                axisLine: { show: true, lineStyle: { color: "#227BA6" } },
+                                axisLabel: { textStyle: { color: "#227BA6" } },
+                                splitLine: { show: false }
+                            }],
+                            series: [{
+                                type: 'line',
+                                data: data,
+                                symbolSize: 1, symbol: 'circle', smooth: true, yAxisIndex: 0, showSymbol: false,
+                                lineStyle: { normal: { color: "#07a6ff" } }
+                            }]
+                        };
+                        return option;
+                    },
+                    //监控站点异常,自动弹窗
+                    inspFn: function () {
+                        clearTimeout(this.inspTime);
+                        http({
+                            url: urls.faultpush,
+                            type: 'get',
+                            success: (res) => {
+                                var data = res.data, stationId = data.stationId;
+                                if (stationId > -1) {
                                     http({
-                                        url: urls.close,
+                                        url: urls.homeclock,
                                         type: 'get',
-                                        data: {
-                                            id: stationId,
-                                            type: type
-                                        },
-                                        success: function () {
-                                            layer.closeAll(function () {
-                                                inspTime = setTimeout(inspFn, 500)
+                                        data: { id: stationId },
+                                        success: (res) => {
+                                            var data = res.data, type = res.type, title = data.station;
+                                            if (type < 0) {
+                                                var layHeight = "414px", content = '../pages/layHome.html?id=' + stationId;
+                                            } else {
+                                                var layHeight = "576px", content = '../pages/layHomes.html?id=' + stationId;
+                                            };
+                                            layer.open({
+                                                type: 2, shade: 0, resize: false,
+                                                title: title, area: ["355px", layHeight],
+                                                skin: 'drop-demo lay-drop', offset: "150px",
+                                                id: "drop-demo", content: content,
+                                                success: () => { clearTimeout(this.inspTime); },
+                                                cancel: function () {
+                                                    http({
+                                                        url: urls.close,
+                                                        type: 'get',
+                                                        data: { id: stationId, type: type },
+                                                        success: () => {
+                                                            layer.closeAll(() => {
+                                                                this.inspTime = setTimeout(() => { this.inspFn() }, 500);
+                                                            });
+                                                        }
+                                                    });
+                                                }
                                             });
                                         }
                                     });
+                                } else {
+                                    this.inspTime = setTimeout(() => { this.inspFn() }, 30000);
+                                };
+                            }
+                        });
+                    },
+                    // 点击站点弹窗
+                    clickFn: function () {
+                        this.layDeta ? layer.close(this.layDeta, () => {
+                            this.layerFn()
+                        }) : this.layerFn();
+                    },
+                    layerFn: function () {
+                        http({
+                            url: urls.homeclock,
+                            data: { id: this.siteId },
+                            success: (res) => {
+                                var data = res.data, type = res.type, title = data.station;
+                                if (type < 0) {
+                                    var layHeight = "414px", content = '../pages/layHome.html?id=' + this.siteId;
+                                } else {
+                                    var layHeight = "576px", content = '../pages/layHomes.html?id=' + this.siteId;
+                                };
+                                this.layDeta = layer.open({
+                                    type: 2, shade: 0, resize: false,
+                                    title: title, area: ["355px", layHeight],
+                                    skin: 'drop-demo lay-drop', offset: "150px",
+                                    id: "drop-demo", content: content,
+                                    success: () => { clearTimeout(this.inspTime); },
+                                    cancel: () => { this.inspTime = setTimeout(this.inspFn, 500); this.layDeta = null }
+                                });
+                            }
+                        });
+                    },
+                    childFn: function () {
+                        layer.closeAll(() => {
+                            this.inspTime = setTimeout(() => { this.inspFn() }, 500)
+                        });
+                    },
+                    layAlertFn: function (url, title, width, height) {
+                        var url = url || '',
+                            title = title || !1,
+                            width = width || "100%",
+                            height = height || "635px";
+                        layer.closeAll(() => {
+                            layer.open({
+                                type: 2, title: title,
+                                shade: 0.8, resize: !1, moveOut: 1,
+                                skin: "lay-drop", area: [width, height], content: url,
+                                success: () => { clearTimeout(this.inspTime) },
+                                cancel: () => { this.childFn() }
+                            });
+                        });
+                    },
+                    userFn: function () {
+                        let isUser = getFn.isUserFn();
+                        isUser ? this.layAlertFn('./user.html', '个人中心管理', '600px', '480px') : alrFn('./users.html', '个人中心管理', '600px', '380px');
+                    },
+                    loadFn: function () {
+                        layer.closeAll(function () {
+                            layer.open({
+                                type: 1, title: "月报下载",
+                                shade: 0.5, closeBtn: 1,
+                                skin: 'drop-demo lay-drop',
+                                area: ['400px'],
+                                content: $("#monthDown"),
+                                success: () => {
+                                    clearTimeout(this.inspTime);
+                                    $(".layItem").addClass("layui-hide");
+                                    $("#layItem").removeClass("layui-hide");
+                                    $('#monthDown')[0].reset();
+                                    var yearVal = new Date().getFullYear();
+                                    laydate.render({
+                                        elem: '#yearTime',
+                                        type: 'year',
+                                        value: yearVal,
+                                        max: 0,
+                                        trigger: 'click',
+                                        btns: ['confirm'],
+                                    });
+                                },
+                                cancel: () => {
+                                    this.inspTime = setTimeout(() => { this.inspFn() }, 500)
                                 }
                             });
-                        }
-                    });
-                } else {
-                    inspTime = setTimeout(inspFn, 30000);
-                };
-            }
-        });
-    };
-    inspFn();
-
-    function clickFn() {
-        http({
-            url: urls.homeclock,
-            type: 'get',
-            data: {
-                id: siteId
-            },
-            success: function (res) {
-                var data = res.data;
-                var type = res.type;
-                var title = data.station;
-                if (type < 0) {
-                    var layHeight = "414px";
-                    var content = '../pages/layHome.html?id=' + siteId;
-                } else {
-                    var layHeight = "576px";
-                    var content = '../pages/layHomes.html?id=' + siteId;
-                };
-                layer.open({
-                    type: 2,
-                    shade: 0,
-                    resize: false,
-                    title: title,
-                    area: ["355px", layHeight],
-                    skin: 'drop-demo lay-drop',
-                    offset: "150px",
-                    id: "drop-demo",
-                    content: content,
-                    success: function () {
-                        clearTimeout(inspTime);
+                        })
                     },
-                    cancel: function () {
-                        inspTime = setTimeout(inspFn, 500)
-                    }
-                });
-            }
-        })
-    };
-    // 右侧海区数据到报显示
-    var barTime = null;
-    function getBarFn() {
-        clearTimeout(barTime);
-        http({
-            url: urls.bar,
-            type: 'get',
-            data: {},
-            success: function (res) {
-                var data = res.data;
-                var str = '';
-                for (var i = 0; i < data.length; i++) {
-                    var dataItem = data[i];
-                    str += '<div>' +
-                        '<p title="' + dataItem.name + '">' + dataItem.name + '</p>' +
-                        '<p>' + dataItem.total + '</p>' +
-                        '<p>' + dataItem.relay + '</p>' +
-                        '<p>' + dataItem.obtain + '</p>' +
-                        '</div>';
-                };
-                $("#menuIn").html(str);
-                var type = res.type;
-                type == 1 ? $("#subRt").show() : "";
-            },
-            complete: function () {
-                barTime = setTimeout(function () {
-                    getBarFn();
-                }, 60000);
-            }
-        });
-    };
-    getBarFn();
-
-    // 获取右侧站类型
-    var type = "";
-    var checkArr = [];
-    function getTypeFn() {
-        http({
-            url: urls.layer,
-            type: 'get',
-            success: function (res) {
-                var data = res.data;
-                var str = '';
-                for (var i = 0; i < data.length; i++) {
-                    var id = data[i].id;
-                    var title = data[i].title;
-                    var is = data[i].checkd;
-                    if (is == 1) {
-                        str += '<div class="layui-inline">' +
-                            '<div class="layui-input-inline">' +
-                            '<input type="checkbox" value="' + id + '" lay-skin="primary" lay-filter="check" title="' +
-                            title + '" checked />' +
-                            '</div>' +
-                            '</div>';
-                        checkArr.push(id);
-                    } else {
-                        str += '<div class="layui-inline">' +
-                            '<div class="layui-input-inline">' +
-                            '<input type="checkbox" value="' + id + '" lay-skin="primary" lay-filter="check" title="' +
-                            title + '"/>' +
-                            '</div>' +
-                            '</div>';
-                    };
-                };
-                $("#check").html(str);
-                layForm.render("checkbox");
-                type = checkArr.join(',');
-                mapDataFn();
-                getStateFn();
-            }
-        });
-    };
-    // getTypeFn();
-    // 监听类型选择
-    var mapInt, mapTime, delaTime;
-    layForm.on('checkbox(check)', function (data) {
-        clearTimeout(mapInt);
-        clearTimeout(delaTime);
-        var tempVal = Number(data.value);
-        var tempIs = data.elem.checked;
-        if (tempIs) {
-            checkArr.push(tempVal)
-        } else {
-            var idx = checkArr.indexOf(tempVal);
-            checkArr.splice(idx, 1);
-        };
-        type = checkArr.join(',');
-        delaTime = setTimeout(function () {
-            mapDataFn();
-            getStateFn();
-        }, 1000)
-    });
-
-    // 获取左侧各站报警信息
-    var rollTimeout,
-        rollTime = null,
-        rollIntrol = null,
-        rollSh = 40,
-        rollSpeed = 30;
-
-    function getStateFn() {
-        clearTimeout(rollTimeout);
-        $("#roll").empty();
-        http({
-            url: urls.alarms,
-            type: 'get',
-            data: {
-                type: type
-            },
-            success: function (res) {
-                var data = res.data;
-                for (var i = 0; i < data.length; i++) {
-                    var dataItem = data[i].fields;
-                    var title = dataItem.station + dataItem.faultReason;
-                    var str = '<ul class="item">' +
-                        '<li title=' + title + '>' + title + '</li>' +
-                        '<li>' + dataItem.startTime + '</li>' +
-                        '</ul>';
-                    $("#roll").append(str);
-                };
-                clearInterval(rollTime);
-                if ($("#roll").height() > $("#deta").height()) {
-                    rollTime = setInterval(function () {
-                        setRollFn();
-                    }, rollSpeed);
-                };
-            },
-            complete: function () {
-                rollTimeout = setTimeout(getStateFn, 60000);
-            }
-        });
-    };
-    function setRollFn() {
-        $("#roll").animate({
-            marginTop: '-=1'
-        }, 0, function () {
-            var s = Math.abs(parseInt($(this).css("margin-top")));
-            if (s >= rollSh) {
-                $(this).find("ul").slice(0, 1).appendTo($(this));
-                $(this).css("margin-top", 0);
-            }
-        });
-        $("#deta").hover(function () {
-            clearTimeout(rollTime);
-            clearInterval(rollIntrol);
-        }, function () {
-            clearInterval(rollTime);
-            clearTimeout(rollIntrol);
-            rollTime = setInterval(function () {
-                setRollFn();
-            }, rollSpeed);
-            rollIntrol = setTimeout(getStateFn, 30000);
-        });
-    };
-
-    var station;
-    var zoom = 2;
-    var center = [120.81, 32.026];
-
-    function mapDataFn() {
-        http({
-            url: urls.homeindex,
-            type: 'get',
-            data: {
-                type: type,
-                num: zoom
-            },
-            success: function (res) {
-                station = res.data;
-                var lineData = res.line;
-                var scatData = scatConvert();
-                myChart.setOption({
-                    series: [{
-                        data: scatData
-                    }, {
-                        data: lineData
-                    }]
-                });
-                setImgFn();
-            },
-            complete: function () {
-                mapInt = setTimeout(mapDataFn, 60000);
-            }
-        });
-    };
-    /*
-        @@字段区分
-        name:站点名
-        id:站点ID
-        type用于区分类别,1-6对应:1台站、2浮标、3雷达、4志愿船、5gps、6管理单位
-        val是空值圈的颜色 1:正常(绿色),2维护(灰色),3异常(红色)
-        line控制线的颜色	0为绿色 1为红色
-    */
-    function scatConvert() {
-        var temp = [];
-        for (var i = 0; i < station.length; i++) {
-            var dataItem = station[i];
-            var img = "image://../static/icon" + dataItem.type + dataItem.val + ".png";
-            var site = dataItem.fontsize == 0 ? "" : dataItem.name;
-
-            var obj = {
-                name: site,
-                site: dataItem.name,
-                value: dataItem.from,
-                val: dataItem.val,
-                id: dataItem.id,
-                type: dataItem.type,
-                symbolSize: dataItem.size,
-                symbol: img,
-                label: {
-                    normal: {
-                        textStyle: {
-                            fontSize: dataItem.fontsize
-                        }
-                    }
-                }
-            };
-            temp.push(obj)
-        };
-        return temp;
-    };
-
-    // 添加选中的圈
-    function setImgFn() {
-
-        var c = myChart.convertToPixel('geo', latlog);
-        var w = Math.ceil(zoom * 0.6),
-            h = Math.ceil(zoom * 0.6);
-
-        var w = w < 30 ? 30 : w,
-            h = h < 30 ? 30 : h;
-
-        var ew = Math.ceil(w / 2);
-        var eh = Math.ceil(h / 2);
-
-        var mw = c[0],
-            mh = c[1];
-
-        var l = mw - ew;
-        var t = mh - eh;
-
-        $("#sele").css({
-            "width": w + 'px',
-            "height": h + 'px',
-            "left": l + 'px',
-            "top": t + 'px',
-        });
-    };
-    $("#sele").on("click", function () {
-        clickFn();
-    });
-    //初始化中间地图
-    var colorArr = ['#33CC00', '#f00', '#ffde00', '#808080'];
-    var myChart = echarts.init(document.getElementById('maps'));
-
-    function initEchartFn() {
-        var option = {
-            tooltip: {
-                trigger: 'item',
-                borderColor: '#FFFFCC',
-                hideDelay: 0,
-                transitionDuration: 0,
-                extraCssText: 'z-index:100',
-                textStyle: {
-                    color: '#fff'
+                    outFn: function () { window.location.href = '../index.html' }
                 },
-                formatter: function (params) {
-                    var data = params.data;
-                    return data.site;
-                }
-            },
-            geo: {
-                map: 'china',
-                zoom: zoom,
-                scaleLimit: {
-                    min: 1,
-                    max: 56
-                },
-                // center: [108, 34],
-
-                center: center,
-                label: {
-                    emphasis: {
-                        show: false
-                    }
-                },
-                roam: true,
-                silent: true,
-                itemStyle: {
-                    normal: {
-                        areaColor: "rgba(0,0,0,0.1)",
-                        color: '#334559',
-                        // borderColor: '#00b8fd',
-                        // shadowColor: '#00b8fd',
-                        borderColor: '#1422CA',
-                        shadowColor: '#010B1D',
-                        borderWidth: 1,
-                        shadowOffsetX: -2,
-                        shadowOffsetY: 2,
-                        shadowBlur: 10
-                    },
-                    emphasis: {
-                        color: '#252b3d'
-                    }
-                },
-                regions: [{
-                    name: '南海诸岛',
-                    itemStyle: {
-                        normal: {
-                            opacity: 0
-                        }
-                    }
-                }]
-            },
-            series: [{
-                type: 'effectScatter',
-                coordinateSystem: 'geo',
-                zlevel: 3,
-                rippleEffect: {
-                    period: 3,
-                    brushType: 'fill',
-                    scale: 0
-                },
-                label: {
-                    normal: {
-                        show: true,
-                        position: 'right',
-                        textStyle: {
-                            color: '#fff',
-                            fontStyle: 'normal',
-                            fontFamily: 'arial',
-                            // fontSize: 14
+                // 监听dom变化
+                directives: {
+                    resize: {
+                        bind(el, binding) {
+                            var width = '', height = '';
+                            function isReize() {
+                                const style = document.defaultView.getComputedStyle(el);
+                                if (width !== style.width || height !== style.height) {
+                                    binding.value({ width: style.width, height: style.height });
+                                };
+                                width = style.width; height = style.height;
+                                el.__vueSetInterval__ = setTimeout(isReize, 300);
+                            };
+                            isReize();
                         },
-                        formatter: '{b}'
+                        unbind(el) { clearInterval(el.__vueSetInterval__) }
                     }
                 },
-                itemStyle: {
-                    normal: {
-                        show: false,
-                        color: function (item) {
-                            var val = item.data.val;
-                            return colorArr[val];
-                        }
-                    }
-                }
-            }, {
-                type: 'lines',
-                tooltip: {
-                    formatter: function (e) {
-                        //这里必须写,要不然鼠标放在线上会显示undefined
-                        return '';
-                    }
+                created: function () {
+                    this.userName = sessionStorage.user;
                 },
-                zlevel: 3,
-                effect: {
-                    show: true,
-                    period: 7,
-                    symbolSize: 2,
-                    trailLength: 0.02,
-                    constantSpeed: 50,
-                    color: 'rgba(255,255,255,0.1)',
-                    shadowBlur: 8
-                },
-                lineStyle: {
-                    normal: {
-                        curveness: 0.2,
-                        color: function (item) {
-                            var line = item.data.line;
-                            var clr = line == 0 ? "rgba(51,204,0,0.1)" : "rgba(255,0,0,0.1)";
-                            return clr;
-                        }
-                    }
-                }
-            }]
-        };
-        myChart.setOption(option);
-        myChart.on('georoam', function (e) {
-            var _option = myChart.getOption();
-            var _zoom = _option.geo[0].zoom;
-            zoom = Math.round(_zoom);
-            clearTimeout(mapInt);
-            mapInt = setTimeout(mapDataFn, 1000)
-        });
-        myChart.on('click', function (e) {
-            if (e.data) {
-                if (e.data.val > -1) {
-                    siteId = e.data.id;
-                    layForm.val("layForm", {
-                        site: siteId
-                    });
-                    latlog = e.data.value;
-                    clearTimeout(mapTime);
-                    mapTime = setTimeout(function () {
-                        clickFn();
-                        fileFn();
-                        setImgFn();
-                    }, 500);
-                }
-            };
-        });
-    };
-    initEchartFn();
+                mounted: function () {
+                    carousel.render({ elem: '#carousel', autoplay: false, arrow: 'always', width: '440px', height: '100%', indicator: 'none', index: this.carIdex });
+                    carousel.on('change(carousel)', (obj) => { this.carIdex = obj.index; this.getEchartsFn(); });
 
-    window.alrFn = function (url, t, w, h) {
-        var url = url || '',
-            // w = w || "1320px",
-            w = w || "100%",
-            h = h || "635px",
-            title = t || !1;
-        layer.closeAll(function () {
-            layer.open({
-                type: 2,
-                title: title,
-                // title: false,
-                shade: 0.8,
-                resize: !1,
-                moveOut: 1,
-                skin: "lay-drop",
-                area: [w, h],
-                content: url,
-                success: function () {
-                    clearTimeout(inspTime);
-                },
-                cancel: function () {
-                    childFn();
+                    form.render(); this.initMapFn(); this.initXmFn(); this.getSeaDataFn();
+
+                    var level = sessionStorage.limit; $("[name=level" + level + "]").hide();
+
+                    form.on('checkbox(check)', (data) => {
+                        clearTimeout(this.delaTime);
+                        var tv = Number(data.value);
+                        let tempIs = data.elem.checked;
+                        if (tempIs) {
+                            this.checkArr.push(tv)
+                        } else {
+                            let idx = this.checkArr.indexOf(tv);
+                            this.checkArr.splice(idx, 1);
+                        };
+                        this.type = this.checkArr.join(',');
+                        this.delaTime = setTimeout(() => {
+                            this.mapDataFn();
+                            this.getStateFn();
+                        }, 1000);
+                    });
+                    form.on('select(homeEl)', (data) => {
+                        this.siteEl = data.value; this.getLineFn();
+                    });
+                    // 月报单选
+                    form.on('radio(monthType)', (data) => {
+                        var value = data.value;
+                        $('.layItem').addClass('layui-hide');
+                        $('.' + value).removeClass('layui-hide');
+                        value == "month" ? laydate.render({
+                            elem: '#monthTime', type: 'month',
+                            btns: ['confirm'], format: 'yyyy-MM',
+                            max: this.hdate, value: this.hdate,
+                            trigger: 'click'
+                        }) : "";
+                    });
+                    // 开始下载月报
+                    form.on('submit(dateBtn)', function (data) {
+                        var data = data.field;
+                        var type = data.type;
+                        switch (type) {
+                            case "year":
+                                delete data.season;
+                                delete data.month;
+                                break;
+                            case "season":
+                                data.month = data.season;
+                                delete data.season;
+                                break;
+                            case "month":
+                                delete data.season;
+                                var month = data.month;
+                                data.year = month.substring(0, 4);
+                                data.month = month.substring(5);
+                                break;
+                            default:
+                                console.log("111111")
+                        };
+                        http({
+                            url: urls.homeReport,
+                            type: "post",
+                            data: data,
+                            beforeSend: () => {
+                                this.index = layer.load(1, { shade: [0.1, '#fff'] });
+                            },
+                            success: (res) => {
+                                var url = res.url;
+                                window.location.href = url;
+                                layer.closeAll(() => {
+                                    this.inspTime = setTimeout(() => { this.inspFn() }, 500)
+                                });
+                            },
+                            error: () => {
+                                layer.close(this.index)
+                            }
+                        });
+                        return false;
+                    });
                 }
             });
         });
-    };
-    // 只为了弹出配置页面
-    window.alrFns = function (url) {
-        layer.open({
-            type: 2,
-            title: "传输任务管理",
-            shade: 0.8,
-            resize: !1,
-            moveOut: 1,
-            skin: "lay-drop",
-            area: ["1320px", "670px"],
-            content: url,
-        });
-    };
-
-    $("#user").click(function () {
-        var isUser = getFn.isUserFn();
-        isUser ? alrFn('./user.html', '个人中心管理', '600px', '480px') : alrFn('./users.html', '个人中心管理', '600px', '380px');
-    });
-
-    var hdate = getFn.initM();
-    $("#load").click(function () {
-        layer.closeAll(function () {
-            layAlr = layer.open({
-                type: 1,
-                title: "月报下载",
-                skin: 'drop-demo lay-drop',
-                shade: 0.5,
-                closeBtn: 1,
-                area: ['400px'],
-                content: $("#monthDown"),
-                success: function () {
-                    clearTimeout(inspTime);
-                    $(".layItem").addClass("layui-hide");
-                    $("#layItem").removeClass("layui-hide");
-                    $('#monthDown')[0].reset();
-                    var yearVal = new Date().getFullYear();
-                    laydate.render({
-                        elem: '#yearTime',
-                        type: 'year',
-                        value: yearVal,
-                        max: 0,
-                        trigger: 'click',
-                        btns: ['confirm'],
-                    });
-                },
-                cancel: function () {
-                    inspTime = setTimeout(inspFn, 500)
-                }
-            });
-        })
-    });
-
-    // 单选
-    layForm.on('radio(monthType)', function (data) {
-        var value = data.value;
-        $('.layItem').addClass('layui-hide');
-        $('.' + value).removeClass('layui-hide');
-        value == "month" ? laydate.render({
-            elem: '#monthTime',
-            type: 'month',
-            btns: ['confirm'],
-            format: 'yyyy-MM',
-            max: hdate,
-            value: hdate,
-            trigger: 'click'
-        }) : "";
-    });
-
-    layForm.on('submit(dateBtn)', function (data) {
-        var data = data.field;
-        var type = data.type;
-        switch (type) {
-            case "year":
-                delete data.season;
-                delete data.month;
-                break;
-            case "season":
-                data.month = data.season;
-                delete data.season;
-                break;
-            case "month":
-                delete data.season;
-                var month = data.month;
-                data.year = month.substring(0, 4);
-                data.month = month.substring(5);
-                break;
-            default:
-                console.log("111111")
-        };
-        var index;
-        http({
-            url: urls.homeReport,
-            type: "post",
-            data: data,
-            beforeSend: function () {
-                index = layer.load(1, {
-                    shade: [0.1, '#fff']
-                });
-            },
-            success: function (res) {
-                var url = res.url;
-                window.location.href = url;
-                layer.closeAll(function () {
-                    inspTime = setTimeout(inspFn, 500)
-                });
-            },
-            error: function () {
-                layer.close(index)
-            }
-        });
-        return false;
-    });
-
-    layForm.verify({
-        handler: function (val) {
-            if (!/^[\u4E00-\u9FA5a-zA-Z]*$/.test(val)) {
-                return '请输入正确的故障处理人!';
-            }
-        }
-    });
-
-    // 子页面调取
-    window.childFn = function () {
-        layer.closeAll(function () {
-            inspTime = setTimeout(inspFn, 500)
-        });
-    };
-
-    e("home", {})
+    exports('home', {});
 });

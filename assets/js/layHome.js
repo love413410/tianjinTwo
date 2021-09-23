@@ -3,8 +3,8 @@ layui.define(['http', "getFn"], function (e) {
     var http = layui.http,
         urls = layui.urls,
         getFn = layui.getFn;
-    var form = layui.form;
 
+    var form = layui.form;
     var id = getFn.locaStr('id');
     http({
         url: urls.homeclock,
@@ -16,7 +16,6 @@ layui.define(['http', "getFn"], function (e) {
             type = res.type;
             alarmId = res.alarmId;
             var data = res.data;
-
             form.val('layForm', {
                 "station": data.station,
                 "seat": data.seat,
@@ -28,6 +27,5 @@ layui.define(['http', "getFn"], function (e) {
             });
         }
     });
-
     e("layHome", {})
 });

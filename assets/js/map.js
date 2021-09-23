@@ -6,7 +6,7 @@ function outFn() {
 	window.location.href = '../index.html';
 };
 
-layui.define(["http", "getFn", "homeGetLeft", "homeGetRight", "homeFun"], function(e) {
+layui.define(["http", "getFn", "homeGetLeft", "homeGetRight", "homeFun"], function (e) {
 	require(
 		[
 			"esri/map",
@@ -22,7 +22,7 @@ layui.define(["http", "getFn", "homeGetLeft", "homeGetRight", "homeFun"], functi
 			"esri/layers/ArcGISTiledMapServiceLayer",
 			"dojo/domReady!",
 		],
-		function(
+		function (
 			Map,
 			graphic,
 			Point,
@@ -62,30 +62,17 @@ layui.define(["http", "getFn", "homeGetLeft", "homeGetRight", "homeFun"], functi
 			var layer = new ArcGISTiledMapServiceLayer(baseUrl);
 			map.addLayer(layer);
 			var mapTimeOut = null;
-			map.on("extent-change", function(e) {
-				zoom = e.lod.level;
+			map.on("zoom-end", function (e) {
+				zoom = e.level;
 				clearTimeout(mapTimeOut);
-				mapTimeOut = setTimeout(function() {
+				mapTimeOut = setTimeout(function () {
 					mapDataFn();
 				}, 500)
 			});
 
-			var carIdex = 0,
-				carTime;
-			carousel.render({
-				elem: '#carousel',
-				autoplay: false,
-				arrow: 'always',
-				// width: '440px',
-				width: '440px',
-				height: '100%',
-				indicator: 'none',
-				index: carIdex
-			});
-			carousel.on('change(carousel)', function(obj) {
-				carIdex = obj.index;
-				getEchartsFn();
-			});
+			var carIdex = 0;
+			carousel.render({ elem: '#carousel', autoplay: false, arrow: 'always', width: '440px', height: '100%', indicator: 'none', index: carIdex });
+			carousel.on('change(carousel)', function (obj) { carIdex = obj.index; getEchartsFn(); });
 
 			function getEchartsFn() {
 				if (carIdex == 1) {
@@ -100,14 +87,14 @@ layui.define(["http", "getFn", "homeGetLeft", "homeGetRight", "homeFun"], functi
 			var level = sessionStorage.limit;
 			$("[name=level" + level + "]").hide();
 
-			$("#user").click(function() {
+			$("#user").click(function () {
 				var isUser = getFn.isUserFn();
 				isUser ? alrFn('./user.html', '个人中心管理', '600px', '480px') : alrFn('./users.html', '个人中心管理', '600px', '380px');
 			});
 			// 右侧水文或气象的切换
 			var siteHtml = $("span.type").eq(0).html();
 			$("span.type").eq(0).addClass("add");
-			$("span.type").click(function() {
+			$("span.type").click(function () {
 				siteHtml = $(this).html();
 				$(this).addClass("add");
 				$(this).siblings().removeClass("add");
@@ -115,37 +102,35 @@ layui.define(["http", "getFn", "homeGetLeft", "homeGetRight", "homeFun"], functi
 			});
 			// 折线图要素选择
 			var siteEl = $("#homeEl").val();
-			layForm.on('select(homeEl)', function(data) {
+			layForm.on('select(homeEl)', function (data) {
 				siteEl = data.value;
 				homeGetRight.getLineFn(siteId, siteEl);
 			});
 			// 获取默认站点
-			var siteId = null,
-				latlog = [];
-
+			var siteId = null;
+			var xm;
 			function getSiteFn() {
 				http({
 					url: urls.search,
 					type: 'get',
 					data: {},
-					success: function(res) {
+					success: function (res) {
 						var data = res.data;
-						var str = '';
-						for (var i = 0; i < data.length; i++) {
-							str += '<option value="' + data[i].id + '">' + data[i].station + '</option>';
-						};
-						$("#laySearch").html(str);
-
+						xm = xmSelect.render({
+							el: '#xmSelect',
+							radio: true, clickClose: true,
+							prop: { name: 'station', value: 'id' },
+							model: { icon: 'hidden', label: { type: 'text' } },
+							filterable: true, data: data,
+							on: function (e) { siteId = e.change[0].id; getDetaFn(); }
+						});
 						http({
 							url: urls.sitedefault,
 							type: 'get',
 							data: {},
-							success: function(res) {
+							success: function (res) {
 								siteId = res.id;
-								layForm.val("layForm", {
-									site: siteId
-								});
-								homeGetLeft.getFileFn(siteId);
+								xm.setValue([siteId])
 								getTypeFn(); //获取左下角的类型
 								getDetaFn(); //获取站点详情
 							}
@@ -162,29 +147,21 @@ layui.define(["http", "getFn", "homeGetLeft", "homeGetRight", "homeFun"], functi
 					data: {
 						id: siteId
 					},
-					success: function(res) {
+					success: function (res) {
 						var data = res.data.fields;
 						latlog = [data.lon, data.lat];
-						//setImgFn();添加圈圈
-						homeGetLeft.getFileFn(siteId); //获取文件传输量
+						homeGetLeft.getFileFn(siteId);
 						getEchartsFn();
 					}
 				});
 			};
-			//监听右侧站点下拉选择
-			layForm.on('select(laySearch)', function(data) {
-				siteId = data.value;
-				getDetaFn();
-			});
 			// 获取右侧站类型
-			var type = "",
-				checkArr = [];
-
+			var type = "", checkArr = [];
 			function getTypeFn() {
 				http({
 					url: urls.layer,
 					type: 'get',
-					success: function(res) {
+					success: function (res) {
 						var data = res.data;
 						var str = '';
 						for (var i = 0; i < data.length; i++) {
@@ -219,8 +196,7 @@ layui.define(["http", "getFn", "homeGetLeft", "homeGetRight", "homeFun"], functi
 
 			// 监听类型选择
 			var mapInt, mapTime, delaTime;
-			layForm.on('checkbox(check)', function(data) {
-				clearTimeout(mapInt);
+			layForm.on('checkbox(check)', function (data) {
 				clearTimeout(delaTime);
 				var tempVal = Number(data.value);
 				var tempIs = data.elem.checked;
@@ -231,13 +207,14 @@ layui.define(["http", "getFn", "homeGetLeft", "homeGetRight", "homeFun"], functi
 					checkArr.splice(idx, 1);
 				};
 				type = checkArr.join(',');
-				delaTime = setTimeout(function() {
+				delaTime = setTimeout(function () {
 					mapDataFn();
 					homeGetLeft.getStateFn(type);
 				}, 1000)
 			});
 
 			function mapDataFn() {
+				clearTimeout(mapInt);
 				http({
 					url: urls.homeindex,
 					type: 'get',
@@ -245,22 +222,22 @@ layui.define(["http", "getFn", "homeGetLeft", "homeGetRight", "homeFun"], functi
 						type: type,
 						num: zoom
 					},
-					success: function(res) {
+					success: function (res) {
 						setMapDataFn(res.data);
 						setLineDataFn(res.line);
 					},
-					complete: function() {
+					complete: function () {
 						mapInt = setTimeout(mapDataFn, 60000);
 					}
 				});
 			};
 			/*
-			    @@字段区分
-			    name:站点名
-			    id:站点ID
-			    type用于区分类别,1-6对应:1台站、2浮标、3雷达、4志愿船、5gps、6管理单位
-			    val是空值圈的颜色 1:正常(绿色),2维护(灰色),3异常(红色)
-			    line控制线的颜色	0为绿色 1为红色
+				@@字段区分
+				name:站点名
+				id:站点ID
+				type用于区分类别,1-6对应:1台站、2浮标、3雷达、4志愿船、5gps、6管理单位
+				val是空值圈的颜色 1:正常(绿色),2维护(灰色),3异常(红色)
+				line控制线的颜色	0为绿色 1为红色   100:无线
 			*/
 			function setMapDataFn(data) {
 				if (data.length <= 0) {
@@ -268,7 +245,7 @@ layui.define(["http", "getFn", "homeGetLeft", "homeGetRight", "homeFun"], functi
 				};
 				var mapLayers = map.getLayer('mapLayer');
 				if (mapLayers != undefined) {
-					map.removeLayer(mapLayers)
+					map.removeLayer(mapLayers);
 				};
 				var mapLayer = new GraphicsLayer({
 					id: "mapLayer"
@@ -289,28 +266,28 @@ layui.define(["http", "getFn", "homeGetLeft", "homeGetRight", "homeFun"], functi
 					var gp = new graphic(point, pic);
 					mapLayer.add(gp);
 
-					var text = new TextSymbol({
-						text: dataItem.name,
-						xoffset: 0,
-						yoffset: -20,
-						color: new Color("#000"),
-						item: dataItem
-					});
-					var siteName = new graphic(point, text);
-					mapLayer.add(siteName);
+					//添加站名
+					/* 
+						var text = new TextSymbol({
+							text: dataItem.name,
+							xoffset: 0,
+							yoffset: -20,
+							color: new Color("#000"),
+							item: dataItem
+						});
+						var siteName = new graphic(point, text);
+						mapLayer.add(siteName);
+					*/
 
 					var isClick = null;
-					mapLayer.on('click', function(e) {
+					mapLayer.on('click', function (e) {
 						clearTimeout(isClick);
-						isClick = setTimeout(function() {
+						isClick = setTimeout(function () {
 							var item = e.graphic.symbol.item;
-
 							siteId = item.id;
-							layForm.val("layForm", {
-								site: siteId
-							});
+							xm.setValue([siteId])
 							clearTimeout(mapTime);
-							mapTime = setTimeout(function() {
+							mapTime = setTimeout(function () {
 								homeFun.clickFn(siteId);
 								homeGetLeft.getFileFn(siteId);
 								getEchartsFn();
@@ -340,24 +317,26 @@ layui.define(["http", "getFn", "homeGetLeft", "homeGetRight", "homeFun"], functi
 				map.addLayer(layer);
 				for (var i = 0; i < data.length; i++) {
 					var dataItem = data[i].coords;
-					var paths = [
-						dataItem[0],
-						dataItem[1]
-					];
-					var geos = new Polyline({
-						"paths": [paths]
-					});
-
-					var line = data[i].line;
-					var color = line == 0 ? new Color("#32CD32") : new Color("#F0E68C");
-					var lines = new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, color, 1);
-					var sls = new graphic(geos, lines);
-					layer.add(sls);
+					var isShowLine = dataItem.line;
+					if (isShowLine != 100) {
+						var paths = [
+							dataItem[0],
+							dataItem[1]
+						];
+						var geos = new Polyline({
+							"paths": [paths]
+						});
+						var line = data[i].line;
+						var color = line == 0 ? new Color("#32CD32") : new Color("#F0E68C");
+						var lines = new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, color, 1);
+						var sls = new graphic(geos, lines);
+						layer.add(sls);
+					};
 				};
 			};
 
 			// 弹出页面调取封装的
-			window.alrFn = function(u, t, w, h) {
+			window.alrFn = function (u, t, w, h) {
 				var url = u || '',
 					title = t || !1,
 					width = w || "100%",
@@ -365,7 +344,7 @@ layui.define(["http", "getFn", "homeGetLeft", "homeGetRight", "homeFun"], functi
 				homeFun.layAlertFn(url, title, width, height);
 			};
 			// 只为了弹出配置页面  目前好像没用上
-			window.alrFns = function(url) {
+			window.alrFns = function (url) {
 				layer.open({
 					type: 2,
 					title: "传输任务管理",
