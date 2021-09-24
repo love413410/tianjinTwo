@@ -208,7 +208,6 @@ layui.define(["http", "getFn"], function (exports) {
                             });
                             var gp = new graphic(point, pic);
                             mapLayer.add(gp);
-
                             //添加站名
                             /* 
                                 var text = new TextSymbol({
@@ -221,13 +220,12 @@ layui.define(["http", "getFn"], function (exports) {
                                 var siteName = new graphic(point, text);
                                 mapLayer.add(siteName);
                             */
-
                             mapLayer.on('click', (e) => {
                                 clearTimeout(this.isClick);
                                 this.isClick = setTimeout(() => {
                                     var item = e.graphic.symbol.item;
                                     this.siteId = item.id;
-                                    this.xm.setValue([this.siteId])
+                                    this.xm.setValue([this.siteId]);
                                     this.getEchartsFn();
                                     this.clickFn();
                                 }, 250);
