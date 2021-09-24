@@ -1,8 +1,7 @@
 layui.define(function (exports) {
 	var baseUrl = 'http://192.168.1.156:8004';
-	// var baseUrl = 'http://192.168.73.247:8004';
-	// var baseUrl = 'http://169.254.35.19:8004';
 	// var baseUrl = window.location.origin;
+	// var baseUrl = 'http://localhost:8004';
 	exports('urls', {
 		login: baseUrl + '/limit/login/',
 
@@ -70,7 +69,7 @@ layui.define(function (exports) {
 		gps: baseUrl + '/data/gps/',
 		boat: baseUrl + '/data/boat/',
 		getType: baseUrl + '/data/getType/',
-		
+
 		getDeta: baseUrl + '/data/station/detail/',
 		// 台站观测
 		dataMenu: baseUrl + '/data/menu/',

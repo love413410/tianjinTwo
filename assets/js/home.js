@@ -39,7 +39,7 @@ layui.define(["http", "getFn"], function (exports) {
                 },
                 methods: {
                     initMapFn: function () {
-                        this.map = new Map("map", { zoom: this.zoom, minZoom: 3, maxZoom: 9, center: this.center });
+                        this.map = new Map("map", { zoom: this.zoom, minZoom: 5, maxZoom: 9, center: this.center });
                         var baseUrl = "http://server.arcgisonline.com/ArcGIS/rest/services/ESRI_StreetMap_World_2D/MapServer";
                         // var url = "http://71.3.251.104:8066/arcgis/rest/services/6199/0/MapServer?token=";
                         // var token =
@@ -200,7 +200,7 @@ layui.define(["http", "getFn"], function (exports) {
                         for (var i = 0; i < data.length; i++) {
                             var dataItem = data[i];
                             var log = dataItem.from[0], lat = dataItem.from[1];
-                            var area = this.zoom * 3 >= 38 ? 38 : this.zoom * 3 <= 16 ? 16 : this.zoom * 3;
+                            var area = this.zoom * 2 >= 18 ? 18 : this.zoom * 2 <= 10 ? 10 : this.zoom * 2;
                             var point = new Point(log, lat);
                             var pic = new PictureMarkerSymbol({
                                 url: "../static/icon" + dataItem.type + dataItem.val + ".png",
@@ -514,12 +514,9 @@ layui.define(["http", "getFn"], function (exports) {
                                     $('#monthDown')[0].reset();
                                     var yearVal = new Date().getFullYear();
                                     laydate.render({
-                                        elem: '#yearTime',
-                                        type: 'year',
-                                        value: yearVal,
-                                        max: 0,
-                                        trigger: 'click',
-                                        btns: ['confirm'],
+                                        elem: '#yearTime', type: 'year',
+                                        value: yearVal, max: 0,
+                                        trigger: 'click', btns: ['confirm'],
                                     });
                                 },
                                 cancel: () => {
