@@ -38,7 +38,7 @@ layui.define(['http'], function (e) {
     // 获取左侧各站报警信息
     var rollTimeout, rollTime = null, rollSh = 40, rollSpeed = 30;
     function getStateFn(type) {
-        clearTimeout(rollTime);
+        clearInterval(rollTime);
         clearTimeout(rollTimeout);
         $("#roll").empty();
         http({
@@ -81,7 +81,7 @@ layui.define(['http'], function (e) {
             }
         });
         $("#deta").hover(function () {
-            clearTimeout(rollTime);
+            clearInterval(rollTime);
             clearTimeout(rollTimeout);
         }, function () {
             clearInterval(rollTime);
