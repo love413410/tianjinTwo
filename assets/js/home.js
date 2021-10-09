@@ -378,8 +378,10 @@ layui.define(["http", "getFn"], function (exports) {
                                 var max = res.max, min = res.min;
                                 var max_mult = max > 0 ? 1.2 : max < 0 ? 0.8 : 0,
                                     min_mult = min > 0 ? 0.8 : 1.2;
-                                var max_val = Math.floor(max * max_mult),
-                                    min_val = Math.ceil(min * min_mult);
+                                // var max_val = Math.floor(max * max_mult),
+                                //     min_val = Math.ceil(min * min_mult);
+                                var max_val = (max * max_mult).toFixed(2),
+                                    min_val = (min * min_mult).toFixed(2);
                                 this.myLine = echarts.init(document.getElementById("line"));
                                 let option = this.initLineFn(this.siteEl, xData, data, unit, max_val, min_val);
                                 this.myLine.setOption(option);
