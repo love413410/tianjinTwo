@@ -25,7 +25,7 @@ layui.define(["http", "getFn"], function (exports) {
                     carIdex: 0, userName: null, xm: null, siteId: null,
 
                     fileTime: null, fileData: { dir: 0, dunit: "个", size: 0, sunit: "MB", time: "2020-10-10", list: [] },
-                    stateTime: null, list: [], rollTime: null, rollTimeout: null,
+                    stateTime: null, list: [], height: 0, rollTime: null, rollTimeout: null,
 
                     barTime: null, seaData: { type: 0, data: [] },
 
@@ -33,7 +33,7 @@ layui.define(["http", "getFn"], function (exports) {
                     delaTime: null, mapInt: null, isClick: null, layDeta: null,
 
                     siteHtml: "水文", gaugeTimout: null,
-                    siteEl: "潮位", siteType: "年", lineTimout: null, gaugeArr: [],
+                    siteEl: "潮位", siteType: "月", lineTimout: null, gaugeArr: [],
                     inspTime: null,
                     hdate: getFn.initM(), index: null
                 },
@@ -72,7 +72,6 @@ layui.define(["http", "getFn"], function (exports) {
                                 http({
                                     url: urls.sitedefault,
                                     type: 'get',
-                                    data: {},
                                     success: (res) => {
                                         this.siteId = res.id;
                                         this.xm.setValue([res.id]);
@@ -147,6 +146,7 @@ layui.define(["http", "getFn"], function (exports) {
                         let { height } = data;
                         let n = height.slice(0, -2);
                         var h = $("#deta").height();
+                        this.height = n;
                         if (n > h) {
                             this.rollTime = setInterval(() => { this.setRollFn(); }, 30);
                         };
@@ -169,9 +169,11 @@ layui.define(["http", "getFn"], function (exports) {
                     leave: function () {
                         clearInterval(this.rollTime);
                         clearTimeout(this.rollTimeout);
-                        this.rollTime = setInterval(() => {
-                            this.setRollFn();
-                        }, 30);
+
+                        var h = $("#deta").height();
+                        if (this.height > h) {
+                            this.rollTime = setInterval(() => { this.setRollFn(); }, 30);
+                        };
                         this.rollTimeout = setTimeout(() => {
                             this.getStateFn();
                         }, 30000);
@@ -181,6 +183,7 @@ layui.define(["http", "getFn"], function (exports) {
                         clearTimeout(this.mapInt);
                         http({
                             url: urls.homeindex,
+                            type:"post",
                             data: { type: this.type, num: this.zoom },
                             success: (res) => {
                                 this.setLineDataFn(res.line);
@@ -209,17 +212,17 @@ layui.define(["http", "getFn"], function (exports) {
                             var gp = new graphic(point, pic);
                             mapLayer.add(gp);
                             //添加站名
-                            /* 
+                            if (this.zoom >= 8) {
                                 var text = new TextSymbol({
                                     text: dataItem.name,
                                     xoffset: 0,
                                     yoffset: -20,
-                                    color: new Color("#000"),
+                                    color: new Color("#227ba6"),
                                     item: dataItem
                                 });
                                 var siteName = new graphic(point, text);
                                 mapLayer.add(siteName);
-                            */
+                            };
                             mapLayer.on('click', (e) => {
                                 clearTimeout(this.isClick);
                                 this.isClick = setTimeout(() => {
@@ -230,6 +233,13 @@ layui.define(["http", "getFn"], function (exports) {
                                     this.clickFn();
                                 }, 250);
                             });
+
+                            // mapLayer.on('mouse-move', (e) => {
+                            //     var item = e.graphic.symbol.item;
+                            //     console.log(e)
+                               
+                            // });
+
                         };
                     },
                     setLineDataFn: function (data) {
@@ -492,6 +502,9 @@ layui.define(["http", "getFn"], function (exports) {
                                 cancel: () => { this.childFn() }
                             });
                         });
+                    },
+                    toFn: function () {
+                        window.location.href = '../pages/test.html'
                     },
                     userFn: function () {
                         let isUser = getFn.isUserFn();

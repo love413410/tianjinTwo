@@ -136,14 +136,15 @@ layui.define(['http', "getFn"], function (e) {
 	// 获取折线图数据
 	var lineTimout, myLine = echarts.init(document.getElementById("line"));
 
-	function getLineFn(siteId, siteEl) {
+	function getLineFn(siteId, siteEl, siteType) {
 		clearTimeout(lineTimout);
 		http({
 			url: urls.homeEl,
 			type: 'post',
 			data: {
 				id: siteId,
-				name: siteEl
+				name: siteEl,
+				type: siteType
 			},
 			success: function (res) {
 				var xData = res.title,

@@ -1,10 +1,10 @@
-<!-- <script>
+<script>
     var token = sessionStorage.token;
     if (!token) {
         alert("请先登录!")
         window.top.location.href = "../index.html";
     }
-</script> -->
+</script>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -26,6 +26,7 @@
         <div class="head">
             海洋观测数据传输监控系统
         </div>
+        <button class="layui-btn layui-btn-sm toBtn" @click="toFn">更换</button>
         <div class="head-deta">
             <div class="lt">
                 欢迎登录：<span @click="userFn">{{userName}}</span>！
@@ -195,10 +196,10 @@
                                             <option>波浪</option>
                                         </select>
                                     </div>
-                                    <div class="layui-inline lay_type" :class="[siteType=='年'?'add':'']"
-                                        @click='siteTypeFn("年")'>年</div>
                                     <div class="layui-inline lay_type" :class="[siteType=='月'?'add':'']"
                                         @click='siteTypeFn("月")'>月</div>
+                                    <div class="layui-inline lay_type" :class="[siteType=='周'?'add':'']"
+                                        @click='siteTypeFn("周")'>周</div>
                                     <div class="layui-inline lay_type" :class="[siteType=='日'?'add':'']"
                                         @click='siteTypeFn("日")'>日</div>
                                 </div>

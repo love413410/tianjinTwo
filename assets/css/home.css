@@ -3,7 +3,7 @@
   padding: 0;
   font-size: 16px;
 }
-body{
+body {
   background-color: rgba(214, 242, 255, 0.9);
 }
 #app {
@@ -27,6 +27,12 @@ body{
   left: 0;
   top: 0;
   z-index: 4;
+}
+.toBtn{
+  position: absolute;
+  left: 10px;
+  top: 10px;
+  z-index: 5;
 }
 
 .head-deta {

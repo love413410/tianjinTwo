@@ -6,7 +6,7 @@ function outFn() {
 	window.location.href = '../index.html';
 };
 
-layui.define(["http", "getFn", "homeGetLeft", "homeGetRight", "homeFun"], function(e) {
+layui.define(["http", "getFn", "homeGetLeft", "homeGetRight", "homeFun"], function (e) {
 	var http = layui.http,
 		urls = layui.urls,
 		getFn = layui.getFn,
@@ -28,7 +28,7 @@ layui.define(["http", "getFn", "homeGetLeft", "homeGetRight", "homeFun"], functi
 		indicator: 'none',
 		index: carIdex
 	});
-	carousel.on('change(carousel)', function(obj) {
+	carousel.on('change(carousel)', function (obj) {
 		carIdex = obj.index;
 		getEchartsFn();
 	});
@@ -37,7 +37,7 @@ layui.define(["http", "getFn", "homeGetLeft", "homeGetRight", "homeFun"], functi
 		if (carIdex == 1) {
 			homeGetRight.getGaugeFn(siteId, siteHtml); //获取仪表盘数据
 			homeGetRight.getLineFn(siteId, siteEl); //获取折线图
-			
+
 		} else {
 			homeGetRight.stopFn();
 		}
@@ -47,7 +47,10 @@ layui.define(["http", "getFn", "homeGetLeft", "homeGetRight", "homeFun"], functi
 	var level = sessionStorage.limit;
 	$("[name=level" + level + "]").hide();
 
-	$("#user").click(function() {
+	$("#toFn").click(function () {
+		window.location.href = '../pages/home.html';
+	});
+	$("#user").click(function () {
 		var isUser = getFn.isUserFn();
 		isUser ? alrFn('./user.html', '个人中心管理', '600px', '480px') : alrFn('./users.html', '个人中心管理', '600px', '380px');
 	});
@@ -55,49 +58,54 @@ layui.define(["http", "getFn", "homeGetLeft", "homeGetRight", "homeFun"], functi
 	// 右侧水文或气象的切换
 	var siteHtml = $("span.type").eq(0).html();
 	$("span.type").eq(0).addClass("add");
-	$("span.type").click(function() {
+	$("span.type").click(function () {
 		siteHtml = $(this).html();
 		$(this).addClass("add");
 		$(this).siblings().removeClass("add");
 		homeGetRight.getGaugeFn(siteId, siteHtml);
 	});
 	// 折线图要素选择
-	var siteEl = $("#homeEl").val();
-	layForm.on('select(homeEl)', function(data) {
+	var siteEl = $("#homeEl").val(),siteType="月";
+	layForm.on('select(homeEl)', function (data) {
 		siteEl = data.value;
-		homeGetRight.getLineFn(siteId, siteEl);
+		homeGetRight.getLineFn(siteId, siteEl,siteType);
 	});
-	
-	
+	$(".lay_type").click(function(){
+		$(".lay_type").removeClass("add");
+		$(this).addClass("add");
+		siteType=$(this).html();
+		homeGetRight.getLineFn(siteId, siteEl,siteType);
+	});
+
+
 	// 获取默认站点
 	var siteId = null,
 		latlog = [];
 
+	var xm;
 	function getSiteFn() {
 		http({
 			url: urls.search,
-			type: 'get',
-			data: {},
-			success: function(res) {
-				var data = res.data;
-				var str = '';
-				for (var i = 0; i < data.length; i++) {
-					str += '<option value="' + data[i].id + '">' + data[i].station + '</option>';
-				};
-				$("#laySearch").html(str);
+			success: function (res) {
 
+				var data = res.data;
+				xm = xmSelect.render({
+					el: '#xmSelect',
+					radio: true, clickClose: true,
+					prop: { name: 'station', value: 'id' },
+					model: { icon: 'hidden', label: { type: 'text' } },
+					filterable: true, data: data,
+					on: (e) => { siteId = e.change[0].id; getDetaFn(); }
+				});
 				http({
 					url: urls.sitedefault,
 					type: 'get',
 					data: {},
-					success: function(res) {
+					success: (res) => {
 						siteId = res.id;
-						layForm.val("layForm", {
-							site: siteId
-						});
+						xm.setValue([res.id]);
 						homeGetLeft.getFileFn(siteId);
-						getTypeFn(); //获取左下角的类型
-						getDetaFn(); //获取站点详情
+						getTypeFn();
 					}
 				});
 			}
@@ -112,7 +120,7 @@ layui.define(["http", "getFn", "homeGetLeft", "homeGetRight", "homeFun"], functi
 			data: {
 				id: siteId
 			},
-			success: function(res) {
+			success: function (res) {
 				var data = res.data.fields;
 				latlog = [data.lon, data.lat];
 				setImgFn(); //添加圈圈
@@ -120,11 +128,6 @@ layui.define(["http", "getFn", "homeGetLeft", "homeGetRight", "homeFun"], functi
 			}
 		});
 	};
-	//监听右侧站点下拉选择
-	layForm.on('select(laySearch)', function(data) {
-		siteId = data.value;
-		getDetaFn();
-	});
 	// 获取右侧站类型
 	var type = "",
 		checkArr = [];
@@ -133,7 +136,7 @@ layui.define(["http", "getFn", "homeGetLeft", "homeGetRight", "homeFun"], functi
 		http({
 			url: urls.layer,
 			type: 'get',
-			success: function(res) {
+			success: function (res) {
 				var data = res.data;
 				var str = '';
 				for (var i = 0; i < data.length; i++) {
@@ -168,7 +171,7 @@ layui.define(["http", "getFn", "homeGetLeft", "homeGetRight", "homeFun"], functi
 
 	// 监听类型选择
 	var mapInt, mapTime, delaTime;
-	layForm.on('checkbox(check)', function(data) {
+	layForm.on('checkbox(check)', function (data) {
 		clearTimeout(mapInt);
 		clearTimeout(delaTime);
 		var tempVal = Number(data.value);
@@ -180,7 +183,7 @@ layui.define(["http", "getFn", "homeGetLeft", "homeGetRight", "homeFun"], functi
 			checkArr.splice(idx, 1);
 		};
 		type = checkArr.join(',');
-		delaTime = setTimeout(function() {
+		delaTime = setTimeout(function () {
 			mapDataFn();
 			homeGetLeft.getStateFn(type);
 		}, 1000)
@@ -197,7 +200,7 @@ layui.define(["http", "getFn", "homeGetLeft", "homeGetRight", "homeFun"], functi
 				type: type,
 				num: zoom
 			},
-			success: function(res) {
+			success: function (res) {
 				station = res.data;
 				var lineData = res.line;
 				var scatData = scatConvert();
@@ -210,18 +213,18 @@ layui.define(["http", "getFn", "homeGetLeft", "homeGetRight", "homeFun"], functi
 				});
 				setImgFn();
 			},
-			complete: function() {
+			complete: function () {
 				mapInt = setTimeout(mapDataFn, 60000);
 			}
 		});
 	};
 	/*
-	    @@字段区分
-	    name:站点名
-	    id:站点ID
-	    type用于区分类别,1-6对应:1台站、2浮标、3雷达、4志愿船、5gps、6管理单位
-	    val是空值圈的颜色 1:正常(绿色),2维护(灰色),3异常(红色)
-	    line控制线的颜色	0为绿色 1为红色
+		@@字段区分
+		name:站点名
+		id:站点ID
+		type用于区分类别,1-6对应:1台站、2浮标、3雷达、4志愿船、5gps、6管理单位
+		val是空值圈的颜色 1:正常(绿色),2维护(灰色),3异常(红色)
+		line控制线的颜色	0为绿色 1为红色
 	*/
 	function scatConvert() {
 		var temp = [];
@@ -277,7 +280,7 @@ layui.define(["http", "getFn", "homeGetLeft", "homeGetRight", "homeFun"], functi
 			"top": t + 'px',
 		});
 	};
-	$("#sele").on("click", function() {
+	$("#sele").on("click", function () {
 		clickFn(siteId);
 	});
 	//初始化中间地图
@@ -295,7 +298,7 @@ layui.define(["http", "getFn", "homeGetLeft", "homeGetRight", "homeFun"], functi
 				textStyle: {
 					color: '#fff'
 				},
-				formatter: function(params) {
+				formatter: function (params) {
 					var data = params.data;
 					return data.site;
 				}
@@ -363,7 +366,7 @@ layui.define(["http", "getFn", "homeGetLeft", "homeGetRight", "homeFun"], functi
 				itemStyle: {
 					normal: {
 						show: false,
-						color: function(item) {
+						color: function (item) {
 							var val = item.data.val;
 							return colorArr[val];
 						}
@@ -372,7 +375,7 @@ layui.define(["http", "getFn", "homeGetLeft", "homeGetRight", "homeFun"], functi
 			}, {
 				type: 'lines',
 				tooltip: {
-					formatter: function(e) {
+					formatter: function (e) {
 						return '';
 					}
 				},
@@ -389,7 +392,7 @@ layui.define(["http", "getFn", "homeGetLeft", "homeGetRight", "homeFun"], functi
 				lineStyle: {
 					normal: {
 						curveness: 0.2,
-						color: function(item) {
+						color: function (item) {
 							var line = item.data.line;
 							var clr = line == 0 ? "rgba(51,204,0,0.1)" : "rgba(255,0,0,0.1)";
 							return clr;
@@ -399,23 +402,21 @@ layui.define(["http", "getFn", "homeGetLeft", "homeGetRight", "homeFun"], functi
 			}]
 		};
 		myChart.setOption(option);
-		myChart.on('georoam', function(e) {
+		myChart.on('georoam', function (e) {
 			var _option = myChart.getOption();
 			var _zoom = _option.geo[0].zoom;
 			zoom = Math.round(_zoom);
 			clearTimeout(mapInt);
 			mapInt = setTimeout(mapDataFn, 1000)
 		});
-		myChart.on('click', function(e) {
+		myChart.on('click', function (e) {
 			if (e.data) {
 				if (e.data.val > -1) {
 					siteId = e.data.id;
-					layForm.val("layForm", {
-						site: siteId
-					});
+					xm.setValue([siteId]);
 					latlog = e.data.value;
 					clearTimeout(mapTime);
-					mapTime = setTimeout(function() {
+					mapTime = setTimeout(function () {
 						homeFun.clickFn(siteId);
 						homeGetLeft.getFileFn(siteId);
 						getEchartsFn();
@@ -428,7 +429,7 @@ layui.define(["http", "getFn", "homeGetLeft", "homeGetRight", "homeFun"], functi
 	initEchartFn();
 
 	// 弹出页面调取封装的
-	window.alrFn = function(u, t, w, h) {
+	window.alrFn = function (u, t, w, h) {
 		var url = u || '',
 			title = t || !1,
 			width = w || "100%",
@@ -436,7 +437,7 @@ layui.define(["http", "getFn", "homeGetLeft", "homeGetRight", "homeFun"], functi
 		homeFun.layAlertFn(url, title, width, height);
 	};
 	// 只为了弹出配置页面  目前好像没用上
-	window.alrFns = function(url) {
+	window.alrFns = function (url) {
 		layer.open({
 			type: 2,
 			title: "传输任务管理",

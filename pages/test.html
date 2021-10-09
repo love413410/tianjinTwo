@@ -1,10 +1,10 @@
-<!-- <script>
-	var token = sessionStorage.token;
-	if (!token) {
-		alert("请先登录!")
-		window.top.location.href = "../index.html";
-	}
-</script> -->
+<script>
+    var token = sessionStorage.token;
+    if (!token) {
+        alert("请先登录!")
+        window.top.location.href = "../index.html";
+    }
+</script>
 <!DOCTYPE html>
 <html lang="zh">
 
@@ -22,7 +22,8 @@
     <div class="head">
         海洋观测数据传输监控系统
     </div>
-    <div class="layui-form head-deta" lay-filter="layForm">
+    <button class="layui-btn layui-btn-sm toBtn" id="toFn">更换</button>
+    <div class="layui-form head-deta">
         <p class="lt">
             <!-- 欢迎登录：<span id="user" onclick="alrFn('./user.html','600px','380px')"></span>！ -->
             欢迎登录：<span id="user"></span>！
@@ -34,12 +35,20 @@
                         当前站:
                     </div>
                 </div>
-                <div class="layui-inline">
+                <!-- <div class="layui-inline">
                     <div class="layui-input-inline lay-sele">
                         <select name="site" lay-search id="laySearch" lay-filter="laySearch">
                         </select>
                     </div>
+                </div> -->
+
+                <div class="layui-inline">
+                    <div class="layui-input-inline lay-sele">
+                        <div class="xmSelect" id="xmSelect"></div>
+                    </div>
                 </div>
+
+
 
                 <div class="layui-inline">
                     <div class="layui-input-inline head-btn" onclick="outFn()">
@@ -227,20 +236,30 @@
                         <div class="gauge-item">4444</div> -->
                     </div>
 
-                    <div class="el-line">
-                        <div class="layui-form lay_sele">
-                            <select lay-filter="homeEl" id="homeEl">
-                                <option value="气压">气压</option>
-                                <option value="气温">气温</option>
-                                <option value="水温">水温</option>
-                                <option value="波浪">波浪</option>
-                                <option value="湿度">湿度</option>
-                                <option value="潮位">潮位</option>
-                                <option value="盐度">盐度</option>
-                                <option value="风">风</option>
-                            </select>
+                    <div class="el-line" id="elLine">
+                        <div class="layui-form">
+                            <div class="layui-form-item">
+                                <div class="layui-inline lay_sele">
+                                    <select lay-filter="homeEl" id="homeEl">
+                                        <option>潮位</option>
+                                        <option>气压</option>
+                                        <option>气温</option>
+                                        <option>水温</option>
+                                        <option>湿度</option>
+                                        <option>盐度</option>
+                                        <option>风</option>
+                                        <option>波浪</option>
+                                    </select>
+                                </div>
+                                <div class="layui-inline lay_type add">月</div>
+                                <div class="layui-inline lay_type">周</div>
+                                <div class="layui-inline lay_type">日</div>
+                            </div>
                         </div>
                         <div id="line"></div>
+
+
+
                     </div>
                 </div>
             </div>
@@ -368,6 +387,7 @@
 
 </body>
 <script src="../assets/lib/layui/layui.js"></script>
+<script src="../assets/lib/xmselect.js"></script>
 <script src="../assets/lib/echarts.js"></script>
 <script src="../assets/lib/china.js"></script>
 <script>
