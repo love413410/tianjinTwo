@@ -59,7 +59,7 @@ layui.define(['http', "getFn"], function (e) {
 	// 右侧折线图
 	function initLineFn(siteEl, xData, data, unit, max, min) {
 		var option = {
-			grid: { top: 20, bottom: 80, right: 0 },
+			grid: { top: 20, bottom: 40, right: 10 },
 			tooltip: {
 				trigger: "axis",
 				formatter: function (item) {
@@ -147,15 +147,13 @@ layui.define(['http', "getFn"], function (e) {
 				type: siteType
 			},
 			success: function (res) {
-				var xData = res.title,
-					data = res.data,
-					unit = res.unit;
-				var max = res.max,
-					min = res.min;
+				var xData = res.title, data = res.data, unit = res.unit;
+				var max = res.max, min = res.min;
 				var max_mult = max > 0 ? 1.2 : max < 0 ? 0.8 : 0,
 					min_mult = min > 0 ? 0.8 : 1.2;
 				var max_val = Math.floor(max * max_mult),
 					min_val = Math.ceil(min * min_mult);
+				myLine = echarts.init(document.getElementById("line"));
 				var option = initLineFn(siteEl, xData, data, unit, max_val, min_val);
 				myLine.setOption(option);
 			},

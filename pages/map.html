@@ -13,8 +13,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>海洋观测数据传输监控系统</title>
-    <link rel="stylesheet" type="text/css" href="../assets/lib/layui/css/layui.css" />
-    <link rel="stylesheet" type="text/css" href="../assets/lib/arcgis/esri/css/esri.css" />
+    <link rel="stylesheet" href="../assets/lib/layui/css/layui.css" />
     <link rel="stylesheet" type="text/css" href="../assets/css/lib.css" />
     <link rel="stylesheet" type="text/css" href="../assets/css/map.css" />
 </head>
@@ -23,6 +22,7 @@
     <div class="head">
         海洋观测数据传输监控系统
     </div>
+    <button class="layui-btn layui-btn-sm toBtn" id="toFn">更换</button>
     <div class="layui-form head-deta">
         <p class="lt">
             <!-- 欢迎登录：<span id="user" onclick="alrFn('./user.html','600px','380px')"></span>！ -->
@@ -35,11 +35,20 @@
                         当前站:
                     </div>
                 </div>
+                <!-- <div class="layui-inline">
+                    <div class="layui-input-inline lay-sele">
+                        <select name="site" lay-search id="laySearch" lay-filter="laySearch">
+                        </select>
+                    </div>
+                </div> -->
+
                 <div class="layui-inline">
                     <div class="layui-input-inline lay-sele">
                         <div class="xmSelect" id="xmSelect"></div>
                     </div>
                 </div>
+
+
 
                 <div class="layui-inline">
                     <div class="layui-input-inline head-btn" onclick="outFn()">
@@ -54,7 +63,9 @@
     <div class="menu-lt">
         <div class="sub-head">
             <img src="../static/h1.png">
-            <p> 今日传输量 </p>
+            <p>
+                今日传输量
+            </p>
             <p class="sub-rt">
                 <img src="../static/h2.png">
             </p>
@@ -125,7 +136,7 @@
 
     </div>
 
-    <div id="maps"></div>
+    <div id="map"></div>
     <img src="../static/selected.gif" id="sele">
 
     <div class="menu-rt">
@@ -225,55 +236,47 @@
                         <div class="gauge-item">4444</div> -->
                     </div>
 
-                    <div class="el-line">
-                        <div class="layui-form lay_sele">
-                            <select lay-filter="homeEl" id="homeEl">
-                                <option value="潮位">潮位</option>
-                                <option value="气压">气压</option>
-                                <option value="气温">气温</option>
-                                <option value="水温">水温</option>
-                                <option value="湿度">湿度</option>
-                                <option value="盐度">盐度</option>
-                                <option value="风">风</option>
-                                <option value="波浪">波浪</option>
-                            </select>
+                    <div class="el-line" id="elLine">
+                        <div class="layui-form">
+                            <div class="layui-form-item">
+                                <div class="layui-inline lay_sele">
+                                    <select lay-filter="homeEl" id="homeEl">
+                                        <option>潮位</option>
+                                        <option>气压</option>
+                                        <option>气温</option>
+                                        <option>水温</option>
+                                        <option>湿度</option>
+                                        <option>盐度</option>
+                                        <option>风</option>
+                                        <option>波浪</option>
+                                    </select>
+                                </div>
+                               
+                                
+                                <div class="layui-inline lay_type add">日</div>
+                                <div class="layui-inline lay_type">周</div>
+                                <div class="layui-inline lay_type">月</div>
+                            </div>
                         </div>
                         <div id="line"></div>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="sub-head">
-            <img src="../static/h1.png">
-            <p>
-                图标
-            </p>
-            <p class="sub-rt">
-                <img src="../static/h2.png">
-            </p>
-        </div>
+        <div class="menu-rt-btm">
+            <div class="sub-head">
+                <img src="../static/h1.png">
+                <p>图标</p>
+                <p class="sub-rt"><img src="../static/h2.png"></p>
+            </div>
 
-        <div class="menu-icon">
-            <p>
-                <img src="../static/icon11.png" alt="">
-                <span>台站</span>
-            </p>
-            <p>
-                <img src="../static/icon21.png" alt="">
-                <span>浮标</span>
-            </p>
-            <p>
-                <img src="../static/icon31.png" alt="">
-                <span>雷达</span>
-            </p>
-            <p>
-                <img src="../static/icon41.png" alt="">
-                <span>志愿船</span>
-            </p>
-            <p>
-                <img src="../static/icon51.png" alt="">
-                <span>GNSS</span>
-            </p>
+            <div class="menu-icon">
+                <p><img src="../static/icon11.png" alt=""><span>台站</span></p>
+                <p><img src="../static/icon21.png" alt=""><span>浮标</span></p>
+                <p><img src="../static/icon31.png" alt=""><span>雷达</span></p>
+                <p><img src="../static/icon41.png" alt=""><span>志愿船</span></p>
+                <p><img src="../static/icon51.png" alt=""><span>GNSS</span></p>
+            </div>
         </div>
     </div>
 
@@ -368,8 +371,22 @@
 <script src="../assets/lib/layui/layui.js"></script>
 <script src="../assets/lib/xmselect.js"></script>
 <script src="../assets/lib/echarts.js"></script>
-<script src="../assets/lib/arcgis/init.js"></script>
+<script src="../assets/lib/china.js"></script>
 <script>
+    // layui
+    //     .config({
+    //         base: "../assets/",
+    //     })
+    //     .extend({
+    //         http: "api/http",
+    //         getFn: "lib/getFn",
+    //         homeGetLeft: "js/homeGetLeft",
+    //         homeGetRight: "js/homeGetRight",
+    //         homeFun: "js/homeFun",
+    //         map: "js/map",
+    //     })
+    //     .use("map");
+
     layui
         .config({
             base: "../assets/",
@@ -377,9 +394,6 @@
         .extend({
             http: "api/http",
             getFn: "lib/getFn",
-            homeGetLeft: "js/homeGetLeft",
-            homeGetRight: "js/homeGetRight",
-            homeFun: "js/homeFun",
             map: "js/map",
         })
         .use("map");

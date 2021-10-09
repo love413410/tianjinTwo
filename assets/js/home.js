@@ -10,12 +10,15 @@ layui.define(["http", "getFn"], function (exports) {
             "esri/map", "esri/graphic", "esri/geometry/Point",
             "esri/layers/GraphicsLayer", "esri/Color", "esri/symbols/TextSymbol",
             "esri/symbols/SimpleLineSymbol", "esri/geometry/Polyline", "esri/symbols/PictureMarkerSymbol",
-            "esri/layers/ArcGISTiledMapServiceLayer", "dojo/domReady!",
+            "esri/layers/ArcGISTiledMapServiceLayer",
+            "dojo/dom", "dojo/dom-construct", "dojo/dom-attr", "dojo/dom-style",
+            "dojo/domReady!",
         ],
         function (
             Map, graphic, Point, GraphicsLayer, Color,
             TextSymbol, SimpleLineSymbol, Polyline,
-            PictureMarkerSymbol, ArcGISTiledMapServiceLayer
+            PictureMarkerSymbol, ArcGISTiledMapServiceLayer,
+            dom, domConstruct, domAttr, domStyle
         ) {
             var http = layui.http, urls = layui.urls, getFn = layui.getFn;
             var $ = layui.$, form = layui.form, carousel = layui.carousel, laydate = layui.laydate;
@@ -33,7 +36,7 @@ layui.define(["http", "getFn"], function (exports) {
                     delaTime: null, mapInt: null, isClick: null, layDeta: null,
 
                     siteHtml: "水文", gaugeTimout: null,
-                    siteEl: "潮位", siteType: "月", lineTimout: null, gaugeArr: [],
+                    siteEl: "潮位", siteTimeout: null, siteType: "日", lineTimout: null, gaugeArr: [],
                     inspTime: null,
                     hdate: getFn.initM(), index: null
                 },
@@ -183,7 +186,7 @@ layui.define(["http", "getFn"], function (exports) {
                         clearTimeout(this.mapInt);
                         http({
                             url: urls.homeindex,
-                            type:"post",
+                            type: "post",
                             data: { type: this.type, num: this.zoom },
                             success: (res) => {
                                 this.setLineDataFn(res.line);
@@ -223,24 +226,44 @@ layui.define(["http", "getFn"], function (exports) {
                                 var siteName = new graphic(point, text);
                                 mapLayer.add(siteName);
                             };
-                            mapLayer.on('click', (e) => {
-                                clearTimeout(this.isClick);
-                                this.isClick = setTimeout(() => {
-                                    var item = e.graphic.symbol.item;
-                                    this.siteId = item.id;
-                                    this.xm.setValue([this.siteId]);
-                                    this.getEchartsFn();
-                                    this.clickFn();
-                                }, 250);
-                            });
-
-                            // mapLayer.on('mouse-move', (e) => {
-                            //     var item = e.graphic.symbol.item;
-                            //     console.log(e)
-                               
-                            // });
-
                         };
+
+                        mapLayer.on('click', (e) => {
+                            clearTimeout(this.isClick);
+                            this.isClick = setTimeout(() => {
+                                var item = e.graphic.symbol.item;
+                                this.siteId = item.id;
+                                this.xm.setValue([this.siteId]);
+                                this.getEchartsFn();
+                                this.clickFn();
+                            }, 250);
+                        });
+                        // mapLayer.on('mouse-move', (e) => {
+                        //     var item = e.graphic.symbol.item;
+                        //     var scrPt =  this.map.toScreen(e.graphic.geometry);
+                        //     var textDiv = domConstruct.create("div");
+                        //     domAttr.set(textDiv, {
+                        //         "id": "popup"
+                        //     });
+                        //     domStyle.set(textDiv, {
+                        //         "left": scrPt.x + 10 + "px",
+                        //         "top": scrPt.y + 10 + "px",
+                        //         "position": "absolute",
+                        //         "z-index": 99,
+                        //         "background": "#fcffd1",
+                        //         "font-size": "10px",
+                        //         "border": "1px solid #0096ff",
+                        //         "padding": "3px",
+                        //         "border-radius": "3px",
+                        //     });
+                        //     textDiv.innerHTML = "当前是：" + item.name;
+                        //     dom.byId("map").appendChild(textDiv);
+                        // });
+                        // mapLayer.on("mouse-out", (e)=>{
+                        //     console.log(e)
+                        //     dom.byId("map").removeChild(dom.byId("popup"));
+                        // });
+
                     },
                     setLineDataFn: function (data) {
                         if (data.length <= 0) {
@@ -340,8 +363,8 @@ layui.define(["http", "getFn"], function (exports) {
                         return option;
                     },
                     siteTypeFn: function (e) {
-                        this.siteType = e;
-                        this.getLineFn();
+                        clearTimeout(this.siteTimeout);
+                        this.siteTimeout = setTimeout(() => { this.siteType = e; this.getLineFn(); }, 500);
                     },
                     //折线图数据
                     getLineFn: function () {
@@ -371,7 +394,7 @@ layui.define(["http", "getFn"], function (exports) {
                     },
                     initLineFn: function (siteEl, xData, data, unit, max, min) {
                         var option = {
-                            grid: { top: 20, bottom: 40, right: 10 },
+                            grid: { top: 20, bottom: 20, right: 10 },
                             tooltip: {
                                 trigger: "axis",
                                 formatter: function (item) {
@@ -504,7 +527,7 @@ layui.define(["http", "getFn"], function (exports) {
                         });
                     },
                     toFn: function () {
-                        window.location.href = '../pages/test.html'
+                        window.location.href = '../pages/map.html'
                     },
                     userFn: function () {
                         let isUser = getFn.isUserFn();

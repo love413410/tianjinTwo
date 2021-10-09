@@ -96,12 +96,10 @@
 .menu-rt {
   width: 480px;
   height: 100vh;
-  /* padding: 102px 20px 0 20px; */
-  padding: 102px 20px 110px 20px;
+  padding: 102px 20px 90px 20px;
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
-  /* position: absolute; */
   position: fixed;
   right: 0;
   top: 0;
@@ -240,7 +238,7 @@
 }
 .menu-rt-btm {
   width: 100%;
-  height: 110px;
+  height: 90px;
   position: absolute;
   bottom: 0;
   right: 0;
