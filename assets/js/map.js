@@ -819,7 +819,19 @@ layui.define(["http", "getFn"], function (e) {
     // 关闭页面时调取
     function childFn() {
         layer.closeAll(function () {
-            inspTime = setTimeout(inspFn, 500)
+            inspTime = setTimeout(inspFn, 500);
+        });
+    };
+    window.alrFns = function (url) {
+        layer.open({
+            type: 2,
+            title: "传输任务管理",
+            shade: 0.8,
+            resize: !1,
+            moveOut: 1,
+            skin: "lay-drop",
+            area: ["1320px", "670px"],
+            content: url,
         });
     };
     // 正则验证

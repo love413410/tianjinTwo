@@ -42,7 +42,8 @@ layui.define(["http", "getFn"], function (exports) {
                 },
                 methods: {
                     initMapFn: function () {
-                        this.map = new Map("map", { zoom: this.zoom, minZoom: 5, maxZoom: 9, center: this.center });
+                        // this.map = new Map("map", { zoom: this.zoom, minZoom: 5, maxZoom: 9, center: this.center });
+                        this.map = new Map("map", { zoom: this.zoom, minZoom: 5, center: this.center });
                         var baseUrl = "http://server.arcgisonline.com/ArcGIS/rest/services/ESRI_StreetMap_World_2D/MapServer";
                         // var url = "http://71.3.251.104:8066/arcgis/rest/services/6199/0/MapServer?token=";
                         // var token =
@@ -667,6 +668,18 @@ layui.define(["http", "getFn"], function (exports) {
                     });
                 }
             });
+            window.alrFns = function (url) {
+                layer.open({
+                    type: 2,
+                    title: "传输任务管理",
+                    shade: 0.8,
+                    resize: !1,
+                    moveOut: 1,
+                    skin: "lay-drop",
+                    area: ["1320px", "670px"],
+                    content: url,
+                });
+            };
         });
     exports('home', {});
 });
