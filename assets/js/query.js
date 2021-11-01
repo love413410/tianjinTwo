@@ -30,7 +30,7 @@ layui.define(["http", "load", "getFn"], function(e) {
 		var url = "./dataDeta.html?id=" + id + "&style=" + style + "&startTime=" + startTime + "&endTime=" + endTime;
 		layer.open({
 			type: 2,
-			title: "修改",
+			title: "详情",
 			resize: !1,
 			skin: "lay-drop lay-drp",
 			id: "id",

@@ -436,6 +436,7 @@ layui.define(["http", "getFn"], function (exports) {
                     },
                     //监控站点异常,自动弹窗
                     inspFn: function () {
+                        var _this = this;
                         clearTimeout(this.inspTime);
                         http({
                             url: urls.faultpush,
@@ -459,7 +460,7 @@ layui.define(["http", "getFn"], function (exports) {
                                                 title: title, area: ["355px", layHeight],
                                                 skin: 'drop-demo lay-drop', offset: "150px",
                                                 id: "drop-demo", content: content,
-                                                success: () => { clearTimeout(this.inspTime); },
+                                                success: () => { clearTimeout(_this.inspTime); },
                                                 cancel: function () {
                                                     http({
                                                         url: urls.close,
@@ -467,7 +468,7 @@ layui.define(["http", "getFn"], function (exports) {
                                                         data: { id: stationId, type: type },
                                                         success: () => {
                                                             layer.closeAll(() => {
-                                                                this.inspTime = setTimeout(() => { this.inspFn() }, 500);
+                                                                _this.inspTime = setTimeout(() => { _this.inspFn() }, 500);
                                                             });
                                                         }
                                                     });
@@ -488,6 +489,7 @@ layui.define(["http", "getFn"], function (exports) {
                         }) : this.layerFn();
                     },
                     layerFn: function () {
+                        var _this = this;
                         http({
                             url: urls.homeclock,
                             data: { id: this.siteId },
@@ -503,8 +505,8 @@ layui.define(["http", "getFn"], function (exports) {
                                     title: title, area: ["355px", layHeight],
                                     skin: 'drop-demo lay-drop', offset: "150px",
                                     id: "drop-demo", content: content,
-                                    success: () => { clearTimeout(this.inspTime); },
-                                    cancel: () => { this.inspTime = setTimeout(this.inspFn, 500); this.layDeta = null }
+                                    success: () => { clearTimeout(_this.inspTime); },
+                                    cancel: () => { _this.inspTime = setTimeout(_this.inspFn, 500); _this.layDeta = null }
                                 });
                             }
                         });
@@ -519,13 +521,14 @@ layui.define(["http", "getFn"], function (exports) {
                             title = title || !1,
                             width = width || "100%",
                             height = height || "635px";
+                        var _this = this;
                         layer.closeAll(() => {
                             layer.open({
                                 type: 2, title: title,
                                 shade: 0.8, resize: !1, moveOut: 1,
                                 skin: "lay-drop", area: [width, height], content: url,
-                                success: () => { clearTimeout(this.inspTime) },
-                                cancel: () => { this.childFn() }
+                                success: () => { clearTimeout(_this.inspTime) },
+                                cancel: () => { _this.childFn() }
                             });
                         });
                     },
@@ -534,9 +537,10 @@ layui.define(["http", "getFn"], function (exports) {
                     },
                     userFn: function () {
                         let isUser = getFn.isUserFn();
-                        isUser ? this.layAlertFn('./user.html', '个人中心管理', '600px', '480px') : alrFn('./users.html', '个人中心管理', '600px', '380px');
+                        isUser ? this.layAlertFn('./user.html', '个人中心管理', '600px', '480px') : this.layAlertFn('./users.html', '个人中心管理', '600px', '380px');
                     },
                     loadFn: function () {
+                        var _this = this;
                         layer.closeAll(function () {
                             layer.open({
                                 type: 1, title: "月报下载",
@@ -545,7 +549,7 @@ layui.define(["http", "getFn"], function (exports) {
                                 area: ['400px'],
                                 content: $("#monthDown"),
                                 success: () => {
-                                    clearTimeout(this.inspTime);
+                                    clearTimeout(_this.inspTime);
                                     $(".layItem").addClass("layui-hide");
                                     $("#layItem").removeClass("layui-hide");
                                     $('#monthDown')[0].reset();
@@ -557,7 +561,7 @@ layui.define(["http", "getFn"], function (exports) {
                                     });
                                 },
                                 cancel: () => {
-                                    this.inspTime = setTimeout(() => { this.inspFn() }, 500)
+                                    _this.inspTime = setTimeout(() => { _this.inspFn() }, 500)
                                 }
                             });
                         })
@@ -586,6 +590,7 @@ layui.define(["http", "getFn"], function (exports) {
                     this.userName = sessionStorage.user;
                 },
                 mounted: function () {
+                    this.inspFn();
                     carousel.render({ elem: '#carousel', autoplay: false, arrow: 'always', width: '440px', height: '100%', indicator: 'none', index: this.carIdex });
                     carousel.on('change(carousel)', (obj) => { this.carIdex = obj.index; this.getEchartsFn(); });
 
