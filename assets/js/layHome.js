@@ -16,6 +16,7 @@ layui.define(['http', "getFn"], function (e) {
             type = res.type;
             alarmId = res.alarmId;
             var data = res.data;
+            console.log(data)
             form.val('layForm', {
                 "station": data.station,
                 "seat": data.seat,
@@ -23,7 +24,9 @@ layui.define(['http', "getFn"], function (e) {
                 "newTime": data.newTime,
                 "minuteFile": data.minuteFile,
                 "hourFile": data.hourFile,
-                "punctualityFile": data.punctualityFile
+                "punctualityFile": data.punctualityFile,
+                "linkTime": data.linkTime,
+                "description": data.description
             });
         }
     });

@@ -73,7 +73,7 @@ body {
 }
 
 .layui-form-item {
-  margin-bottom: 12px;
+  margin-bottom: 6px;
 }
 .layui-form-item .layui-form-label {
   width: 60px;
@@ -91,10 +91,15 @@ body {
 .lay_bg_color {
   color: #000 !important;
 }
-.lay_bg_color .layui-input {
+.lay_bg_color .layui-input,
+.layui-textarea {
   color: #fff;
   border: none;
   background-color: #112350;
+}
+.layui-textarea {
+  min-height: 55px;
+  resize: none;
 }
 
 .plaImg {

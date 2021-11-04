@@ -1,9 +1,6 @@
 .lay-form {
   width: 355px;
-  height: 534px;
   padding: 10px 0;
-  border: 1px solid #005ca0;
-  border-top: none;
   box-sizing: border-box;
   overflow: hidden;
 }

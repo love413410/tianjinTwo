@@ -28,7 +28,7 @@ layui.define(['http', "getFn"], function (e) {
                 type = res.type;
                 alarmId = res.alarmId;
                 var data = res.data;
-                
+
                 getSeleFn(data);
                 var text = type == 0 ? "推送" : type == 1 ? "提交" : "";
                 $("#subbtn").html(text);
@@ -83,7 +83,7 @@ layui.define(['http', "getFn"], function (e) {
                         };
                         $("#faultType").html(f_arr.join(","))
                         form.render("select");
-                        
+
                         form.val('layForm', {
                             "station": data.station,
                             "seat": data.seat,
@@ -92,6 +92,8 @@ layui.define(['http', "getFn"], function (e) {
                             "minuteFile": data.minuteFile,
                             "hourFile": data.hourFile,
                             "punctualityFile": data.punctualityFile,
+                            "linkTime": data.linkTime,
+                            "description": data.description,
 
                             "id": alarmId,
                             "type": type,

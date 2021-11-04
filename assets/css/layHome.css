@@ -1,16 +1,13 @@
 .lay-form {
   width: 355px;
-  height: 372px;
   padding: 10px 0;
-  border: 1px solid #005ca0;
-  border-top: none;
   box-sizing: border-box;
   overflow: hidden;
 }
 .lay-form .layui-form-item {
   padding: 0 12px;
   box-sizing: border-box;
-  margin-bottom: 12px;
+  margin-bottom: 7px;
 }
 .lay-form .layui-form-label {
   width: 90px;
@@ -24,11 +21,11 @@
   margin-left: 100px;
 }
 .lay-form .layui-input {
-  background: #112350;
-  border: none;
   color: #fff;
+  border: none;
   overflow: hidden;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  background: #112350;
 }

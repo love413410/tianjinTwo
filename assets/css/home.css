@@ -211,14 +211,14 @@ body {
 }
 
 body .drop-demo .layui-layer-title {
-  height: 42px;
+  height: 41px;
   line-height: 40px;
   color: #fff;
   font-size: 18px;
   font-family: MicrosoftYaHei;
   letter-spacing: 1px;
   background: #000000;
-  border: 1px solid #005ca0;
+  border-bottom: 1px solid #005ca0;
   box-sizing: border-box;
 }
 

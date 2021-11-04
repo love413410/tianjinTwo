@@ -265,9 +265,11 @@ layui.define(["http", "getFn", "dtree"], function (e) {
 			"ofCenter": data.ofCenter,
 
 			"stationRange": data.stationRange,
-			"uphold": data.uphold,
 			"control": data.control,
 			"resident": data.resident,
+			"uphold": data.uphold,
+			"description": data.description,
+			
 		});
 		is = 2;
 	};

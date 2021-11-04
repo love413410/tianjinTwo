@@ -170,7 +170,7 @@ layui.define(["http", "getFn"], function (e) {
     // 地图数据
     var zoom = 2, center = [120.81, 32.026];
     function mapDataFn() {
-		clearTimeout(mapInt);
+        clearTimeout(mapInt);
         http({
             url: urls.homeindex,
             data: {
@@ -402,6 +402,7 @@ layui.define(["http", "getFn"], function (e) {
             if (e.data) {
                 if (e.data.val > -1) {
                     siteId = e.data.id;
+
                     xm.setValue([siteId]);
                     latlog = e.data.value;
                     clearTimeout(mapTime);
@@ -543,7 +544,7 @@ layui.define(["http", "getFn"], function (e) {
                     min_mult = min > 0 ? 0.8 : 1.2;
                 // var max_val = Math.floor(max * max_mult),
                 //     min_val = Math.ceil(min * min_mult);
-				var max_val = (max * max_mult).toFixed(2),
+                var max_val = (max * max_mult).toFixed(2),
                     min_val = (min * min_mult).toFixed(2);
                 myLine = echarts.init(document.getElementById("line"));
                 var option = initLineFn(siteEl, xData, data, unit, max_val, min_val);
@@ -599,7 +600,7 @@ layui.define(["http", "getFn"], function (e) {
         };
         return option;
     };
-    
+
     // 监听站点异常
     var inspTime;
     function inspFn() {
@@ -607,8 +608,7 @@ layui.define(["http", "getFn"], function (e) {
         http({
             url: urls.faultpush,
             success: function (res) {
-                var data = res.data;
-                var stationId = data.stationId;
+                var data = res.data, stationId = data.stationId;
                 if (stationId > -1) {
                     http({
                         url: urls.homeclock,
@@ -621,11 +621,9 @@ layui.define(["http", "getFn"], function (e) {
                             var type = res.type;
                             var title = data.station;
                             if (type < 0) {
-                                var layHeight = "414px";
-                                var content = '../pages/layHome.html?id=' + stationId;
+                                var layHeight = "467px", content = '../pages/layHome.html?id=' + stationId;
                             } else {
-                                var layHeight = "576px";
-                                var content = '../pages/layHomes.html?id=' + stationId;
+                                var layHeight = "641px", content = '../pages/layHomes.html?id=' + stationId;
                             };
                             layer.open({
                                 type: 2,
@@ -669,6 +667,7 @@ layui.define(["http", "getFn"], function (e) {
     // 点击站点
     var layDeta;
     function clickFn() {
+        console.log(siteId)
         layDeta ? layer.close(layDeta, function () {
             layerFn();
         }) : layerFn();
@@ -680,9 +679,9 @@ layui.define(["http", "getFn"], function (e) {
             success: function (res) {
                 var data = res.data, type = res.type, title = data.station;
                 if (type < 0) {
-                    var layHeight = "414px", content = '../pages/layHome.html?id=' + siteId;
+                    var layHeight = "467px", content = '../pages/layHome.html?id=' + siteId;
                 } else {
-                    var layHeight = "576px", content = '../pages/layHomes.html?id=' + siteId;
+                    var layHeight = "641px", content = '../pages/layHomes.html?id=' + siteId;
                 };
                 layDeta = layer.open({
                     type: 2, shade: 0, resize: false,
