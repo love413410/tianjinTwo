@@ -450,16 +450,15 @@ layui.define(["http", "getFn"], function (exports) {
                                         data: { id: stationId },
                                         success: (res) => {
                                             var data = res.data, type = res.type, title = data.station;
-                                            if (type < 0) {
-                                                var layHeight = "414px", content = '../pages/layHome.html?id=' + stationId;
-                                            } else {
-                                                var layHeight = "576px", content = '../pages/layHomes.html?id=' + stationId;
-                                            };
-                                            if (type < 0) {
-                                                var layHeight = "467px", content = '../pages/layHome.html?id=' + stationId;
-                                            } else {
-                                                var layHeight = "641px", content = '../pages/layHomes.html?id=' + stationId;
-                                            };
+
+                                            var layHeight = type < 0 ? "480px" : "650px";
+                                            var content = type < 0 ? '../pages/layHome.html?id=' + stationId : '../pages/layHomes.html?id=' + stationId;
+
+                                            // if (type < 0) {
+                                            //     var layHeight = "467px", content = '../pages/layHome.html?id=' + stationId;
+                                            // } else {
+                                            //     var layHeight = "641px", content = '../pages/layHomes.html?id=' + stationId;
+                                            // };
                                             layer.open({
                                                 type: 2, shade: 0, resize: false,
                                                 title: title, area: ["355px", layHeight],
@@ -500,11 +499,13 @@ layui.define(["http", "getFn"], function (exports) {
                             data: { id: this.siteId },
                             success: (res) => {
                                 var data = res.data, type = res.type, title = data.station;
-                                if (type < 0) {
-                                    var layHeight = "467px", content = '../pages/layHome.html?id=' + this.siteId;
-                                } else {
-                                    var layHeight = "641px", content = '../pages/layHomes.html?id=' + this.siteId;
-                                };
+                                // if (type < 0) {
+                                //     var layHeight = "467px", content = '../pages/layHome.html?id=' + this.siteId;
+                                // } else {
+                                //     var layHeight = "641px", content = '../pages/layHomes.html?id=' + this.siteId;
+                                // };
+                                var layHeight = type < 0 ? "480px" : "650px";
+                                var content = type < 0 ? '../pages/layHome.html?id=' + this.siteId : '../pages/layHomes.html?id=' + this.siteId;
                                 this.layDeta = layer.open({
                                     type: 2, shade: 0, resize: false,
                                     title: title, area: ["355px", layHeight],

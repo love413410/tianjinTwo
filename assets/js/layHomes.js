@@ -84,6 +84,16 @@ layui.define(['http', "getFn"], function (e) {
                         $("#faultType").html(f_arr.join(","))
                         form.render("select");
 
+                        if (f_name != 7) {
+                            getFtypeFn(id);
+                            $("#layHide").removeClass("layui-hide");
+                            $("#layHide").next().addClass("layui-hide");
+                        } else {
+                            $("#layHide").addClass("layui-hide");
+                            $("#layHide").next().removeClass("layui-hide");
+                        };
+
+                        console.log(f_name)
                         form.val('layForm', {
                             "station": data.station,
                             "seat": data.seat,
