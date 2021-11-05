@@ -93,7 +93,6 @@ layui.define(['http', "getFn"], function (e) {
                             $("#layHide").next().removeClass("layui-hide");
                         };
 
-                        console.log(f_name)
                         form.val('layForm', {
                             "station": data.station,
                             "seat": data.seat,
@@ -113,6 +112,16 @@ layui.define(['http', "getFn"], function (e) {
                             "fault": data.fault,
                         });
 
+                        $("#station").attr("title", data.station);
+                        $("#seat").attr("title", data.seat);
+                        $("#ip").attr("title", data.ip);
+                        $("#newTime").attr("title", data.newTime);
+                        $("#minuteFile").attr("title", data.minuteFile);
+                        $("#hourFile").attr("title", data.hourFile);
+                        $("#punctualityFile").attr("title", data.punctualityFile);
+                        $("#linkTime").attr("title", data.linkTime);
+                        $("#description").attr("title", data.description);
+                        $("#fault").attr("title", data.fault);
                         getFtypeFn(f_name);
                     }
                 });
