@@ -620,11 +620,6 @@ layui.define(["http", "getFn"], function (e) {
                             var data = res.data;
                             var type = res.type;
                             var title = data.station;
-                            // if (type < 0) {
-                            //     var layHeight = "467px", content = '../pages/layHome.html?id=' + stationId;
-                            // } else {
-                            //     var layHeight = "641px", content = '../pages/layHomes.html?id=' + stationId;
-                            // };
                             var layHeight = type < 0 ? "480px" : "650px";
                             var content = type < 0 ? '../pages/layHome.html?id=' + stationId : '../pages/layHomes.html?id=' + stationId;
                             layer.open({
@@ -680,11 +675,6 @@ layui.define(["http", "getFn"], function (e) {
             data: { id: siteId },
             success: function (res) {
                 var data = res.data, type = res.type, title = data.station;
-                // if (type < 0) {
-                //     var layHeight = "467px", content = '../pages/layHome.html?id=' + siteId;
-                // } else {
-                //     var layHeight = "641px", content = '../pages/layHomes.html?id=' + siteId;
-                // };
                 var layHeight = type < 0 ? "480px" : "650px";
                 var content = type < 0 ? '../pages/layHome.html?id=' + siteId : '../pages/layHomes.html?id=' + siteId;
                 layDeta = layer.open({
