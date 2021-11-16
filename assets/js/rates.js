@@ -19,7 +19,7 @@ layui.define(["http", "load", "getFn", "query"], function(e) {
 		range: "~",
 		btns: ['confirm']
 	});
-	
+
 	var where = {
 		type: "",
 		ofAreaCenter: "",
@@ -253,8 +253,8 @@ layui.define(["http", "load", "getFn", "query"], function(e) {
 		where.startTime = startTime;
 		where.endTime = endTime;
 		delete where.date;
-		where.type=
-		load(urls.dataList, "post", where);
+		where.type =
+			load(urls.dataList, "post", where);
 	});
 
 	window.layFn = function(id) {
@@ -285,6 +285,13 @@ layui.define(["http", "load", "getFn", "query"], function(e) {
 				return '请选择日期范围';
 			}
 		},
+		num: function(val) {
+			if(val){
+				if (val <= 0 || isNaN(Number(val))) {
+					return '请输入大于0的数字';
+				}
+			}
+		}
 	});
 	e("rates", {})
 });

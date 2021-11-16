@@ -19,26 +19,36 @@ layui.define(["http", "load", "getFn"], function(e) {
 		btns: ['confirm']
 	});
 
+	var type = $("#sele").val();
+	form.on('select(layFilt)', function(data) {
+		type = data.value;
+		stationRange();
+	});
+	stationRange();
+
 	var oneId = "";
 	// 一级检索接口
-	(function() {
+	function stationRange() {
 		http({
-			url: urls.sitemtype,
-			type: 'get',
-			data: {},
+			url: urls.stationRange,
+			data: {
+				type: type,
+				num:1
+			},
 			success: function(res) {
 				var data = res.data;
 				var str = '';
 				for (var i = 0; i < data.length; i++) {
 					var dataItem = data[i].fields;
-					str += '<option value="' + data[i].pk + '">' + dataItem.title + '</option>'
+					str += '<option value="' + data[i].pk + '">' + dataItem.Name + '</option>'
 				};
 				$("#oneId").html(str);
+				form.render("select");
 				oneId = data.length > 0 ? data[0].pk : "";
 				getErFn();
 			}
 		});
-	})();
+	};
 	form.on('select(layOneFilt)', function(data) {
 		oneId = data.value;
 		getErFn();
@@ -228,7 +238,7 @@ layui.define(["http", "load", "getFn"], function(e) {
 		where.startTime = startTime;
 		where.endTime = endTime;
 		delete where.date;
-		
+
 		load(urls.faultlist, "post", where);
 	});
 

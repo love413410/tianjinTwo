@@ -79,7 +79,6 @@ layui.define(["http", "getFn"], function (exports) {
                                     success: (res) => {
                                         this.siteId = res.id;
                                         this.xm.setValue([res.id]);
-                                        this.getFileFn();
                                         this.getTypeFn();
                                     }
                                 });
@@ -91,7 +90,7 @@ layui.define(["http", "getFn"], function (exports) {
                         clearTimeout(this.fileTime);
                         http({
                             url: urls.receive,
-                            data: { id: this.siteId },
+                            data: { id: this.siteId,type: this.type },
                             success: (res) => {
                                 this.fileData = res.data;
                             },
@@ -105,31 +104,62 @@ layui.define(["http", "getFn"], function (exports) {
                         http({
                             url: urls.layer,
                             success: (res) => {
-                                var data = res.data, str = '';
-                                for (let i = 0; i < data.length; i++) {
-                                    var id = data[i].id, title = data[i].title, is = data[i].checkd;
-                                    if (is == 1) {
-                                        str += '<div class="layui-inline">' +
-                                            '<div class="layui-input-inline">' +
-                                            '<input type="checkbox" value="' + id + '" lay-skin="primary" lay-filter="check" title="' +
-                                            title + '" checked />' +
-                                            '</div>' +
-                                            '</div>';
-                                        this.checkArr.push(id);
-                                    } else {
-                                        str += '<div class="layui-inline">' +
-                                            '<div class="layui-input-inline">' +
-                                            '<input type="checkbox" value="' + id + '" lay-skin="primary" lay-filter="check" title="' +
-                                            title + '"/>' +
-                                            '</div>' +
-                                            '</div>';
-                                    };
+                                var country = res.country;
+                                var checks = '';
+                                for (var i = 0; i < country.length; i++) {
+                                	var id = country[i].id,
+                                		title = country[i].title,
+                                		is = country[i].checkd;
+                                	if (is == 1) {
+                                		checks += '<div class="layui-inline">' +
+                                			'<div class="layui-input-inline">' +
+                                			'<input type="checkbox" value="' + id + '" lay-skin="primary" lay-filter="check" title="' +
+                                			title + '" checked />' +
+                                			'</div>' +
+                                			'</div>';
+                                		this.checkArr.push(id);
+                                	} else {
+                                		checks += '<div class="layui-inline">' +
+                                			'<div class="layui-input-inline">' +
+                                			'<input type="checkbox" value="' + id + '" lay-skin="primary" lay-filter="check" title="' +
+                                			title + '"/>' +
+                                			'</div>' +
+                                			'</div>';
+                                	};
                                 };
-                                $("#check").html(str);
+                                $("#checks").html(checks);
+                                
+                                var local = res.local;
+                                var check = '';
+                                for (var i = 0; i < local.length; i++) {
+                                	var id = local[i].id,
+                                		title = local[i].title,
+                                		is = local[i].checkd;
+                                	if (is == 1) {
+                                		check += '<div class="layui-inline">' +
+                                			'<div class="layui-input-inline">' +
+                                			'<input type="checkbox" value="' + id + '" lay-skin="primary" lay-filter="check" title="' +
+                                			title + '" checked />' +
+                                			'</div>' +
+                                			'</div>';
+                                		this.checkArr.push(id);
+                                	} else {
+                                		check += '<div class="layui-inline">' +
+                                			'<div class="layui-input-inline">' +
+                                			'<input type="checkbox" value="' + id + '" lay-skin="primary" lay-filter="check" title="' +
+                                			title + '"/>' +
+                                			'</div>' +
+                                			'</div>';
+                                	};
+                                };
+                                $("#check").html(check);
+                                
                                 form.render("checkbox");
                                 this.type = this.checkArr.join(',');
                                 this.mapDataFn();
                                 this.getStateFn();
+								this.getFileFn();
+								this.getSeaDataFn();
                             }
                         });
                     },
@@ -237,6 +267,7 @@ layui.define(["http", "getFn"], function (exports) {
                                 this.xm.setValue([this.siteId]);
                                 this.getEchartsFn();
                                 this.clickFn();
+								this.getFileFn();
                             }, 250);
                         });
                         // mapLayer.on('mouse-move', (e) => {
@@ -304,6 +335,7 @@ layui.define(["http", "getFn"], function (exports) {
                         clearTimeout(this.barTime);
                         http({
                             url: urls.bar,
+							data:{type:this.type},
                             success: (res) => {
                                 this.seaData = res;
                             },
@@ -397,7 +429,7 @@ layui.define(["http", "getFn"], function (exports) {
                     },
                     initLineFn: function (siteEl, xData, data, unit, max, min) {
                         var option = {
-                            grid: { top: 20, bottom: 20, right: 10 },
+                            grid: { top: 40,bottom: 60,left:50,right: 10 },
                             tooltip: {
                                 trigger: "axis",
                                 formatter: function (item) {
@@ -414,16 +446,18 @@ layui.define(["http", "getFn"], function (exports) {
                                 axisTick: { show: false },
                                 axisLabel: { interval: "auto", textStyle: { color: "#227BA6" }, fontSize: 12, margin: 15, rotate: 45 },
                                 axisPointer: { label: { padding: [0, 0, 10, 0], margin: 15, fontSize: 12 } },
+								splitLine: {lineStyle: {color: '#227BA6'}},
                                 boundaryGap: false
                             }],
                             yAxis: [{
+								name: unit,
                                 type: 'value',
                                 min: min,
                                 max: max,
                                 axisTick: { show: false },
                                 axisLine: { show: true, lineStyle: { color: "#227BA6" } },
                                 axisLabel: { textStyle: { color: "#227BA6" } },
-                                splitLine: { show: false }
+								splitLine: {lineStyle: {color: '#227BA6'}},
                             }],
                             series: [{
                                 type: 'line',
@@ -499,11 +533,6 @@ layui.define(["http", "getFn"], function (exports) {
                             data: { id: this.siteId },
                             success: (res) => {
                                 var data = res.data, type = res.type, title = data.station;
-                                // if (type < 0) {
-                                //     var layHeight = "467px", content = '../pages/layHome.html?id=' + this.siteId;
-                                // } else {
-                                //     var layHeight = "641px", content = '../pages/layHomes.html?id=' + this.siteId;
-                                // };
                                 var layHeight = type < 0 ? "480px" : "650px";
                                 var content = type < 0 ? '../pages/layHome.html?id=' + this.siteId : '../pages/layHomes.html?id=' + this.siteId;
                                 this.layDeta = layer.open({
@@ -517,6 +546,10 @@ layui.define(["http", "getFn"], function (exports) {
                             }
                         });
                     },
+					lineFn(){
+						var url="./line.html?id="+this.siteId;
+						this.layAlertFn(url, "数据折线图");
+					},
                     childFn: function () {
                         layer.closeAll(() => {
                             this.inspTime = setTimeout(() => { this.inspFn() }, 500)
@@ -600,7 +633,7 @@ layui.define(["http", "getFn"], function (exports) {
                     carousel.render({ elem: '#carousel', autoplay: false, arrow: 'always', width: '440px', height: '100%', indicator: 'none', index: this.carIdex });
                     carousel.on('change(carousel)', (obj) => { this.carIdex = obj.index; this.getEchartsFn(); });
 
-                    form.render(); this.initMapFn(); this.initXmFn(); this.getSeaDataFn();
+                    form.render(); this.initMapFn(); this.initXmFn();
 
                     var level = sessionStorage.limit; $("[name=level" + level + "]").hide();
 
@@ -618,6 +651,8 @@ layui.define(["http", "getFn"], function (exports) {
                         this.delaTime = setTimeout(() => {
                             this.mapDataFn();
                             this.getStateFn();
+							this.getFileFn();
+							this.getSeaDataFn();
                         }, 1000);
                     });
                     form.on('select(homeEl)', (data) => {

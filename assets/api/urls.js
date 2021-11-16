@@ -1,5 +1,7 @@
 layui.define(function (exports) {
 	var baseUrl = 'http://192.168.1.156:8004';
+	// var baseUrl = 'http://169.254.14.164:8004';
+	// var baseUrl = 'http://192.168.66.56:8004';
 	// var baseUrl = window.location.origin;
 	// var baseUrl = 'http://localhost:8004';
 	exports('urls', {
@@ -62,6 +64,8 @@ layui.define(function (exports) {
 		sitedele: baseUrl + '/site/dele/',
 		sitedefault: baseUrl + '/site/default/',
 		siteDownload: baseUrl + '/site/download/',
+		stationRange: baseUrl + '/site/stationRange/',
+		
 		// 观测接口
 		buoy: baseUrl + '/data/buoy/',
 		radarType: baseUrl + '/radar/type/',
@@ -88,6 +92,7 @@ layui.define(function (exports) {
 		faultdele: baseUrl + '/fault/dele/',
 		faultStation: baseUrl + '/fault/station/',
 		faultDelete: baseUrl + '/fault/delete/',
+		faultCenter: baseUrl + '/fault/center/',
 		// 配置页面
 		trslist: baseUrl + '/trs/list/',
 		trsdele: baseUrl + '/trs/dele/',

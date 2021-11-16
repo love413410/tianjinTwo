@@ -1,4 +1,4 @@
-layui.define(["http", "getFn", "dtree"], function (e) {
+layui.define(["http", "getFn", "dtree"], function(e) {
 	var http = layui.http,
 		urls = layui.urls,
 		getFn = layui.getFn,
@@ -17,11 +17,12 @@ layui.define(["http", "getFn", "dtree"], function (e) {
 		did: "",
 		eid: ""
 	};
+
 	function getLookFn() {
 		http({
 			url: urls.siteType,
 			type: 'get',
-			success: function (res) {
+			success: function(res) {
 				var data = res.data;
 				var str = '';
 				for (var i = 0; i < data.length; i++) {
@@ -46,7 +47,7 @@ layui.define(["http", "getFn", "dtree"], function (e) {
 			data: {
 				id: para.lookType
 			},
-			success: function (res) {
+			success: function(res) {
 				var data = res.data;
 				var str = '';
 				for (var i = 0; i < data.length; i++) {
@@ -59,7 +60,7 @@ layui.define(["http", "getFn", "dtree"], function (e) {
 		})
 	};
 	//监听观测类型选择,只有观测站才有站代码和区站号
-	layForm.on('select(filtLook)', function (data) {
+	layForm.on('select(filtLook)', function(data) {
 		para.lookType = data.value;
 		para.lookType == 1 ? $("#isType").show() : $("#isType").hide();
 		getSiteTypeFn();
@@ -74,7 +75,7 @@ layui.define(["http", "getFn", "dtree"], function (e) {
 			data: {
 				id: para.lookType
 			},
-			success: function (res) {
+			success: function(res) {
 				var data = res.data;
 				var str = '';
 				for (var i = 0; i < data.length; i++) {
@@ -90,7 +91,7 @@ layui.define(["http", "getFn", "dtree"], function (e) {
 	};
 
 	// 所属站一级
-	window.getType = function () {
+	window.getType = function() {
 		$("#aid").empty();
 		http({
 			url: urls.siteotype,
@@ -102,7 +103,7 @@ layui.define(["http", "getFn", "dtree"], function (e) {
 				ofArea: "",
 				ofCenter: ""
 			},
-			success: function (res) {
+			success: function(res) {
 				var data = res.data;
 				var str = '<option value="">无</option>';
 				for (var i = 0; i < data.length; i++) {
@@ -121,7 +122,7 @@ layui.define(["http", "getFn", "dtree"], function (e) {
 		})
 	};
 	// 所属站二级
-	window.postType = function () {
+	window.postType = function() {
 		$("#bid").empty();
 		http({
 			url: urls.siteotype,
@@ -133,7 +134,7 @@ layui.define(["http", "getFn", "dtree"], function (e) {
 				ofArea: "",
 				ofCenter: ""
 			},
-			success: function (res) {
+			success: function(res) {
 				var data = res.data;
 				var str = '<option value="">无</option>';
 				for (var i = 0; i < data.length; i++) {
@@ -152,7 +153,7 @@ layui.define(["http", "getFn", "dtree"], function (e) {
 		})
 	};
 	// 所属站三级
-	window.getTypes = function () {
+	window.getTypes = function() {
 		$("#cid").empty();
 		http({
 			url: urls.sitentype,
@@ -164,7 +165,7 @@ layui.define(["http", "getFn", "dtree"], function (e) {
 				ofArea: "",
 				ofCenter: ""
 			},
-			success: function (res) {
+			success: function(res) {
 				var data = res.data;
 				var str = '<option value="">无</option>';
 				for (var i = 0; i < data.length; i++) {
@@ -183,7 +184,7 @@ layui.define(["http", "getFn", "dtree"], function (e) {
 		})
 	};
 	// 所属站四级
-	window.postTypes = function () {
+	window.postTypes = function() {
 		$("#did").empty();
 		http({
 			url: urls.sitentype,
@@ -195,7 +196,7 @@ layui.define(["http", "getFn", "dtree"], function (e) {
 				ofArea: para.cid,
 				ofCenter: ""
 			},
-			success: function (res) {
+			success: function(res) {
 				var data = res.data;
 				var str = '<option value="">无</option>';
 				for (var i = 0; i < data.length; i++) {
@@ -214,7 +215,7 @@ layui.define(["http", "getFn", "dtree"], function (e) {
 	};
 
 	// 检索框选择
-	layForm.on('select(filts)', function (data) {
+	layForm.on('select(filts)', function(data) {
 		var t = data.othis[0];
 		var fn = $(t).prev().attr('fn');
 		var id = $(t).prev().attr('id');
@@ -232,12 +233,12 @@ layui.define(["http", "getFn", "dtree"], function (e) {
 		nodeData = null, //节点数据
 		strNodeTree = ""; //选中后的节点集合
 
-	window.layNodeFn = function () {
+	window.layNodeFn = function() {
 		http({
 			url: urls.siteTree,
 			type: 'get',
 			data: {},
-			success: function (res) {
+			success: function(res) {
 				nodeData = res.data;
 				tempNode = res.ids;
 				var DTree = dtree.render({
@@ -256,7 +257,7 @@ layui.define(["http", "getFn", "dtree"], function (e) {
 					ficon: ["3", "7"],
 					checkbar: true,
 					checkbarType: "self",
-					done: function () {
+					done: function() {
 						dtree.chooseDataInit("nodeTree", strNodeTree);
 					}
 				});
@@ -274,14 +275,14 @@ layui.define(["http", "getFn", "dtree"], function (e) {
 		});
 	};
 	// 监听上传节点全选
-	layForm.on('checkbox(treeChek)', function (data) {
+	layForm.on('checkbox(treeChek)', function(data) {
 		var is = data.elem.checked;
 		if (is) {
 			dtree.chooseDataInit("nodeTree", tempNode);
 		} else {
 			dtree.reload("nodeTree", {
 				data: nodeData,
-				done: function () {
+				done: function() {
 					dtree.chooseDataInit("nodeTree", "");
 				}
 			});
@@ -289,7 +290,7 @@ layui.define(["http", "getFn", "dtree"], function (e) {
 		return false;
 	});
 	//监听上传节点确定
-	$("#treeBtn").click(function () {
+	$("#treeBtn").click(function() {
 		var dom = dtree.getCheckbarNodesParam("nodeTree");
 		var arr = [];
 		for (var i = 0; i < dom.length; i++) {
@@ -299,18 +300,18 @@ layui.define(["http", "getFn", "dtree"], function (e) {
 		layer.close(layNodeTree);
 	});
 	//关闭上传节点弹窗
-	$("#layNodeTree").click(function () {
+	$("#layNodeTree").click(function() {
 		layer.close(layNodeTree);
 	});
 	// 获取主线路
 	var layLineTree = null, //弹出层
 		strLine = ""; //选中后的节点id
-	window.layLineFn = function () {
+	window.layLineFn = function() {
 		http({
 			url: urls.sitemain,
 			type: 'get',
 			data: {},
-			success: function (res) {
+			success: function(res) {
 				var data = res.data;
 				dtree.render({
 					elem: "#LineTree",
@@ -328,7 +329,7 @@ layui.define(["http", "getFn", "dtree"], function (e) {
 					ficon: ["3", "7"],
 					checkbar: true,
 					checkbarType: "only",
-					done: function () {
+					done: function() {
 						dtree.chooseDataInit("LineTree", strLine);
 					}
 				});
@@ -347,7 +348,7 @@ layui.define(["http", "getFn", "dtree"], function (e) {
 	};
 
 	//监听主线路点确定
-	$("#lineBtn").click(function () {
+	$("#lineBtn").click(function() {
 		var dom = dtree.getCheckbarNodesParam("LineTree");
 		var arr = [];
 		for (var i = 0; i < dom.length; i++) {
@@ -357,19 +358,19 @@ layui.define(["http", "getFn", "dtree"], function (e) {
 		layer.close(layLineTree);
 	});
 	//关闭主线路弹窗
-	$("#layLineTree").click(function () {
+	$("#layLineTree").click(function() {
 		layer.close(layLineTree);
 	});
 
 	//获取要素接口
 	var layEl = null, //要素弹出层
 		strEl = ""; //选中后的要素集合
-	window.layElFn = function () {
+	window.layElFn = function() {
 		http({
 			url: urls.siteel,
 			type: 'get',
 			data: {},
-			success: function (res) {
+			success: function(res) {
 				var data = res.data;
 				var str = '';
 				for (var i = 0; i < data.length; i++) {
@@ -406,16 +407,16 @@ layui.define(["http", "getFn", "dtree"], function (e) {
 		});
 	};
 	// 监听要素全选
-	layForm.on('checkbox(elChek)', function (data) {
+	layForm.on('checkbox(elChek)', function(data) {
 		var is = data.elem.checked;
 		$(".elItem").prop("checked", is);
 		layForm.render("checkbox");
 		return false;
 	});
 	// 要素选择后确定
-	$("#elBtn").click(function () {
+	$("#elBtn").click(function() {
 		var arr = [];
-		$(".elItem").each(function () {
+		$(".elItem").each(function() {
 			var is = $(this).is(":checked");
 			if (is) {
 				var val = $(this).val();
@@ -426,12 +427,12 @@ layui.define(["http", "getFn", "dtree"], function (e) {
 		layer.close(layEl);
 	});
 	// 关闭要素弹窗
-	$("#layEl").click(function () {
+	$("#layEl").click(function() {
 		layer.close(layEl);
 	});
 
 	// 提交
-	layForm.on('submit(sub)', function (data) {
+	layForm.on('submit(sub)', function(data) {
 		var data = data.field;
 		data.uid = strNodeTree;
 		data.Main = strLine || 0;
@@ -450,11 +451,11 @@ layui.define(["http", "getFn", "dtree"], function (e) {
 			url: urls.siteAdd,
 			type: 'post',
 			data: data,
-			success: function (res) {
+			success: function(res) {
 				if (res.code == 1) {
 					layer.msg("添加站点成功!", {
 						time: 1500
-					}, function () {
+					}, function() {
 						parent.getListFn();
 					});
 				} else {
@@ -469,48 +470,47 @@ layui.define(["http", "getFn", "dtree"], function (e) {
 		@@添加站点时的验证
 	*/
 	layForm.verify({
-		station: function (val) {
+		station: function(val) {
 			if (!getFn.trimFn(val)) {
 				return '请输入站点名';
 			}
 		},
-		stationCode: function (val) {
+		stationCode: function(val) {
 			if (!getFn.trimFn(val)) {
 				return '请输入站名代码';
 			}
 		},
-		ip: function (val) {
-			var reg = /^(25[0-5]|2[0-4]\d|[0-1]?\d?\d)(\.(25[0-5]|2[0-4]\d|[0-1]?\d?\d)){3}$/;
-			if (!reg.test(val)) {
+		ip: function(val) {
+			if (!getFn.regIp(val)) {
 				return '请输入正确的IP';
 			}
 		},
-		lon: function (val) {
+		lon: function(val) {
 			if (!getFn.trimFn(val)) {
 				return '请输入经度';
 			}
 		},
-		lat: function (val) {
+		lat: function(val) {
 			if (!getFn.trimFn(val)) {
 				return '请输入经度';
 			}
 		},
-		dtime: function (val) {
+		dtime: function(val) {
 			if (!getFn.trimFn(val)) {
 				return '请输入延时时间';
 			}
 		},
-		htime: function (val) {
+		htime: function(val) {
 			if (!getFn.trimFn(val)) {
 				return '请输入接收时间';
 			}
 		},
-		mustFile: function (val) {
+		mustFile: function(val) {
 			if (!getFn.inte(val)) {
 				return '请输入应收文件数量,只可输入大于0的正整数';
 			}
 		},
-		ofStation: function (val) {
+		ofStation: function(val) {
 			var p = $("#lookType").val();
 			if (p != 6 && !val) {
 				return '请选择所属站点';

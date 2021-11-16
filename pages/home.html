@@ -112,7 +112,7 @@
                     <div>
                         <div class="sub-head">
                             <img src="../static/h1.png">
-                            <p> 数据到报显示</p>
+                            <p> 实时数据到报显示</p>
                             <p class="sub-rt">
                                 <span id="dataTime">{{fileData.time}}</span>
                                 <img src="../static/h2.png">
@@ -128,7 +128,7 @@
 
                         <div class="sub-head">
                             <img src="../static/h1.png">
-                            <p>海区数据到报显示</p>
+                            <p>台站实时文件到报显示</p>
                             <p class="sub-rt" id="subRt" v-if="seaData.type==1">
                                 <button class="layui-btn" @click="layAlertFn('./ring.html','数据到报显示','1320px')">
                                     查看更多
@@ -154,13 +154,23 @@
                             </div>
                         </div>
                         <div class="sub-head">
-                            <img src="../static/h1.png">
-                            <p>站点</p>
-                            <p class="sub-rt"><img src="../static/h2.png"></p>
+                        	<img src="../static/h1.png">
+                        	<p>国家</p>
+                        	<p class="sub-rt"><img src="../static/h2.png"></p>
                         </div>
-
-                        <div class="layui-form menu-btm">
-                            <div class="layui-form-item" id="check"></div>
+                        
+                        <div class="layui-form menu-btm checks">
+                        	<div class="layui-form-item" id="checks"></div>
+                        </div>
+                        
+                        <div class="sub-head">
+                        	<img src="../static/h1.png">
+                        	<p>地方</p>
+                        	<p class="sub-rt"><img src="../static/h2.png"></p>
+                        </div>
+                        
+                        <div class="layui-form menu-btm check">
+                        	<div class="layui-form-item" id="check"></div>
                         </div>
                     </div>
 
@@ -205,6 +215,7 @@
                                         @click='siteTypeFn("月")'>月</div>
                                 </div>
                             </div>
+							<div class="layui-icon" id="layuiIcon" @click="lineFn">&#xe622;</div>
                             <div id="line"></div>
                         </div>
                     </div>

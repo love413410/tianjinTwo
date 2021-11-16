@@ -445,11 +445,10 @@ layui.define(["http", "getFn"], function (e) {
 			}
 		},
 		cIp: function (val) {
-			if (getFn.regIp(val)) {
+			if (!getFn.regIp(val)) {
 				return '请输入正确的目标IP';
 			}
 		},
-
 		// 第四步验证
 		dName: function (val) {
 			if (!getFn.trimFn(val)) {
@@ -457,12 +456,12 @@ layui.define(["http", "getFn"], function (e) {
 			}
 		},
 		dIp: function (val) {
-			if (getFn.regIp(val)) {
+			if (!getFn.regIp(val)) {
 				return '请输入正确的IP地址';
 			}
 		},
 		dGateway: function (val) {
-			if (getFn.regIp(val)) {
+			if (!getFn.regIp(val)) {
 				return '请输入正确的网管';
 			}
 		}

@@ -1,4 +1,4 @@
-layui.define(["http", "load"], function (e) {
+layui.define(["http", "load"], function(e) {
 	var http = layui.http,
 		urls = layui.urls,
 		load = layui.load;
@@ -10,19 +10,31 @@ layui.define(["http", "load"], function (e) {
 	//乱七八糟的在最下面,监听按钮,验证等
 
 	var page = 1;
-	var oneId = "", twoId = "", threeId = "";
+
+
+	var type = $("#sele").val();
+	form.on('select(layFilt)', function(data) {
+		type = data.value;
+		stationRange();
+	});
+
+	stationRange();
+	var oneId = "",
+		twoId = "",
+		threeId = "";
 	// 一级检索接口
-	(function () {
+	function stationRange() {
 		http({
-			url: urls.sitemtype,
-			type: 'get',
-			data: {},
-			success: function (res) {
+			url: urls.stationRange,
+			data: {
+				type: type
+			},
+			success: function(res) {
 				var data = res.data;
 				var str = '';
 				for (var i = 0; i < data.length; i++) {
 					var dataItem = data[i].fields;
-					str += '<option value="' + data[i].pk + '">' + dataItem.title + '</option>'
+					str += '<option value="' + data[i].pk + '">' + dataItem.Name + '</option>'
 				};
 				$("#oneId").html(str);
 				form.render("select");
@@ -30,8 +42,8 @@ layui.define(["http", "load"], function (e) {
 				getErFn();
 			}
 		});
-	})();
-	form.on('select(layOneFilt)', function (data) {
+	};
+	form.on('select(layOneFilt)', function(data) {
 		oneId = data.value;
 		getErFn();
 	});
@@ -43,27 +55,34 @@ layui.define(["http", "load"], function (e) {
 			data: {
 				type: oneId
 			},
-			success: function (res) {
+			success: function(res) {
 				var data = res.data;
 				var name = res.name;
-				var str = '<option value="">全部</option>';
+				var str = '<option value="" selected>全部</option>';
 				for (var i = 0; i < data.length; i++) {
 					var id = data[i].pk;
 					var title = data[i].fields.title;
-					if (name == title) {
-						str += '<option value="' + id + '" selected>' + title + '</option>';
-						twoId = id;
-					} else {
-						str += '<option value="' + id + '">' + title + '</option>';
-					};
+					str += '<option value="' + id + '">' + title + '</option>';
 				};
+				twoId = "";
+				// var str = '<option value="">全部</option>';
+				// for (var i = 0; i < data.length; i++) {
+				// 	var id = data[i].pk;
+				// 	var title = data[i].fields.title;
+				// 	if (name == title) {
+				// 		str += '<option value="' + id + '" selected>' + title + '</option>';
+				// 		twoId = id;
+				// 	} else {
+				// 		str += '<option value="' + id + '">' + title + '</option>';
+				// 	};
+				// };
 				$("#twoId").html(str);
 				form.render("select");
 				getSanFn();
 			}
 		});
 	};
-	form.on('select(layTwoFilt)', function (data) {
+	form.on('select(layTwoFilt)', function(data) {
 		twoId = data.value;
 		getSanFn();
 	});
@@ -76,27 +95,34 @@ layui.define(["http", "load"], function (e) {
 				type: oneId,
 				ofAreaCenter: twoId
 			},
-			success: function (res) {
+			success: function(res) {
 				var data = res.data;
 				var name = res.name;
-				var str = '<option value="">全部</option>';
+				var str = '<option value="" selected>全部</option>';
 				for (var i = 0; i < data.length; i++) {
 					var id = data[i].pk;
 					var title = data[i].fields.station;
-					if (name == title) {
-						str += '<option value="' + id + '" selected>' + title + '</option>';
-						threeId = id;
-					} else {
-						str += '<option value="' + id + '">' + title + '</option>';
-					};
+					str += '<option value="' + id + '">' + title + '</option>';
 				};
+				threeId = "";
+				// var str = '<option value="">全部</option>';
+				// for (var i = 0; i < data.length; i++) {
+				// 	var id = data[i].pk;
+				// 	var title = data[i].fields.station;
+				// 	if (name == title) {
+				// 		str += '<option value="' + id + '" selected>' + title + '</option>';
+				// 		threeId = id;
+				// 	} else {
+				// 		str += '<option value="' + id + '">' + title + '</option>';
+				// 	};
+				// };
 				$("#threeId").html(str);
 				form.render("select");
 				getSiFn();
 			}
 		});
 	};
-	form.on('select(layThrFilt)', function (data) {
+	form.on('select(layThrFilt)', function(data) {
 		threeId = data.value;
 		getSiFn();
 	});
@@ -110,26 +136,32 @@ layui.define(["http", "load"], function (e) {
 				ofAreaCenter: twoId,
 				ofArea: threeId
 			},
-			success: function (res) {
+			success: function(res) {
 				var data = res.data;
 				var name = res.name;
-				var str = '<option value="">全部</option>';
+				var str = '<option value="" selected>全部</option>';
 				for (var i = 0; i < data.length; i++) {
 					var id = data[i].pk;
 					var title = data[i].fields.station;
-					if (name == title) {
-						str += '<option value="' + id + '" selected>' + title + '</option>';
-						threeId = id;
-					} else {
-						str += '<option value="' + id + '">' + title + '</option>';
-					};
+					str += '<option value="' + id + '">' + title + '</option>';
 				};
+				// var str = '<option value="">全部</option>';
+				// for (var i = 0; i < data.length; i++) {
+				// 	var id = data[i].pk;
+				// 	var title = data[i].fields.station;
+				// 	if (name == title) {
+				// 		str += '<option value="' + id + '" selected>' + title + '</option>';
+				// 		threeId = id;
+				// 	} else {
+				// 		str += '<option value="' + id + '">' + title + '</option>';
+				// 	};
+				// };
 				$("#fourId").html(str);
 				form.render("select");
 			}
 		});
 	};
-	window.getListFn = function () {
+	window.getListFn = function() {
 		table.render({
 			elem: '#table',
 			url: urls.sitelist,
@@ -137,18 +169,19 @@ layui.define(["http", "load"], function (e) {
 			headers: {
 				token: sessionStorage.token
 			},
-			where: {
-				type: listData.type,
-				ofAreaCenter: listData.ofAreaCenter,
-				ofArea: listData.ofArea,
-				ofCenter: listData.ofCenter,
-				name: listData.name
-			},
+			where: listData,
+			// where: {
+			// 	type: listData.type,
+			// 	ofAreaCenter: listData.ofAreaCenter,
+			// 	ofArea: listData.ofArea,
+			// 	ofCenter: listData.ofCenter,
+			// 	name: listData.name
+			// },
 			request: {
 				pageName: 'pageNum',
 				limitName: 'pageSize'
 			},
-			parseData: function (res) {
+			parseData: function(res) {
 				return {
 					"code": 0,
 					"count": res.count,
@@ -158,52 +191,52 @@ layui.define(["http", "load"], function (e) {
 			cols: [
 				[{
 					title: '站点名',
-					templet: function (item) {
+					templet: function(item) {
 						return item.fields.station
 					}
 				}, {
 					title: '站类型',
-					templet: function (item) {
+					templet: function(item) {
 						return item.fields.stationType
 					}
 				}, {
 					title: '站代码',
-					templet: function (item) {
+					templet: function(item) {
 						return item.fields.stationCode;
 					}
 				}, {
 					title: '站名代码',
-					templet: function (item) {
+					templet: function(item) {
 						return item.fields.stationNumCode
 					}
 				}, {
 					title: '区站号',
-					templet: function (item) {
+					templet: function(item) {
 						return item.fields.stationNum
 					}
 				}, {
 					title: '观测类型',
-					templet: function (item) {
+					templet: function(item) {
 						return item.fields.lookType
 					}
 				}, {
 					title: '经度',
-					templet: function (item) {
+					templet: function(item) {
 						return item.fields.lon
 					}
 				}, {
 					title: '纬度',
-					templet: function (item) {
+					templet: function(item) {
 						return item.fields.lat
 					}
 				}, {
 					title: '所属站点',
-					templet: function (item) {
+					templet: function(item) {
 						return item.fields.hans
 					}
 				}, {
 					title: 'IP',
-					templet: function (item) {
+					templet: function(item) {
 						return item.fields.ip
 					}
 				}, {
@@ -219,16 +252,15 @@ layui.define(["http", "load"], function (e) {
 			id: 'tabReload',
 			height: 535,
 			cellMinWidth: 80,
-			done: function (res, curr) {
+			done: function(res, curr) {
 				page = curr;
-
 			}
 		});
 	};
 
 	// 重载当前页面
-	window.ReLoadFn = function () {
-		layer.closeAll(function () {
+	window.ReLoadFn = function() {
+		layer.closeAll(function() {
 			table.reload('tabReload', {
 				page: {
 					curr: page
@@ -236,18 +268,18 @@ layui.define(["http", "load"], function (e) {
 			});
 		});
 	};
-	table.on('tool(table)', function (data) {
+	table.on('tool(table)', function(data) {
 		var event = data.event;
 		var id = data.data.pk;
 		event == 1 ? clickFn(id) : event == 2 ? openFn(id) : deleFn(id);
 	});
 	// 查询按钮调取站点列表接口
-	form.on('submit(subBtn)', function (data) {
+	form.on('submit(subBtn)', function(data) {
 		// siteName = data.field.name;
 		listData = data.field;
 		getListFn();
 	});
-	form.on('submit(expBtn)', function (data) {
+	form.on('submit(expBtn)', function(data) {
 		load(urls.siteDownload, "get");
 	});
 	// 设置默认站点
@@ -256,31 +288,31 @@ layui.define(["http", "load"], function (e) {
 			time: 5000,
 			shade: 0.5,
 			btn: ['确定', '取消'],
-			yes: function () {
+			yes: function() {
 				http({
 					url: urls.sitedefault,
 					type: 'post',
 					data: {
 						id: id
 					},
-					success: function (res) {
+					success: function(res) {
 						layer.msg('设置成功！', {
 							time: 1500
-						}, function () {
+						}, function() {
 							ReLoadFn();
 						});
 						layer.close(infoMsg);
 					}
 				});
 			},
-			btn2: function () {
+			btn2: function() {
 				layer.msg('已取消设置。');
 			}
 		});
 	};
 
 	// 添加还是修改,有ID则去修改,无ID则去添加
-	window.openFn = function (id) {
+	window.openFn = function(id) {
 		// var url = id ? "./siteChange.html?id=" + id : "./siteAdd.html";
 		if (id) {
 			var title = "修改站点";
@@ -301,7 +333,7 @@ layui.define(["http", "load"], function (e) {
 		});
 	};
 	//上传数据类型
-	window.impFn = function () {
+	window.impFn = function() {
 		layer.open({
 			type: 1,
 			title: "上传数据类型",
@@ -317,19 +349,19 @@ layui.define(["http", "load"], function (e) {
 	upload.render({
 		elem: '#impDemo',
 		url: urls.siteUphold,
-		headers: { "token": sessionStorage.token },
+		headers: {
+			"token": sessionStorage.token
+		},
 		accept: 'file',
 		acceptMime: 'application/vnd.ms-excel',
 		exts: 'xls|xlsx',
 		field: 'myfile',
-		done: function (res) {
-			layer.msg("上传成功", {}, function () {
+		done: function(res) {
+			layer.msg("上传成功", {}, function() {
 				layer.closeAll();
 			})
 		}
 	});
-	WebSocket
-
 	/*
 		@@删除
 	*/
@@ -338,24 +370,24 @@ layui.define(["http", "load"], function (e) {
 			time: 5000,
 			shade: 0.5,
 			btn: ['确定', '取消'],
-			yes: function () {
+			yes: function() {
 				http({
 					url: urls.sitedele,
 					type: 'post',
 					data: {
 						id: id
 					},
-					success: function (res) {
+					success: function(res) {
 						layer.msg('删除成功！', {
 							time: 1500
-						}, function () {
+						}, function() {
 							ReLoadFn();
 						});
 						layer.close(infoMsg);
 					}
 				});
 			},
-			btn2: function () {
+			btn2: function() {
 				layer.msg('已取消删除。');
 			}
 		});

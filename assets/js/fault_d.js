@@ -19,159 +19,55 @@ layui.define(["http", "load", "getFn"], function(e) {
 		btns: ['confirm']
 	});
 
-	var oneId = "",
-		twoId = "",
-		threeId = "",
-		fourId = "";
+	var type = $("#sele").val();
+	form.on('select(layFilt)', function(data) {
+		type = data.value;
+		stationRange();
+	});
+	stationRange();
+
 	// 一级检索接口
-	(function() {
+	function stationRange() {
 		http({
-			url: urls.sitemtype,
-			type: 'get',
-			data: {},
+			url: urls.stationRange,
+			data: {
+				type: type,
+				num:1
+			},
 			success: function(res) {
 				var data = res.data;
 				var str = '';
 				for (var i = 0; i < data.length; i++) {
 					var dataItem = data[i].fields;
-					str += '<option value="' + data[i].pk + '">' + dataItem.title + '</option>'
+					str += '<option value="' + data[i].pk + '">' + dataItem.Name + '</option>'
 				};
 				$("#oneId").html(str);
 				form.render("select");
-				oneId = data.length > 0 ? data[0].pk : "";
 				getErFn();
 			}
 		});
-	})();
-	form.on('select(layOneFilt)', function(data) {
-		oneId = data.value;
-		getErFn();
-	});
+	};
 	// 二级检索接口
 	function getErFn() {
 		http({
-			url: urls.sitelisttype,
-			type: 'post',
-			data: {
-				type: oneId
-			},
+			url: urls.faultCenter,
 			success: function(res) {
 				var data = res.data;
-				var name = res.name;
-				var str = '<option value="">全部</option>';
-				for (var i = 0; i < data.length; i++) {
-					var id = data[i].pk;
-					var title = data[i].fields.title;
-					if (name == title) {
-						str += '<option value="' + id + '" selected>' + title + '</option>';
-						twoId = id;
-					} else {
-						str += '<option value="' + id + '">' + title + '</option>';
-					};
-				};
-				$("#twoId").html(str);
-				getSanFn();
-			}
-		});
-	};
-	form.on('select(layTwoFilt)', function(data) {
-		twoId = data.value;
-		getSanFn();
-	});
-	// 三级检索接口
-	function getSanFn() {
-		http({
-			url: urls.siteliststype,
-			type: 'get',
-			data: {
-				type: oneId,
-				ofAreaCenter: twoId
-			},
-			success: function(res) {
-				var data = res.data;
-				var name = res.name;
-				var str = '<option value="">全部</option>';
+				var str = '<option value="" selected>全部</option>';
 				for (var i = 0; i < data.length; i++) {
 					var id = data[i].pk;
 					var title = data[i].fields.station;
-					if (name == title) {
-						str += '<option value="' + id + '" selected>' + title + '</option>';
-						threeId = id;
-					} else {
-						str += '<option value="' + id + '">' + title + '</option>';
-					};
-				};
-				$("#threeId").html(str);
-				getSiFn();
-			}
-		});
-	};
-	form.on('select(layThrFilt)', function(data) {
-		threeId = data.value;
-		getSiFn();
-	});
-	// 四级检索接口
-	function getSiFn() {
-		http({
-			url: urls.siteliststype,
-			type: 'post',
-			data: {
-				type: oneId,
-				ofAreaCenter: twoId,
-				ofArea: threeId
-			},
-			success: function(res) {
-				var data = res.data;
-				var name = res.name;
-				var str = '<option value="">全部</option>';
-				for (var i = 0; i < data.length; i++) {
-					var id = data[i].pk;
-					var title = data[i].fields.station;
-					if (name == title) {
-						str += '<option value="' + id + '" selected>' + title + '</option>';
-						fourId = id;
-					} else {
-						str += '<option value="' + id + '">' + title + '</option>';
-					};
-				};
-				$("#fourId").html(str);
-				getWuFn();
-			}
-		});
-	};
-	form.on('select(layFourFilt)', function(data) {
-		fourId = data.value;
-		getWuFn();
-	});
-	//五级检索接口
-	function getWuFn() {
-		http({
-			url: urls.faultStation,
-			type: 'get',
-			data: {
-				type: oneId,
-				ofAreaCenter: twoId,
-				ofArea: threeId,
-				ofCenter: fourId
-			},
-			success: function(res) {
-				var data = res.data;
-				var arr = [];
-				var str = '<option value="">全部</option>';
-				for (var t = 0; t < data.length; t++) {
-					var id = data[t].pk;
-					var title = data[t].fields.station;
-					// arr[t] = '<option value="' + id + '">' + title + '</option>';
 					str += '<option value="' + id + '">' + title + '</option>';
 				};
-				// $("#id").html(arr.join(","));
-				$("#id").html(str);
+				twoId = "";
+				$("#twoId").html(str);
 				form.render("select");
 			}
 		});
 	};
+	getErFn();
 
-	// 六级检索接口
+	// 故障类型检索接口
 	function getLiuFn() {
 		http({
 			url: urls.faultType,
@@ -184,7 +80,7 @@ layui.define(["http", "load", "getFn"], function(e) {
 					var title = data[t].fields.Title;
 					arr[t] = '<option value="' + id + '">' + title + '</option>';
 				};
-				arr.unshift('<option value="">全部</option>');
+				arr.unshift('<option value="" selected>全部</option>');
 				$("#faultType").html(arr.join(","));
 				form.render("select");
 			}
@@ -405,6 +301,13 @@ layui.define(["http", "load", "getFn"], function(e) {
 				return '请选择日期范围';
 			}
 		},
+		time: function(val) {
+			if (val) {
+				if (val < 0 || isNaN(Number(val))) {
+					return '请输入大于0的数字';
+				}
+			}
+		}
 	});
 	e("fault_d", {})
 });

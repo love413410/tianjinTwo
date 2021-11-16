@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<meta http-equiv="X-UA-Compatible" content="ie=edge" />
+	<title>海洋观测数据传输与故障响应系统</title>
+	<link rel="stylesheet" href="../assets/lib/layui/css/layui.css" />
+	<link rel="stylesheet" href="../assets/css/lib.css" />
+	<link rel="stylesheet" href="../assets/css/line.css" />
+</head>
+
+<body>
+	<div class="line-head">
+		<div class="lt head-left" id="element">
+			<p>潮位</p>
+			<p>气压</p>
+			<p>气温</p>
+			<p>水温</p>
+			<p>湿度</p>
+			<p>盐度</p>
+			<p>风</p>
+			<p>波浪</p>
+		</div>
+		<div class="rt head-right" id="time">
+			<p>日</p>
+			<p>周</p>
+			<p>月</p>
+		</div>
+	</div>
+	
+	<div class="main">
+		<div id="lines"></div>
+		<div id="roll">
+			<ul id="rolls">
+				<!-- <li><p>2021-10-10 10:00</p><p>36cm</p></li> -->
+			</ul>
+		</div>
+	</div>
+</body>
+<script src="../assets/lib/layui/layui.js"></script>
+<script src="../assets/lib/echarts.js"></script>
+<script>
+	layui
+		.config({
+			base: "../assets/",
+		})
+		.extend({
+			http: "api/http",
+			getFn: "lib/getFn",
+			line: "js/line"
+		})
+		.use("line");
+</script>
+
+</html>
