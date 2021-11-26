@@ -699,15 +699,17 @@ layui.define(["http", "getFn"], function (e) {
         clearTimeout(siteTimeout);
         $(".lay_type").removeClass("add");
         $(this).addClass("add");
+        var _this = $(this);
         siteTimeout = setTimeout(function () {
-            siteType = $(this).html();
+            siteType = _this.html();
             getLineFn();
         }, 500);
     });
-    var lineTimout, myLine = echarts.init(document.getElementById("line"));
+    var lineTimout, myLine;
 
     function getLineFn() {
         clearTimeout(lineTimout);
+        myLine = echarts.init(document.getElementById("line"))
         var range = { 潮位: 5, 气压: 1, 气温: 1, 水温: 0.5, 湿度: 1, 盐度: 1, 风: 0, 波浪: 0 };
         var rangeVal = range[siteEl];
         http({
@@ -730,7 +732,7 @@ layui.define(["http", "getFn"], function (e) {
                 //     min_val = (min * min_mult).toFixed(2);
                 var max_val = (max + rangeVal).toFixed(2),
                     min_val = (min - rangeVal).toFixed(2);
-                myLine = echarts.init(document.getElementById("line"));
+                // myLine = echarts.init(document.getElementById("line"));
                 var option = initLineFn(siteEl, xData, data, unit, max_val, min_val);
                 myLine.setOption(option);
             },
@@ -774,8 +776,8 @@ layui.define(["http", "getFn"], function (e) {
                 },
                 axisLabel: {
                     interval: "auto",
-                    showMaxLabel:1,
-                    showMaxLabel:1,
+                    showMaxLabel: 1,
+                    showMaxLabel: 1,
                     textStyle: {
                         color: "#227BA6"
                     },
