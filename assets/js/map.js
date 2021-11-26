@@ -732,7 +732,6 @@ layui.define(["http", "getFn"], function (e) {
                 //     min_val = (min * min_mult).toFixed(2);
                 var max_val = (max + rangeVal).toFixed(2),
                     min_val = (min - rangeVal).toFixed(2);
-                // myLine = echarts.init(document.getElementById("line"));
                 var option = initLineFn(siteEl, xData, data, unit, max_val, min_val);
                 myLine.setOption(option);
             },
