@@ -704,7 +704,7 @@ layui.define(["http", "getFn"], function (e) {
             getLineFn();
         }, 500);
     });
-    var lineTimout, myLine;
+    var lineTimout, myLine = echarts.init(document.getElementById("line"));
 
     function getLineFn() {
         clearTimeout(lineTimout);
@@ -774,6 +774,8 @@ layui.define(["http", "getFn"], function (e) {
                 },
                 axisLabel: {
                     interval: "auto",
+                    showMaxLabel:1,
+                    showMaxLabel:1,
                     textStyle: {
                         color: "#227BA6"
                     },

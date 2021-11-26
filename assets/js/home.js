@@ -36,7 +36,7 @@ layui.define(["http", "getFn"], function (exports) {
                     delaTime: null, mapInt: null, isClick: null, layDeta: null,
 
                     siteHtml: "水文", gaugeTimout: null,
-                    siteEl: "潮位", siteTimeout: null, siteType: "日", lineTimout: null, gaugeArr: [],
+                    siteEl: "潮位", siteTimeout: null, siteType: "日", lineTimout: null, myLine: null, gaugeArr: [],
                     inspTime: null,
                     hdate: getFn.initM(), index: null
                 },
@@ -398,6 +398,7 @@ layui.define(["http", "getFn"], function (exports) {
                     //折线图数据
                     getLineFn: function () {
                         clearTimeout(this.lineTimout);
+                        this.myLine = echarts.init(document.getElementById("line"));
                         var range = { 潮位: 5, 气压: 1, 气温: 1, 水温: 0.5, 湿度: 1, 盐度: 1, 风: 0, 波浪: 0 };
                         var rangeVal = range[this.siteEl];
                         http({
@@ -413,7 +414,7 @@ layui.define(["http", "getFn"], function (exports) {
                                 //     min_val = (min * min_mult).toFixed(2);
                                 var max_val = (max + rangeVal).toFixed(2),
                                     min_val = (min - rangeVal).toFixed(2);
-                                this.myLine = echarts.init(document.getElementById("line"));
+                                // this.myLine = echarts.init(document.getElementById("line"));
                                 let option = this.initLineFn(this.siteEl, xData, data, unit, max_val, min_val);
                                 this.myLine.setOption(option);
                             },
@@ -442,7 +443,7 @@ layui.define(["http", "getFn"], function (exports) {
                                 data: xData,
                                 axisLine: { onZero: false, lineStyle: { color: "#227BA6" } },
                                 axisTick: { show: false },
-                                axisLabel: { interval: "auto", textStyle: { color: "#227BA6" }, fontSize: 12, margin: 15, rotate: 45 },
+                                axisLabel: { interval: "auto", showMaxLabel: 1, showMaxLabel: 1, textStyle: { color: "#227BA6" }, fontSize: 12, margin: 15, rotate: 45 },
                                 axisPointer: { label: { padding: [0, 0, 10, 0], margin: 15, fontSize: 12 } },
                                 splitLine: { lineStyle: { color: '#227BA6' } },
                                 boundaryGap: false
