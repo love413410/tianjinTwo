@@ -90,8 +90,9 @@ layui.define(["http", "getFn"], function (e) {
                     success: (res) => {
                         siteId = res.id;
                         xm.setValue([res.id]);
+                        center = [res.lon, res.lat];
+                        initMapFn();
                         getDetaFn();
-                        getTypeFn();
                     }
                 });
             },
@@ -242,8 +243,7 @@ layui.define(["http", "getFn"], function (e) {
         }, 1000)
     });
     // 地图数据
-    var zoom = 2,
-        center = [120.81, 32.026];
+    var zoom = 2,center;
 
     function mapDataFn() {
         clearTimeout(mapInt);
@@ -541,9 +541,8 @@ layui.define(["http", "getFn"], function (e) {
                 }
             };
         });
+        getTypeFn();
     };
-    initMapFn();
-
     // 右侧数据:右侧海区到报显示
     var barTime;
 

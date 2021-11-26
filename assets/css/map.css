@@ -204,7 +204,7 @@ body {
 }
 
 #dataTime {
-  font-size: 14px;
+  font-size: 12px;
 }
 
 .menu-lt {
@@ -421,6 +421,7 @@ body {
   width: 460px;
   padding-right: 20px;
   box-sizing: border-box;
+  overflow: hidden;
   overflow-y: auto;
 }
 

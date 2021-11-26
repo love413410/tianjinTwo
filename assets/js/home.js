@@ -32,7 +32,7 @@ layui.define(["http", "getFn"], function (exports) {
 
                     barTime: null, seaData: { type: 0, data: [] },
 
-                    map: null, zoom: 6, center: [120.81, 32.026], mapTime: null, type: "", checkArr: [],
+                    map: null, zoom: 6, center: null, mapTime: null, type: "", checkArr: [],
                     delaTime: null, mapInt: null, isClick: null, layDeta: null,
 
                     siteHtml: "水文", gaugeTimout: null,
@@ -42,7 +42,6 @@ layui.define(["http", "getFn"], function (exports) {
                 },
                 methods: {
                     initMapFn: function () {
-                        // this.map = new Map("map", { zoom: this.zoom, minZoom: 5, maxZoom: 9, center: this.center });
                         this.map = new Map("map", { zoom: this.zoom, minZoom: 5, center: this.center });
                         var baseUrl = "http://server.arcgisonline.com/ArcGIS/rest/services/ESRI_StreetMap_World_2D/MapServer";
                         // var baseUrl = "http://71.3.251.104:8066/arcgis/rest/services/6199/0/MapServer?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxNjN8NjE5OXw3MS4zLjAuMTB8fHx8MSIsImlhdCI6MTYyOTk0NDUyNywiZXhwIjoxNjMwMzA0NTI3fQ.qh-q9Xq66jwPqR1TatApz6f79Xe4mziSJvJ6Ehhm9dPXSR3T5yRuiFPcmfHEKxPLn2gJRR6htRRR75HfS1RyoQ";
@@ -53,8 +52,9 @@ layui.define(["http", "getFn"], function (exports) {
                             this.zoom = e.level;
                             this.mapTime = setTimeout(() => {
                                 this.mapDataFn();
-                            }, 500)
+                            }, 500);
                         });
+                        this.getTypeFn();
                     },
 
                     initXmFn: function () {
@@ -75,7 +75,8 @@ layui.define(["http", "getFn"], function (exports) {
                                     success: (res) => {
                                         this.siteId = res.id;
                                         this.xm.setValue([res.id]);
-                                        this.getTypeFn();
+                                        this.center = [res.lon, res.lat];
+                                        this.initMapFn();
                                     }
                                 });
                             },
@@ -630,7 +631,7 @@ layui.define(["http", "getFn"], function (exports) {
                     carousel.render({ elem: '#carousel', autoplay: false, arrow: 'always', width: '440px', height: '100%', indicator: 'none', index: this.carIdex });
                     carousel.on('change(carousel)', (obj) => { this.carIdex = obj.index; this.getEchartsFn(); });
 
-                    form.render(); this.initMapFn(); this.initXmFn();
+                    form.render(); this.initXmFn();
 
                     var level = sessionStorage.limit; $("[name=level" + level + "]").hide();
 
