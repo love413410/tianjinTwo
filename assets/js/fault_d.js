@@ -1,4 +1,4 @@
-layui.define(["http", "load", "getFn"], function(e) {
+layui.define(["http", "load", "getFn"], function (e) {
 	var http = layui.http,
 		urls = layui.urls,
 		load = layui.load,
@@ -20,7 +20,7 @@ layui.define(["http", "load", "getFn"], function(e) {
 	});
 
 	var type = $("#sele").val();
-	form.on('select(layFilt)', function(data) {
+	form.on('select(layFilt)', function (data) {
 		type = data.value;
 		stationRange();
 	});
@@ -32,9 +32,9 @@ layui.define(["http", "load", "getFn"], function(e) {
 			url: urls.stationRange,
 			data: {
 				type: type,
-				num:1
+				num: 1
 			},
-			success: function(res) {
+			success: function (res) {
 				var data = res.data;
 				var str = '';
 				for (var i = 0; i < data.length; i++) {
@@ -51,7 +51,7 @@ layui.define(["http", "load", "getFn"], function(e) {
 	function getErFn() {
 		http({
 			url: urls.faultCenter,
-			success: function(res) {
+			success: function (res) {
 				var data = res.data;
 				var str = '<option value="" selected>全部</option>';
 				for (var i = 0; i < data.length; i++) {
@@ -71,8 +71,7 @@ layui.define(["http", "load", "getFn"], function(e) {
 	function getLiuFn() {
 		http({
 			url: urls.faultType,
-			type: 'get',
-			success: function(res) {
+			success: function (res) {
 				var data = res.data;
 				var arr = [];
 				for (var t = 0; t < data.length; t++) {
@@ -87,6 +86,38 @@ layui.define(["http", "load", "getFn"], function(e) {
 		});
 	};
 	getLiuFn();
+
+
+	function initXmFn() {
+		http({
+			url: urls.search,
+			success: (res) => {
+				var data = res.data;
+				// xm = xmSelect.render({
+				xmSelect.render({
+					el: '#xmSelect',
+					radio: true,
+					clickClose: true,
+					name:"name",
+					prop: {
+						name: 'station',
+						value: 'id'
+					},
+					model: {
+						icon: 'hidden',
+						label: {
+							type: 'text'
+						}
+					},
+					filterable: true,
+					data: data
+				});
+			},
+		});
+	};
+	initXmFn();
+
+
 
 	// 列表接口
 	var where, page = 1;
@@ -103,7 +134,7 @@ layui.define(["http", "load", "getFn"], function(e) {
 				pageName: 'pageNum',
 				limitName: 'pageSize'
 			},
-			parseData: function(res) {
+			parseData: function (res) {
 				return {
 					"code": 0,
 					"count": res.count,
@@ -114,53 +145,53 @@ layui.define(["http", "load", "getFn"], function(e) {
 				[{
 					fixed: 'left',
 					title: '站名',
-					templet: function(item) {
+					templet: function (item) {
 						return item.fields.station
 					}
 				}, {
 					title: 'ip',
-					templet: function(item) {
+					templet: function (item) {
 						return item.fields.ip
 					}
 				}, {
 					title: '故障类型',
-					templet: function(item) {
+					templet: function (item) {
 						return item.fields.faultType
 					}
 				}, {
 					title: '推断故障',
 					minWidth: 260,
-					templet: function(item) {
+					templet: function (item) {
 						return item.fields.faultReason
 					}
 				}, {
 					title: '确认故障',
-					templet: function(item) {
+					templet: function (item) {
 						return item.fields.faulCconfirm
 					}
 				}, {
 					title: '缺失开始时间',
-					templet: function(item) {
+					templet: function (item) {
 						return item.fields.startTime
 					}
 				}, {
 					title: '缺失结束时间',
-					templet: function(item) {
+					templet: function (item) {
 						return item.fields.endTime
 					}
 				}, {
 					title: '持续时间',
-					templet: function(item) {
+					templet: function (item) {
 						return item.fields.durTime
 					}
 				}, {
 					title: '故障处理人',
-					templet: function(item) {
+					templet: function (item) {
 						return item.fields.handler
 					}
 				}, {
 					title: '状态',
-					templet: function(item) {
+					templet: function (item) {
 						var is = item.fields.state;
 						if (is == 0) {
 							var html = "待推送";
@@ -184,15 +215,15 @@ layui.define(["http", "load", "getFn"], function(e) {
 			id: 'tabReload',
 			height: 535,
 			cellMinWidth: 80,
-			done: function(res, curr) {
+			done: function (res, curr) {
 				page = curr;
 			}
 		});
 	};
 
 	// 重载当前页面
-	window.ReLoadFn = function() {
-		layer.closeAll(function() {
+	window.ReLoadFn = function () {
+		layer.closeAll(function () {
 			table.reload('tabReload', {
 				page: {
 					curr: page
@@ -201,13 +232,14 @@ layui.define(["http", "load", "getFn"], function(e) {
 		})
 	};
 
-	table.on('tool(table)', function(data) {
+	table.on('tool(table)', function (data) {
 		var event = data.event;
 		var id = data.data.pk;
 		event == 1 ? openFn(id) : deleFn(id);
 	});
 	// 查询
-	form.on('submit(subBtn)', function(data) {
+	form.on('submit(subBtn)', function (data) {
+		console.log(data)
 		page = 1;
 		where = data.field;
 		var date = where.date;
@@ -219,7 +251,7 @@ layui.define(["http", "load", "getFn"], function(e) {
 		delete where.date;
 		getListFn();
 	});
-	form.on('submit(expBtn)', function(data) {
+	form.on('submit(expBtn)', function (data) {
 		where = data.field;
 		var date = where.date;
 		var idx = date.indexOf("~");
@@ -230,25 +262,25 @@ layui.define(["http", "load", "getFn"], function(e) {
 		delete where.date;
 		load(urls.faultlist, "post", where);
 	});
-	$("#deleBtn").click(function() {
+	$("#deleBtn").click(function () {
 		var infoMsg = layer.msg('此操作将永久清除历史故障, 是否继续?', {
 			time: 5000,
 			shade: 0.5,
 			btn: ['确定', '取消'],
-			yes: function() {
+			yes: function () {
 				http({
 					url: urls.faultDelete,
-					success: function(res) {
+					success: function (res) {
 						layer.msg('清除成功！', {
 							time: 1000
-						}, function() {
+						}, function () {
 							ReLoadFn();
 						});
 						layer.close(infoMsg);
 					}
 				});
 			},
-			btn2: function() {
+			btn2: function () {
 				layer.msg('已取消删除。');
 			}
 		});
@@ -273,35 +305,35 @@ layui.define(["http", "load", "getFn"], function(e) {
 			time: 5000,
 			shade: 0.5,
 			btn: ['确定', '取消'],
-			yes: function() {
+			yes: function () {
 				http({
 					url: urls.faultdele,
 					type: 'post',
 					data: {
 						id: id
 					},
-					success: function(res) {
+					success: function (res) {
 						layer.msg('删除成功！', {
 							time: 1000
-						}, function() {
+						}, function () {
 							ReLoadFn();
 						});
 						layer.close(infoMsg);
 					}
 				});
 			},
-			btn2: function() {
+			btn2: function () {
 				layer.msg('已取消删除。');
 			}
 		});
 	};
 	form.verify({
-		date: function(val) {
+		date: function (val) {
 			if (val.indexOf('~') == -1) {
 				return '请选择日期范围';
 			}
 		},
-		time: function(val) {
+		time: function (val) {
 			if (val) {
 				if (val < 0 || isNaN(Number(val))) {
 					return '请输入大于0的数字';

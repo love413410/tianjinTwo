@@ -24,6 +24,11 @@ layui.define(["http", "load", "getFn"], function(e) {
 		var url = "./dataDeta.html?id=" + id + "&startTime=" + startTime + "&endTime=" + endTime;
 		layFn(url);
 	};
+	//志愿船查询
+	function prteLayFn(id, startTime, endTime) {
+		var url = "./dataDeta.html?id=" + id + "&startTime=" + startTime + "&endTime=" + endTime;
+		layFn(url);
+	};
 
 	function layFn(id, startTime, endTime,style) {
 		var style = style || 2;

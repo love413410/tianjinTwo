@@ -25,7 +25,6 @@ layui.define(["http", "getFn"], function (e) {
 				id: userId
 			},
 			async: false,
-			type: "get",
 			success: function (res) {
 				userData = res.data;
 				var data = userData.fields;
@@ -42,8 +41,6 @@ layui.define(["http", "getFn"], function (e) {
 	window.getYiFn = function () {
 		http({
 			url: urls.infotype,
-			type: 'get',
-			data: {},
 			success: function (res) {
 				var data = res.data;
 				var str = '<option value="">无</option>';
@@ -81,7 +78,6 @@ layui.define(["http", "getFn"], function (e) {
 	window.getSanFn = function () {
 		http({
 			url: urls.infstype,
-			type: 'get',
 			data: {
 				type: para.ofArea
 			},

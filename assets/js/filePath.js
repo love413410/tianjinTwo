@@ -6,8 +6,6 @@ layui.define(["http"], function (e) {
 	function getDataFn() {
 		http({
 			url: urls.config,
-			type: 'get',
-			data: {},
 			success: function (res) {
 				var data = res.data;
 				layForm.val('filePath', {

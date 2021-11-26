@@ -10,7 +10,6 @@ layui.define(["http"], function (e) {
 	function getTypeFn() {
 		http({
 			url: urls.getType,
-			type: 'get',
 			data: {
 				id: 1
 			},
@@ -38,7 +37,6 @@ layui.define(["http"], function (e) {
 	function getAreaFn() {
 		http({
 			url: urls.homearea,
-			type: 'get',
 			data: {
 				type: type
 			},
@@ -112,7 +110,6 @@ layui.define(["http"], function (e) {
 	function getHomeGraph() {
 		http({
 			url: urls.homeGraph,
-			type: 'get',
 			data: {
 				type: type,
 				id: areaId

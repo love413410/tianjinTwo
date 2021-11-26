@@ -9,7 +9,6 @@ layui.define(['http', "getFn"], function (e) {
     var id = getFn.locaStr('id');
     http({
         url: urls.homeclock,
-        type: 'get',
         data: {
             id: id
         },

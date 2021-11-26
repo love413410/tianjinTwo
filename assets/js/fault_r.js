@@ -83,7 +83,6 @@ layui.define(["http", "load", "getFn"], function(e) {
 	function getSanFn() {
 		http({
 			url: urls.faultType,
-			type: 'get',
 			success: function(res) {
 				var data = res.data;
 				var arr = [];

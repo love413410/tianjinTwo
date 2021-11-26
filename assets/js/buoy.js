@@ -32,7 +32,6 @@ layui.define(['http', "load", "getFn", "query"], function(e) {
 	function getTypeFn() {
 		http({
 			url: urls.getType,
-			type: 'get',
 			data: {
 				id: 2
 			},
@@ -88,7 +87,6 @@ layui.define(['http', "load", "getFn", "query"], function(e) {
 	function getSeaCenterFn() {
 		http({
 			url: urls.siteliststype,
-			type: 'get',
 			data: {
 				type: where.type,
 				ofAreaCenter: where.ofAreaCenter

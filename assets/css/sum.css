@@ -31,7 +31,10 @@ body {
   box-sizing: border-box;
 }
 .layui-table-body {
-  overflow: hidden;
+  /* overflow: hidden; */
+}
+.layui-table-view .layui-table td, .layui-table-view .layui-table th{
+    padding: 0;
 }
 .lay-line {
   width: 1100px;

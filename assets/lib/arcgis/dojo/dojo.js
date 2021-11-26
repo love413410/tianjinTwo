@@ -5,9 +5,6 @@
 */
 
 //>>built
-var base = window.location.origin;
-var path = "/dist/assets/lib/arcgis/dojo";
-var baseUrls = base + path;
 (function(b, n) {
 	var f, p = function() {
 			return "undefined" !== typeof t && "function" !== typeof t ? t : "undefined" !== typeof window ? window :
@@ -791,7 +788,7 @@ var baseUrls = base + path;
 }, {
 	async: 0,
 	// baseUrl:"https://[HOSTNAME_AND_PATH_TO_JSAPI]dojo",
-	baseUrl: baseUrls,
+    baseUrl: window.location.origin+"/dist/assets/lib/arcgis/dojo",
 	hasCache: {
 		"config-selectorEngine": "acme",
 		"config-tlmSiblingOfDojo": 1,

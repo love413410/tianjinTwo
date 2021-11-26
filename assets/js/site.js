@@ -10,8 +10,6 @@ layui.define(["http", "load"], function(e) {
 	//乱七八糟的在最下面,监听按钮,验证等
 
 	var page = 1;
-
-
 	var type = $("#sele").val();
 	form.on('select(layFilt)', function(data) {
 		type = data.value;
@@ -90,7 +88,6 @@ layui.define(["http", "load"], function(e) {
 	function getSanFn() {
 		http({
 			url: urls.siteliststype,
-			type: 'get',
 			data: {
 				type: oneId,
 				ofAreaCenter: twoId

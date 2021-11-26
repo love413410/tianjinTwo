@@ -46,8 +46,6 @@ layui.define(["http", "getFn"], function (e) {
 	window.getYiFn = function () {
 		http({
 			url: urls.infotype,
-			type: 'get',
-			data: {},
 			async: false,
 			success: function (res) {
 				var data = res.data;
@@ -87,7 +85,6 @@ layui.define(["http", "getFn"], function (e) {
 	window.getSanFn = function () {
 		http({
 			url: urls.infstype,
-			type: 'get',
 			data: {
 				type: para.ofArea
 			},

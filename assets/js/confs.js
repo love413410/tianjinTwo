@@ -14,8 +14,6 @@ layui.define(['http', "dtree"], function (e) {
 	function getTreeFn() {
 		http({
 			url: urls.trstree,
-			type: 'get',
-			data: {},
 			success: function (res) {
 				var data = res.data;
 				var ids = res.id;
@@ -54,7 +52,6 @@ layui.define(['http', "dtree"], function (e) {
 		var loading = null;
 		http({
 			url: urls.recall,
-			type: 'get',
 			data: {
 				data: strTree
 			},

@@ -50,7 +50,6 @@ layui.define(["http", "getFn", "dtree"], function (e) {
 	function getLookFn() {
 		http({
 			url: urls.siteType,
-			type: 'get',
 			success: function (res) {
 				var data = res.data;
 				var str = '';
@@ -98,7 +97,6 @@ layui.define(["http", "getFn", "dtree"], function (e) {
 	function getSiteTypeFn() {
 		http({
 			url: urls.sitestype,
-			type: 'get',
 			data: {
 				id: para.lookType
 			},
@@ -120,7 +118,6 @@ layui.define(["http", "getFn", "dtree"], function (e) {
 	window.getType = function () {
 		http({
 			url: urls.siteotype,
-			type: 'get',
 			data: para,
 			success: function (res) {
 				var data = res.data;
@@ -176,7 +173,6 @@ layui.define(["http", "getFn", "dtree"], function (e) {
 		$("#ofArea").empty();
 		http({
 			url: urls.sitentype,
-			type: 'get',
 			data: para,
 			success: function (res) {
 				var data = res.data;
@@ -293,8 +289,6 @@ layui.define(["http", "getFn", "dtree"], function (e) {
 	window.layNodeFn = function () {
 		http({
 			url: urls.siteTree,
-			type: 'get',
-			data: {},
 			success: function (res) {
 				nodeData = res.data;
 				tempNode = res.ids;
@@ -366,8 +360,6 @@ layui.define(["http", "getFn", "dtree"], function (e) {
 	window.layLineFn = function () {
 		http({
 			url: urls.sitemain,
-			type: 'get',
-			data: {},
 			success: function (res) {
 				var data = res.data;
 				var lineTree = dtree.render({
@@ -425,8 +417,6 @@ layui.define(["http", "getFn", "dtree"], function (e) {
 	window.layElFn = function () {
 		http({
 			url: urls.siteel,
-			type: 'get',
-			data: {},
 			success: function (res) {
 				var data = res.data;
 				var str = '';

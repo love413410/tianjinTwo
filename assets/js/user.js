@@ -90,7 +90,6 @@ layui.define(["http", "getFn"], function (e) {
 	function getTab2Fn() {
 		http({
 			url: urls.utype,
-			type: 'get',
 			success: function (res) {
 				var type = res.type;
 				xmst = xmSelect.render({
@@ -281,7 +280,6 @@ layui.define(["http", "getFn"], function (e) {
 	function getTab3Fn() {
 		http({
 			url: urls.utype,
-			type: 'get',
 			success: function (res) {
 				var type = res.type;
 				var arr = [];
@@ -303,7 +301,6 @@ layui.define(["http", "getFn"], function (e) {
 	function getConFn() {
 		http({
 			url: urls.dtype,
-			type: 'get',
 			data: {
 				id: typeId
 			},

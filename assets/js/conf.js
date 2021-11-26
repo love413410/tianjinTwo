@@ -27,7 +27,6 @@ layui.define(["http", "getFn"], function (e) {
 	function getTaskFn() {
 		http({
 			url: urls.trslist,
-			type: 'get',
 			data: {
 				ip: ip
 			},

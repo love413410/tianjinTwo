@@ -30,7 +30,6 @@ layui.define(["http", "getFn"], function (e) {
 	function getTypeFn() {
 		http({
 			url: urls.getType,
-			type: 'get',
 			data: {
 				id: 1
 			},
@@ -81,7 +80,6 @@ layui.define(["http", "getFn"], function (e) {
 	function getSeaCenterFn() {
 		http({
 			url: urls.siteliststype,
-			type: 'get',
 			data: {
 				type: where.type,
 				ofAreaCenter: where.ofAreaCenter
@@ -131,7 +129,6 @@ layui.define(["http", "getFn"], function (e) {
 	function getDataTypeFn() {
 		http({
 			url: urls.dataType,
-			type: 'get',
 			success: function (res) {
 				var data = res.data;
 				var str = '';
@@ -159,7 +156,6 @@ layui.define(["http", "getFn"], function (e) {
 	function getDataFn() {
 		http({
 			url: urls.dataGraph,
-			type: 'get',
 			data: where,
 			success: function (res) {
 				var title = res.title;

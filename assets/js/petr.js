@@ -1,4 +1,4 @@
-layui.define(['http', "load", "getFn", "query"], function(e) {
+layui.define(["http", "load", "getFn", "query"], function (e) {
 	var http = layui.http,
 		urls = layui.urls,
 		load = layui.load,
@@ -7,44 +7,36 @@ layui.define(['http', "load", "getFn", "query"], function(e) {
 
 	var $ = layui.$,
 		form = layui.form,
-		laydate = layui.laydate,
-		table = layui.table;
+		table = layui.table,
+		laydate = layui.laydate;
 
 	var initTime = getFn.initDate();
-
 	laydate.render({
 		elem: '#date',
-		range: "~",
 		value: initTime + "\xa0" + "~" + "\xa0" + initTime,
-		max: initTime,
+		format: 'yyyy-MM-dd',
+		max: getFn.initDate(),
+		range: "~",
 		btns: ['confirm']
 	});
+
 	var where = {
-		style: "xml",
 		type: "",
 		ofAreaCenter: "",
 		ofArea: "",
 		ofCenter: "",
+		style: "",
 		startTime: "",
 		endTime: ""
 	};
-
-	form.on('select(laySele)', function(data) {
-		var val = data.value;
-		val == "xml" ? (
-			$(".isHide").removeClass("layui-hide").addClass("layui-inline")
-		) : (
-			$(".isHide").removeClass("layui-inline").addClass("layui-hide")
-		);
-	});
 
 	function getTypeFn() {
 		http({
 			url: urls.getType,
 			data: {
-				id: 4
+				id: 7
 			},
-			success: function(res) {
+			success: function (res) {
 				var data = res.data;
 				var str = '';
 				for (var i = 0; i < data.length; i++) {
@@ -53,12 +45,16 @@ layui.define(['http', "load", "getFn", "query"], function(e) {
 					str += '<option value="' + id + '">' + title + '</option>';
 				};
 				$("#laySele").html(str);
-				data.length > 0 ? where.type = data[0].pk : "";
+				where.type = data.length > 0 ? data[0].pk : "";
 				getSeaFn();
 			}
 		});
 	};
 	getTypeFn();
+	form.on('select(laySele)', function (data) {
+		where.type = data.value;
+		getSeaFn();
+	});
 
 	function getSeaFn() {
 		http({
@@ -67,27 +63,30 @@ layui.define(['http', "load", "getFn", "query"], function(e) {
 			data: {
 				type: where.type
 			},
-			success: function(res) {
+			success: function (res) {
 				var data = res.data;
-				var name = res.name;
+				// var name = res.name;
 				var str = '<option value="">全部</option>';
+				// var str = '';
 				for (var i = 0; i < data.length; i++) {
 					var id = data[i].pk;
 					var title = data[i].fields.title;
-					if (name == title) {
-						str += '<option value="' + id + '" selected>' + title + '</option>';
-						where.ofAreaCenter = id;
-					} else {
-						str += '<option value="' + id + '">' + title + '</option>';
-					};
+					// if (name == title) {
+					// 	str += '<option value="' + id + '" selected>' + title + '</option>';
+					// 	where.ofAreaCenter = id;
+					// } else {
+					// 	str += '<option value="' + id + '">' + title + '</option>';
+					// };
+					str += '<option value="' + id + '">' + title + '</option>';
 				};
 				$("#laySeleA").html(str);
+				where.ofAreaCenter = data.length > 0 ? data[0].pk : "";
 				getSeaCenterFn();
 			}
 		});
 	};
 
-	form.on('select(laySeleA)', function(data) {
+	form.on('select(laySeleA)', function (data) {
 		where.ofAreaCenter = data.value;
 		getSeaCenterFn();
 	});
@@ -99,26 +98,29 @@ layui.define(['http', "load", "getFn", "query"], function(e) {
 				type: where.type,
 				ofAreaCenter: where.ofAreaCenter
 			},
-			success: function(res) {
+			success: function (res) {
 				var data = res.data;
-				var name = res.name;
+				// var name = res.name;
 				var str = '<option value="">全部</option>';
+				// var str = '';
 				for (var i = 0; i < data.length; i++) {
 					var id = data[i].pk;
 					var title = data[i].fields.station;
-					if (name == title) {
-						str += '<option value="' + id + '" selected>' + title + '</option>';
-						where.ofArea = id;
-					} else {
-						str += '<option value="' + id + '">' + title + '</option>';
-					};
+					// if (name == title) {
+					// 	str += '<option value="' + id + '" selected>' + title + '</option>';
+					// 	where.ofArea = id;
+					// } else {
+					// 	str += '<option value="' + id + '">' + title + '</option>';
+					// };
+					str += '<option value="' + id + '">' + title + '</option>';
 				};
 				$("#laySeleB").html(str);
+				where.ofArea = data.length > 0 ? data[0].pk : "";
 				getCenterFn();
 			}
 		});
 	};
-	form.on('select(laySeleB)', function(data) {
+	form.on('select(laySeleB)', function (data) {
 		where.ofArea = data.value;
 		getCenterFn();
 	});
@@ -132,32 +134,49 @@ layui.define(['http', "load", "getFn", "query"], function(e) {
 				ofAreaCenter: where.ofAreaCenter,
 				ofArea: where.ofArea
 			},
-			success: function(res) {
+			success: function (res) {
 				var data = res.data;
-				var name = res.name;
+				// var name = res.name;
 				var str = '<option value="">全部</option>';
+				// var str = '';
 				for (var i = 0; i < data.length; i++) {
 					var id = data[i].pk;
 					var title = data[i].fields.station;
-					if (name == title) {
-						str += '<option value="' + id + '" selected>' + title + '</option>';
-						where.ofCenter = id;
-					} else {
-						str += '<option value="' + id + '">' + title + '</option>';
-					};
+					// if (name == title) {
+					// 	str += '<option value="' + id + '" selected>' + title + '</option>';
+					// 	where.ofCenter = id;
+					// } else {
+					// 	str += '<option value="' + id + '">' + title + '</option>';
+					// };
+					str += '<option value="' + id + '">' + title + '</option>';
 				};
 				$("#laySeleC").html(str);
-				form.render("select");
-				// getListFn();
+				where.ofCenter = data.length > 0 ? data[0].pk : "";
+				getDataTypeFn();
 			}
 		});
+	};
+
+	function getDataTypeFn() {
+		http({
+			url: urls.dataType,
+			success: function (res) {
+				var data = res.data;
+				var str = '';
+				for (var i = 0; i < data.length; i++) {
+					var dataItem = data[i];
+					str += '<option value=' + dataItem.pk + '>' + dataItem.fields.Type + '</option>';
+				};
+				$("#type").html(str);
+				form.render("select");
+			}
+		})
 	};
 
 	function getListFn() {
 		table.render({
 			elem: '#table',
-			url: urls.boat,
-			method: "post",
+			url: urls.petr,
 			headers: {
 				token: sessionStorage.token
 			},
@@ -166,7 +185,7 @@ layui.define(['http', "load", "getFn", "query"], function(e) {
 				pageName: 'pageNum',
 				limitName: 'pageSize'
 			},
-			parseData: function(res) {
+			parseData: function (res) {
 				return {
 					"code": 0,
 					"count": res.count,
@@ -175,16 +194,19 @@ layui.define(['http', "load", "getFn", "query"], function(e) {
 			},
 			cols: [
 				[{
-					title: '船名',
-					templet: function(item) {
+					field: 'area',
+					title: '海区'
+				}, {
+					field: 'center',
+					title: '中心站'
+				}, {
+					title: '台站',
+					templet: function (item) {
 						var html = '<div onclick="layFn(' + item.stationId + ')" style="color: #5a98de;cursor: pointer;">' +
 							item.station +
 							'</div>';
 						return html;
 					}
-				}, {
-					field: 'code',
-					title: '船舶呼号'
 				}, {
 					field: 'total',
 					title: '应收文件(个)'
@@ -204,10 +226,9 @@ layui.define(['http', "load", "getFn", "query"], function(e) {
 			cellMinWidth: 80
 		});
 	};
-	// getListFn();
 
 	// 查询按钮调取站点列表接口
-	form.on('submit(subBtn)', function(data) {
+	form.on('submit(subBtn)', function (data) {
 		where = data.field;
 		var date = where.date;
 		var idx = date.indexOf("~");
@@ -218,7 +239,8 @@ layui.define(['http', "load", "getFn", "query"], function(e) {
 		delete where.date;
 		getListFn();
 	});
-	form.on('submit(expBtn)', function(data) {
+
+	form.on('submit(expBtn)', function (data) {
 		where = data.field;
 		var date = where.date;
 		var idx = date.indexOf("~");
@@ -227,21 +249,31 @@ layui.define(['http', "load", "getFn", "query"], function(e) {
 		where.startTime = startTime;
 		where.endTime = endTime;
 		delete where.date;
-		load(urls.boat, "get", where);
+		// where.type =
+		load(urls.petr, "post", where);
 	});
 
-	window.layFn = function(id) {
-		var startTime = where.startTime,
+	window.layFn = function (id) {
+		var style = where.style,
+			startTime = where.startTime,
 			endTime = where.endTime;
-		query.layFn(id, startTime, endTime);
+		query.layFn(id, startTime, endTime, style,);
 	};
+
+
 	form.verify({
-		date: function(val) {
+		date: function (val) {
 			if (val.indexOf('~') == -1) {
 				return '请选择日期范围';
 			}
 		},
+		num: function (val) {
+			if (val) {
+				if (val <= 0 || isNaN(Number(val))) {
+					return '请输入大于0的数字';
+				}
+			}
+		}
 	});
-
-	e("ship", {})
+	e("petr", {})
 });

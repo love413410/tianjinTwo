@@ -13,7 +13,6 @@ layui.define(["http", "getFn"], function (e) {
     function getDetaFn() {
         http({
             url: urls.faultdata,
-            type: 'get',
             data: {
                 id: id
             },
@@ -30,7 +29,6 @@ layui.define(["http", "getFn"], function (e) {
     function getSeleFn() {
         http({
             url: urls.people,
-            type: 'get',
             data: {
                 type: 'type',
                 id: id
@@ -48,7 +46,6 @@ layui.define(["http", "getFn"], function (e) {
 
                 http({
                     url: urls.faultType,
-                    type: 'get',
                     data: {
                         type: 'type',
                         stationId: id
