@@ -362,19 +362,19 @@ layui.define(["http", "getFn"], function (e) {
                 clearInterval(rollTime);
                 if ($("#roll").height() > $("#deta").height()) {
                     rollTime = setInterval(function () {
-                        setRollFn(type);
+                        setRollFn();
                     }, rollSpeed);
                 };
             },
             complete: function () {
                 rollTimeout = setTimeout(function () {
-                    getStateFn(type);
+                    getStateFn();
                 }, 60000);
             }
         });
     };
 
-    function setRollFn(type) {
+    function setRollFn() {
         $("#roll").animate({
             marginTop: '-=1'
         }, 0, function () {
@@ -394,7 +394,7 @@ layui.define(["http", "getFn"], function (e) {
                 setRollFn();
             }, rollSpeed);
             rollTimeout = setTimeout(function () {
-                getStateFn(type);
+                getStateFn();
             }, 30000);
         });
     };
