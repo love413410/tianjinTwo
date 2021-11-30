@@ -482,7 +482,7 @@ layui.define(["http", "getFn", "dtree"], function(e) {
 		},
 		lat: function(val) {
 			if (!getFn.trimFn(val)) {
-				return '请输入经度';
+				return '请输入纬度';
 			}
 		},
 		dtime: function(val) {
