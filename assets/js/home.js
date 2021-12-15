@@ -168,6 +168,7 @@ layui.define(["http", "getFn"], function (exports) {
                             data: { type: this.type },
                             success: (res) => {
                                 this.list = res.data;
+                                // this.list = 10;
                             },
                             complete: () => { this.stateTime = setTimeout(() => { this.getStateFn(); }, 60000); }
                         })
@@ -178,9 +179,12 @@ layui.define(["http", "getFn"], function (exports) {
                         let n = height.slice(0, -2);
                         var h = $("#deta").height();
                         this.height = n;
-                        if (n > h) {
+                        if (this.list.length >= 10 || n >= h) {
                             this.rollTime = setInterval(() => { this.setRollFn(); }, 30);
                         };
+                        // if (n >= h) {
+                        //     this.rollTime = setInterval(() => { this.setRollFn(); }, 30);
+                        // };
                     },
                     setRollFn: function () {
                         $("#roll").animate({
