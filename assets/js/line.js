@@ -22,6 +22,7 @@ layui.define(["http", "getFn"], function (e) {
             getLineFn();
         }, 500);
     });
+    console.log("11")
 
     $("#time p").click(function () {
         $("#time p").removeClass("add");
