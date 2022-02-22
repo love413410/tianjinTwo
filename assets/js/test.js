@@ -720,5 +720,5 @@ layui.define(["http", "getFn"], function (exports) {
                 });
             };
         });
-    exports('home', {});
+    exports('test', {});
 });

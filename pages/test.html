@@ -16,7 +16,7 @@
     <link rel="stylesheet" href="../assets/lib/layui/css/layui.css" />
     <link rel="stylesheet" href="../assets/lib/arcgis/esri/css/esri.css" />
     <link rel="stylesheet" type="text/css" href="../assets/css/lib.css" />
-    <link rel="stylesheet" type="text/css" href="../assets/css/home.css" />
+    <link rel="stylesheet" type="text/css" href="../assets/css/test.css" />
     <link rel="stylesheet" href="../assets/css/menu.css">
 </head>
 
@@ -332,13 +332,16 @@
 <script src="../assets/lib/echarts.js"></script>
 <script src="../assets/lib/arcgis/init.js"></script>
 <script>
-    layui.config({
-        base: "../assets/",
-    }).extend({
-        http: "api/http",
-        getFn: "lib/getFn",
-        home: "js/home",
-    }).use("home");
+    layui
+        .config({
+            base: "../assets/",
+        })
+        .extend({
+            http: "api/http",
+            getFn: "lib/getFn",
+            test: "js/test",
+        })
+        .use("test");
 </script>
 
 </html>

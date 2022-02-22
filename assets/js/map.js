@@ -243,7 +243,7 @@ layui.define(["http", "getFn"], function (e) {
         }, 1000)
     });
     // 地图数据
-    var zoom = 2,center;
+    var zoom = 2, center;
 
     function mapDataFn() {
         clearTimeout(mapInt);
@@ -861,13 +861,14 @@ layui.define(["http", "getFn"], function (e) {
                             id: stationId
                         },
                         success: function (res) {
-                            var data = res.data;
-                            var type = res.type;
-                            var title = data.station;
-                            var layHeight = "650px", content = '../pages/layHomes.html?is=1&id=' + stationId;
-                            if (type < 0) {
-                                layHeight = "480px"; content = '../pages/layHome.html?id=' + stationId;
-                            };
+                            var data = res.data, type = res.type, title = data.station;
+                            // var layHeight = "650px", content = '../pages/layHomes.html?is=1&id=' + stationId;
+                            // if (type < 0) {
+                            //     layHeight = "480px"; content = '../pages/layHome.html?id=' + stationId;
+                            // };
+                            var layItem = type < 0 ? layUrl.layHome : layUrl.layHomes;
+                            var layHeight = layItem.layHeight,
+                                content = layItem.content + "?id=" + stationId;
                             // var layHeight = type < 0 ? "480px" : "650px";
                             // var content = type < 0 ? '../pages/layHome.html?id=' +stationId : '../pages/layHomes.html?id=' +stationId;
 
@@ -926,16 +927,17 @@ layui.define(["http", "getFn"], function (e) {
                 id: siteId
             },
             success: function (res) {
-                var data = res.data,
-                    type = res.type,
-                    title = data.station;
+                var data = res.data, type = res.type, title = data.station;
                 // var layHeight = type < 0 ? "480px" : "650px";
                 // var content = type < 0 ? '../pages/layHome.html?id=' + siteId :
                 //     '../pages/layHomes.html?id=' + siteId;
-                var layHeight = "650px", content = '../pages/layHomes.html?is=1&id=' + siteId;
-                if (type < 0) {
-                    layHeight = "480px"; content = '../pages/layHome.html?id=' + siteId;
-                };
+                // var layHeight = "650px", content = '../pages/layHomes.html?is=1&id=' + siteId;
+                // if (type < 0) {
+                //     layHeight = "480px"; content = '../pages/layHome.html?id=' + siteId;
+                // };
+                var layItem = type < 0 ? layUrl.layHome : layUrl.layHomes;
+                var layHeight = layItem.layHeight,
+                    content = layItem.content + "?id=" + siteId;
                 layDeta = layer.open({
                     type: 2,
                     shade: 0,

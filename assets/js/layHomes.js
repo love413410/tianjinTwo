@@ -14,16 +14,14 @@ layui.define(['http', "getFn"], function (e) {
     var $ = layui.jquery,
         form = layui.form;
 
-    var is = getFn.locaStr('is'), id = getFn.locaStr('id');
+    var id = getFn.locaStr('id');
 
     var type, alarmId;
 
     function getDataFn() {
         http({
             url: urls.homeclock,
-            data: {
-                id: id
-            },
+            data: { id: id },
             success: function (res) {
                 type = res.type;
                 alarmId = res.alarmId;
@@ -173,13 +171,15 @@ layui.define(['http', "getFn"], function (e) {
         var data = data.field;
         data.faulCconfirm = data.faultType == 7 ? data.faul : data.faulCconfirm;
         delete data.faul;
-        is ? parent.childFn() : parent.vm.childFn();
+        parent.childFn();
+        // is ? parent.childFn() : parent.vm.childFn();
         http({
             url: urls.homeclock,
             type: 'post',
             data: data,
             success: function (res) {
-                is ? parent.childFn() : parent.vm.childFn();
+                parent.childFn();
+                // is ? parent.childFn() : parent.vm.childFn();
             }
         });
     });
