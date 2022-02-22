@@ -43,7 +43,7 @@ layui.define(["http", "getFn"], function (exports) {
                     });
                 };
                 inspFn();
-                inspTimer = setInterval(inspFn, 10000);
+                inspTimer = setInterval(inspFn, 30000);
 
                 function homeclock(stationId) {
                     http({
