@@ -28,6 +28,17 @@ layui.define(["http", "getFn"], function (e) {
             '600px', '380px');
     });
 
+    var layUrl = {
+        layHomes: {
+            layHeight: "650px",
+            content: "../pages/layHomes.html"
+        },
+        layHome: {
+            layHeight: "480px",
+            content: "../pages/layHome.html"
+        }
+    };
+
     var carIdex = 0;
     carousel.render({
         elem: '#carousel',
