@@ -30,7 +30,6 @@ body {
   background-color: #08132c;
 }
 
-
 .layForm {
   color: #fff;
   font-size: 14px;
@@ -62,11 +61,15 @@ body {
 .site-item .layui-form-item {
   flex: 1;
 }
+.lay_select dl {
+  max-height: 200px;
+}
 
 .lay_bg_color {
   color: #000 !important;
 }
-.lay_bg_color .layui-input,.layui-textarea {
+.lay_bg_color .layui-input,
+.layui-textarea {
   color: #fff;
   border: none;
   background-color: #112350;

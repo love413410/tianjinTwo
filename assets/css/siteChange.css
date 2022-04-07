@@ -63,6 +63,9 @@ body {
 #bel .layui-inline {
   margin-right: 0px;
 }
+.lay_select dl {
+  max-height: 200px;
+}
 
 .mar {
   margin-left: 5px;
