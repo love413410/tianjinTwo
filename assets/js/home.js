@@ -150,8 +150,9 @@ layui.define(["http", "getFn"], function (exports) {
             var mapTimer;
             function initMapFn() {
                 map = new Map("map", { zoom: zoom, minZoom: 5, center: center });
-                var baseUrl = "http://server.arcgisonline.com/ArcGIS/rest/services/ESRI_StreetMap_World_2D/MapServer";
+                // var baseUrl = "http://server.arcgisonline.com/ArcGIS/rest/services/ESRI_StreetMap_World_2D/MapServer";
                 // var baseUrl = "http://71.3.251.104:8066/arcgis/rest/services/6199/0/MapServer?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxNjN8NjE5OXw3MS4zLjAuMTB8fHx8MSIsImlhdCI6MTYyOTk0NDUyNywiZXhwIjoxNjMwMzA0NTI3fQ.qh-q9Xq66jwPqR1TatApz6f79Xe4mziSJvJ6Ehhm9dPXSR3T5yRuiFPcmfHEKxPLn2gJRR6htRRR75HfS1RyoQ";
+                var baseUrl = "https://services.arcgisonline.com/arcgis/rest/services/World_Terrain_Base/MapServer";
                 var layer = new ArcGISTiledMapServiceLayer(baseUrl);
                 map.addLayer(layer);
                 map.on("zoom-end", function (e) {
