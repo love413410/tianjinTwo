@@ -98,5 +98,9 @@ layui.define(function (exports) {
 		trstree: baseUrl + '/trs/tree/',
 		recall: baseUrl + '/trs/recall/',
 		config: baseUrl + '/trs/config/',
+
+        // 操作日志
+        limitUsers: baseUrl + '/limit/users/',
+        limitLog: baseUrl + '/limit/log/',
 	});
 });

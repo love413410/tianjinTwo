@@ -1,5 +1,5 @@
 <script>
-	var token = sessionStorage.token;
+    var token = sessionStorage.token;
     if (!token) {
         alert("请先登录!")
         window.top.location.href = "../index.html";
@@ -8,86 +8,86 @@
 <!DOCTYPE html>
 <html lang="zh">
 
-	<head>
-		<meta charset="UTF-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-		<meta http-equiv="X-UA-Compatible" content="ie=edge">
-		<title>海洋观测数据传输监控系统</title>
-		<link rel="stylesheet" href="../assets/lib/layui/css/layui.css" />
-		<link rel="stylesheet" type="text/css" href="../assets/css/lib.css" />
-		<link rel="stylesheet" type="text/css" href="../assets/css/map.css" />
-	</head>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>海洋观测数据传输监控系统</title>
+    <link rel="stylesheet" href="../assets/lib/layui/css/layui.css" />
+    <link rel="stylesheet" type="text/css" href="../assets/css/lib.css" />
+    <link rel="stylesheet" type="text/css" href="../assets/css/map.css" />
+</head>
 
-	<body>
-		<div class="head">
-			海洋观测数据传输监控系统
-		</div>
-		<button class="layui-btn layui-btn-sm toBtn" id="toFn">更换</button>
-		<div class="layui-form head-deta">
-			<p class="lt">
-				<!-- 欢迎登录：<span id="user" onclick="alrFn('./user.html','600px','380px')"></span>！ -->
-				欢迎登录：<span id="user"></span>！
-			</p>
-			<div class="rt">
-				<div class="layui-form-item">
-					<div class="layui-inline">
-						<div class="layui-input-inline">
-							当前站:
-						</div>
-					</div>
-					<div class="layui-inline">
-						<div class="layui-input-inline lay-sele">
-							<div id="xmSelect"></div>
-						</div>
-					</div>
-					<div class="layui-inline">
-						<div class="layui-input-inline head-btn" onclick="outFn()">
-							退出
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
+<body>
+    <div class="head">
+        海洋观测数据传输监控系统
+    </div>
+    <button class="layui-btn layui-btn-sm toBtn" id="toFn">更换</button>
+    <div class="layui-form head-deta">
+        <p class="lt">
+            <!-- 欢迎登录：<span id="user" onclick="alrFn('./user.html','600px','380px')"></span>！ -->
+            欢迎登录：<span id="user"></span>！
+        </p>
+        <div class="rt">
+            <div class="layui-form-item">
+                <div class="layui-inline">
+                    <div class="layui-input-inline">
+                        当前站:
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <div class="layui-input-inline lay-sele">
+                        <div id="xmSelect"></div>
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <div class="layui-input-inline head-btn" onclick="outFn()">
+                        退出
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
 
-		<div class="menu-lt">
-			<div class="sub-head">
-				<img src="../static/h1.png">
-				<p>
-					今日传输量
-				</p>
-				<p class="sub-rt">
-					<img src="../static/h2.png">
-				</p>
-			</div>
+    <div class="menu-lt">
+        <div class="sub-head">
+            <img src="../static/h1.png">
+            <p>
+                今日传输量
+            </p>
+            <p class="sub-rt">
+                <img src="../static/h2.png">
+            </p>
+        </div>
 
-			<div class="menu-top">
-				<div>
-					<p class="lt-img" id="file"></p>
-					<p>文件接收量(<span id="fileNum">个</span>)</p>
-				</div>
+        <div class="menu-top">
+            <div>
+                <p class="lt-img" id="file"></p>
+                <p>文件接收量(<span id="fileNum">个</span>)</p>
+            </div>
 
-				<div>
-					<p class="lt-img" id="data"></p>
-					<p>数据接收量(<span id="dataNum">MB</span>)</p>
-				</div>
-			</div>
+            <div>
+                <p class="lt-img" id="data"></p>
+                <p>数据接收量(<span id="dataNum">MB</span>)</p>
+            </div>
+        </div>
 
-			<div class="sub-head">
-				<img src="../static/h1.png">
-				<p>
-					各站故障信息
-				</p>
-				<p class="sub-rt">
-					<button type="button" class="layui-btn" onclick="alrFn('./fault_r.html','实时故障统计')">
-						查看更多
-					</button>
-				</p>
-			</div>
+        <div class="sub-head">
+            <img src="../static/h1.png">
+            <p>
+                各站故障信息
+            </p>
+            <p class="sub-rt">
+                <button type="button" class="layui-btn" onclick="alrFn('./fault_r.html','实时故障统计')">
+                    查看更多
+                </button>
+            </p>
+        </div>
 
-			<div class="menu-in" id="deta">
-				<div id="roll">
-					<!-- <ul class="item">
+        <div class="menu-in" id="deta">
+            <div id="roll">
+                <!-- <ul class="item">
 						<li>
 							鳌江数据接收超时
 						</li>
@@ -95,55 +95,55 @@
 							2020-07-21 9:28
 						</li>
 					</ul> -->
-				</div>
-			</div>
+            </div>
+        </div>
 
 
-			<div class="sub-head">
-				<img src="../static/h1.png">
-				<p>
-					图标
-				</p>
-				<p class="sub-rt">
-					<img src="../static/h2.png">
-				</p>
-			</div>
+        <div class="sub-head">
+            <img src="../static/h1.png">
+            <p>
+                图标
+            </p>
+            <p class="sub-rt">
+                <img src="../static/h2.png">
+            </p>
+        </div>
 
-			<div class="menu-icon">
-				<p>
-					<img src="../static/h3.png" alt="">
-					<span>正常</span>
-				</p>
-				<p>
-					<img src="../static/h4.png" alt="">
-					<span>维护</span>
-				</p>
-				<p>
-					<img src="../static/h6.png" alt="">
-					<span>报警</span>
-				</p>
-			</div>
+        <div class="menu-icon">
+            <p>
+                <img src="../static/h3.png" alt="">
+                <span>正常</span>
+            </p>
+            <p>
+                <img src="../static/h4.png" alt="">
+                <span>维护</span>
+            </p>
+            <p>
+                <img src="../static/h6.png" alt="">
+                <span>报警</span>
+            </p>
+        </div>
 
-		</div>
+    </div>
 
-		<div id="map"></div>
-		<img src="../static/selected.gif" id="sele">
+    <div id="map"></div>
+    <img src="../static/selected.gif" id="sele">
 
-		<div class="menu-rt">
-			<div class="layui-carousel menu-carousel" id="carousel" lay-filter="carousel">
-				<div carousel-item class="carousel-item">
-					<div>
-						<div class="sub-head">
-							<img src="../static/h1.png">
-							<p>实时文件到报显示</p>
-							<p class="sub-rt">
-								<span id="dataTime"></span>
-								<img src="../static/h2.png">
-							</p>
-						</div>
+    <div class="menu-rt">
+        <div class="layui-carousel menu-carousel" id="carousel" lay-filter="carousel">
+            <div carousel-item class="carousel-item">
+                <div>
+                    <div class="sub-head">
+                        <img src="../static/h1.png">
+                        <p>实时文件到报显示</p>
+                        <p class="sub-rt">
+                            <span id="dataTime"></span>
+                            <img src="../static/h2.png">
+                        </p>
+                    </div>
 
-						<div class="menu-top" id="rtTop">
-							<!-- <div>
+                    <div class="menu-top" id="rtTop">
+                        <!-- <div>
                                 <p>数据类型</p>
                                 <p>分钟数据</p>
                             </div>
@@ -155,229 +155,230 @@
                                 <p>实到</p>
                                 <p>10900</p>
                             </div> -->
-						</div>
+                    </div>
 
-						<div class="sub-head">
-							<img src="../static/h1.png">
-							<p>海区实时文件到报显示</p>
-							<p style="display: none;" class="sub-rt" id="subRt">
-								<button class="layui-btn" onclick="alrFn('./ring.html','数据到报显示','1320px')">
-									查看更多
-								</button>
-							</p>
-						</div>
+                    <div class="sub-head">
+                        <img src="../static/h1.png">
+                        <p>海区实时文件到报显示</p>
+                        <p style="display: none;" class="sub-rt" id="subRt">
+                            <button class="layui-btn" onclick="alrFn('./ring.html','数据到报显示','1320px')">
+                                查看更多
+                            </button>
+                        </p>
+                    </div>
 
-						<div class="menu-in">
-							<div class="menu-in-tle">
-								<p>站点</p>
-								<p>应到(个)</p>
-								<p>实到(个)</p>
-								<p>到报率(%)</p>
-							</div>
+                    <div class="menu-in">
+                        <div class="menu-in-tle">
+                            <p>站点</p>
+                            <p>应到(个)</p>
+                            <p>实到(个)</p>
+                            <p>到报率(%)</p>
+                        </div>
 
-							<div id="menuIn">
-								<!-- <div>
+                        <div id="menuIn">
+                            <!-- <div>
                                     <p>东海</p>
                                     <p>0</p>
                                     <p>0</p>
                                     <p>0</p>
                                 </div> -->
-							</div>
-						</div>
-						<div class="sub-head">
-							<img src="../static/h1.png">
-							<p>国家</p>
-							<p class="sub-rt">
-								<img src="../static/h2.png">
-							</p>
-						</div>
-						
-						<div class="layui-form menu-btm checks">
-							<div class="layui-form-item" id="checks"></div>
-						</div>
-						
-						<div class="sub-head">
-							<img src="../static/h1.png">
-							<p>地方</p>
-							<p class="sub-rt">
-								<img src="../static/h2.png">
-							</p>
-						</div>
-						
-						<div class="layui-form menu-btm check">
-							<div class="layui-form-item" id="check"></div>
-						</div>
-					</div>
+                        </div>
+                    </div>
+                    <div class="sub-head">
+                        <img src="../static/h1.png">
+                        <p>国家</p>
+                        <p class="sub-rt">
+                            <img src="../static/h2.png">
+                        </p>
+                    </div>
+
+                    <div class="layui-form menu-btm checks">
+                        <div class="layui-form-item" id="checks"></div>
+                    </div>
+
+                    <div class="sub-head">
+                        <img src="../static/h1.png">
+                        <p>地方</p>
+                        <p class="sub-rt">
+                            <img src="../static/h2.png">
+                        </p>
+                    </div>
+
+                    <div class="layui-form menu-btm check">
+                        <div class="layui-form-item" id="check"></div>
+                    </div>
+                </div>
 
 
-					<div>
-						<div class="sub-head">
-							<img src="../static/h1.png">
-							<p>
-								站点最新数据
-							</p>
-							<p class="sub-rt">
-								<span class="type">水文</span>
-								<span class="type">气象</span>
-								<img src="../static/h2.png">
-							</p>
-						</div>
+                <div>
+                    <div class="sub-head">
+                        <img src="../static/h1.png">
+                        <p>
+                            站点最新数据
+                        </p>
+                        <p class="sub-rt">
+                            <span class="type">水文</span>
+                            <span class="type">气象</span>
+                            <img src="../static/h2.png">
+                        </p>
+                    </div>
 
-						<div class="el-list" id="gauge">
-							<!-- <div class="gauge-item" id="gauge">1111</div>
+                    <div class="el-list" id="gauge">
+                        <!-- <div class="gauge-item" id="gauge">1111</div>
                         <div class="gauge-item">2222</div>
                         <div class="gauge-item">3333</div>
                         <div class="gauge-item">4444</div> -->
-						</div>
+                    </div>
 
-						<div class="el-line" id="elLine">
-							<div class="layui-form">
-								<div class="layui-form-item">
-									<div class="layui-inline lay_sele">
-										<select lay-filter="homeEl" id="homeEl">
-											<option>潮位</option>
-											<option>气压</option>
-											<option>气温</option>
-											<option>水温</option>
-											<option>湿度</option>
-											<option>盐度</option>
-											<option>风</option>
-											<option>波浪</option>
-										</select>
-									</div>
+                    <div class="el-line" id="elLine">
+                        <div class="layui-form">
+                            <div class="layui-form-item">
+                                <div class="layui-inline lay_sele">
+                                    <select lay-filter="homeEl" id="homeEl">
+                                        <option>潮位</option>
+                                        <option>气压</option>
+                                        <option>气温</option>
+                                        <option>水温</option>
+                                        <option>湿度</option>
+                                        <option>盐度</option>
+                                        <option>风</option>
+                                        <option>波浪</option>
+                                    </select>
+                                </div>
 
-									<div class="layui-inline lay_type add">日</div>
-									<div class="layui-inline lay_type">周</div>
-									<div class="layui-inline lay_type">月</div>
-								</div>
-							</div>
-							<div class="layui-icon" id="layuiIcon">&#xe622;</div>
-							<div id="line"></div>
-						</div>
-					</div>
-				</div>
-			</div>
-			<div class="menu-rt-btm">
-				<div class="sub-head">
-					<img src="../static/h1.png">
-					<p>图标</p>
-					<p class="sub-rt"><img src="../static/h2.png"></p>
-				</div>
+                                <div class="layui-inline lay_type add">日</div>
+                                <div class="layui-inline lay_type">周</div>
+                                <div class="layui-inline lay_type">月</div>
+                            </div>
+                        </div>
+                        <div class="layui-icon" id="layuiIcon">&#xe622;</div>
+                        <div id="line"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="menu-rt-btm">
+            <div class="sub-head">
+                <img src="../static/h1.png">
+                <p>图标</p>
+                <p class="sub-rt"><img src="../static/h2.png"></p>
+            </div>
 
-				<div class="menu-icon">
-					<p><img src="../static/icon11.png" alt=""><span>台站</span></p>
-					<p><img src="../static/icon21.png" alt=""><span>浮标</span></p>
-					<p><img src="../static/icon31.png" alt=""><span>雷达</span></p>
-					<p><img src="../static/icon41.png" alt=""><span>志愿船</span></p>
-					<p><img src="../static/icon51.png" alt=""><span>GNSS</span></p>
-				</div>
-			</div>
-		</div>
+            <div class="menu-icon">
+                <p><img src="../static/icon11.png" alt=""><span>台站</span></p>
+                <p><img src="../static/icon21.png" alt=""><span>浮标</span></p>
+                <p><img src="../static/icon31.png" alt=""><span>雷达</span></p>
+                <p><img src="../static/icon41.png" alt=""><span>志愿船</span></p>
+                <p><img src="../static/icon51.png" alt=""><span>GNSS</span></p>
+            </div>
+        </div>
+    </div>
 
-		<div class="menu_list" name="level3">
-			<div class="menu_btn">
-				<p>故障查询</p>
-				<div class="menu_hide">
-					<p onclick="alrFn('./fault_r.html','实时故障统计')">实时故障统计</p>
-					<p onclick="alrFn('./fault_d.html','历史故障统计')">历史故障统计</p>
-				</div>
-			</div>
-			<div class="menu_btn">
-				<p>数据查询</p>
-				<div class="menu_hide">
-					<p onclick="alrFn('./rate.html','台站查询')">台站查询</p>
-					<p onclick="alrFn('./buoy.html','浮标查询')">浮标查询</p>
-					<p onclick="alrFn('./radar.html','雷达查询')">雷达查询</p>
-					<p onclick="alrFn('./gps.html','GNSS查询')">GNSS查询</p>
-					<p onclick="alrFn('./ship.html','志愿船查询')">志愿船查询</p>
-					<p onclick="alrFn('./petr.html','石油平台查询')">石油平台查询</p>
-				</div>
-			</div>
+    <div class="menu_list" name="level3">
+        <div class="menu_btn">
+            <p>故障查询</p>
+            <div class="menu_hide">
+                <p onclick="alrFn('./fault_r.html','实时故障统计')">实时故障统计</p>
+                <p onclick="alrFn('./fault_d.html','历史故障统计')">历史故障统计</p>
+            </div>
+        </div>
+        <div class="menu_btn">
+            <p>数据查询</p>
+            <div class="menu_hide">
+                <p onclick="alrFn('./rate.html','台站查询')">台站查询</p>
+                <p onclick="alrFn('./buoy.html','浮标查询')">浮标查询</p>
+                <p onclick="alrFn('./radar.html','雷达查询')">雷达查询</p>
+                <p onclick="alrFn('./gps.html','GNSS查询')">GNSS查询</p>
+                <p onclick="alrFn('./ship.html','志愿船查询')">志愿船查询</p>
+                <p onclick="alrFn('./petr.html','石油平台查询')">石油平台查询</p>
+            </div>
+        </div>
 
-			<div class="menu_btn" name="level2">
-				<p id="load">报告下载</p>
-			</div>
-			<div class="menu_btn" id="uniHide">
-				<p>系统设置</p>
-				<div class="menu_hide">
-					<p name="level2" onclick="alrFn('./site.html','站点信息','','680px')">站点信息</p>
-					<p onclick="alrFn('./info.html','人员信息','','680px')">人员信息</p>
-					<p name="level2" onclick="alrFn('./limit.html','权限管理','','680px')">权限管理</p>
-					<p name="level2" onclick="alrFn('./confs.html','传输配置','1320px','680px')">传输配置</p>
-				</div>
-			</div>
-		</div>
+        <div class="menu_btn" name="level2">
+            <p id="load">报告下载</p>
+        </div>
+        <div class="menu_btn" id="uniHide">
+            <p>系统设置</p>
+            <div class="menu_hide">
+                <p name="level2" onclick="alrFn('./site.html','站点信息','','680px')">站点信息</p>
+                <p onclick="alrFn('./info.html','人员信息','','680px')">人员信息</p>
+                <p name="level2" onclick="alrFn('./limit.html','权限管理','','680px')">权限管理</p>
+                <p name="level2" onclick="alrFn('./confs.html','传输配置','1320px','680px')">传输配置</p>
+                <p name="level2" onClick="alrFn('./log.html','操作日志','1320px')">操作日志</p>
+            </div>
+        </div>
+    </div>
 
-		<!-- <div class="iframe" id="iframe"><iframe src="./layHome.html" name="iframe" frameborder="0"></iframe></div>
+    <!-- <div class="iframe" id="iframe"><iframe src="./layHome.html" name="iframe" frameborder="0"></iframe></div>
 	<div class="iframe" id="iframes"><iframe src="./layHomes.html" frameborder="0"></iframe></div> -->
 
-		<!-- 月报下载 -->
-		<form class="layui-form month-box" id="monthDown">
-			<div class="layui-form-item">
-				<label class="layui-form-label">站点类型:</label>
-				<div class="layui-input-block">
-					<input type="radio" name="class" value="country" title="国家站" checked>
-					<input type="radio" name="class" value="local" title="地方站">
-				</div>
-			</div>
+    <!-- 月报下载 -->
+    <form class="layui-form month-box" id="monthDown">
+        <div class="layui-form-item">
+            <label class="layui-form-label">站点类型:</label>
+            <div class="layui-input-block">
+                <input type="radio" name="class" value="country" title="国家站" checked>
+                <input type="radio" name="class" value="local" title="地方站">
+            </div>
+        </div>
 
-			<div class="layui-form-item">
-				<label class="layui-form-label">月报类型:</label>
-				<div class="layui-input-block">
-					<input type="radio" name="type" value="year" title="年度" checked lay-filter="monthType">
-					<input type="radio" name="type" value="season" title="季度" lay-filter="monthType">
-					<input type="radio" name="type" value="month" title="月度" lay-filter="monthType">
-				</div>
-			</div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">月报类型:</label>
+            <div class="layui-input-block">
+                <input type="radio" name="type" value="year" title="年度" checked lay-filter="monthType">
+                <input type="radio" name="type" value="season" title="季度" lay-filter="monthType">
+                <input type="radio" name="type" value="month" title="月度" lay-filter="monthType">
+            </div>
+        </div>
 
-			<div class="layui-form-item layItem year season" id="layItem">
-				<label class="layui-form-label">年份:</label>
-				<div class="layui-input-block lay_bg_color">
-					<input type="text" name="year" autocomplete="off" readonly id="yearTime" class="layui-input">
-				</div>
-			</div>
-			<!-- lay-verify="hdate"  -->
-			<div class="layui-form-item layItem month layui-hide">
-				<label class="layui-form-label">月份:</label>
-				<div class="layui-input-block lay_bg_color">
-					<input type="text" name="month" autocomplete="off" readonly id="monthTime" class="layui-input">
-				</div>
-			</div>
+        <div class="layui-form-item layItem year season" id="layItem">
+            <label class="layui-form-label">年份:</label>
+            <div class="layui-input-block lay_bg_color">
+                <input type="text" name="year" autocomplete="off" readonly id="yearTime" class="layui-input">
+            </div>
+        </div>
+        <!-- lay-verify="hdate"  -->
+        <div class="layui-form-item layItem month layui-hide">
+            <label class="layui-form-label">月份:</label>
+            <div class="layui-input-block lay_bg_color">
+                <input type="text" name="month" autocomplete="off" readonly id="monthTime" class="layui-input">
+            </div>
+        </div>
 
-			<div class="layui-form-item layItem season layui-hide">
-				<label class="layui-form-label">季度:</label>
-				<div class="layui-input-block lay_bg_color">
-					<select name="season">
-						<option value="第一季度">第一季度</option>
-						<option value="第二季度">第二季度</option>
-						<option value="第三季度">第三季度</option>
-						<option value="第四季度">第四季度</option>
-					</select>
-				</div>
-			</div>
-			<div class="layui-form-item">
-				<button class="layui-btn subbtn" lay-submit lay-filter="dateBtn">
-					下载
-				</button>
-			</div>
-		</form>
+        <div class="layui-form-item layItem season layui-hide">
+            <label class="layui-form-label">季度:</label>
+            <div class="layui-input-block lay_bg_color">
+                <select name="season">
+                    <option value="第一季度">第一季度</option>
+                    <option value="第二季度">第二季度</option>
+                    <option value="第三季度">第三季度</option>
+                    <option value="第四季度">第四季度</option>
+                </select>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <button class="layui-btn subbtn" lay-submit lay-filter="dateBtn">
+                下载
+            </button>
+        </div>
+    </form>
 
-	</body>
-	<script src="../assets/lib/layui/layui.js"></script>
-	<script src="../assets/lib/xmselect.js"></script>
-	<script src="../assets/lib/echarts.js"></script>
-	<script src="../assets/lib/china.js"></script>
-	<script>
-		layui
-			.config({
-				base: "../assets/",
-			})
-			.extend({
-				http: "api/http",
-				getFn: "lib/getFn",
-				map: "js/map",
-			})
-			.use("map");
-	</script>
+</body>
+<script src="../assets/lib/layui/layui.js"></script>
+<script src="../assets/lib/xmselect.js"></script>
+<script src="../assets/lib/echarts.js"></script>
+<script src="../assets/lib/china.js"></script>
+<script>
+    layui
+        .config({
+            base: "../assets/",
+        })
+        .extend({
+            http: "api/http",
+            getFn: "lib/getFn",
+            map: "js/map",
+        })
+        .use("map");
+</script>
 
 </html>
