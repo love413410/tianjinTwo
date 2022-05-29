@@ -171,15 +171,13 @@ layui.define(['http', "getFn"], function (e) {
         var data = data.field;
         data.faulCconfirm = data.faultType == 7 ? data.faul : data.faulCconfirm;
         delete data.faul;
-        parent.childFn();
-        // is ? parent.childFn() : parent.vm.childFn();
+        console.log(data)
         http({
             url: urls.homeclock,
             type: 'post',
             data: data,
             success: function (res) {
                 parent.childFn();
-                // is ? parent.childFn() : parent.vm.childFn();
             }
         });
     });

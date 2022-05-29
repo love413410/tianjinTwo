@@ -158,7 +158,7 @@ layui.define(["http", "getFn"], function (exports) {
                 map.on("zoom-end", function (e) {
                     clearTimeout(mapTimer);
                     zoom = e.level;
-                    zoom = e.level;
+                    console.log(zoom)
                     mapTimer = setTimeout(mapDataFn, 500);
                 });
                 getTypeFn();
