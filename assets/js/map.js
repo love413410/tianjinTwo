@@ -433,10 +433,10 @@ layui.define(["http", "getFn"], function (e) {
             geo: {
                 map: 'china',
                 zoom: zoom,
-                scaleLimit: {
-                    min: 1,
-                    max: 56
-                },
+                // scaleLimit: {
+                //     min: 1,
+                //     max: 56
+                // },
                 center: center,
                 label: {
                     emphasis: {
