@@ -19,6 +19,13 @@ layui.define(["http", "getFn"], function (e) {
     var level = sessionStorage.limit;
     $("[name=level" + level + "]").hide();
 
+    // var isShow = sessionStorage.isShow;
+    // if (isShow == 1) {
+    //     $("#menuList [hide='isShow']").show();
+    // } else {
+    //     $("#menuList [hide='isShow']").hide();
+    // };
+
     $("#toFn").click(function () {
         window.location.href = '../pages/home.html';
     });

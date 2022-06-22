@@ -19,6 +19,16 @@ layui.define(["http", "getFn"], function (exports) {
             var userName = sessionStorage.user;
             $("#userName").html(userName);
 
+            var level = sessionStorage.limit;
+            $("[name=level" + level + "]").hide();
+
+            // var isShow = sessionStorage.isShow;
+            // if (isShow == 1) {
+            //     $("#menuList [hide='isShow']").show();
+            // } else {
+            //     $("#menuList [hide='isShow']").hide();
+            // };
+
             var layUrl = {
                 layHomes: {
                     layHeight: "650px",
@@ -444,9 +454,14 @@ layui.define(["http", "getFn"], function (exports) {
                                 '</div>';
                         };
                         $("#menuIn").html(str);
+                        var type = res.type;
+                        type == 1 ? $("#subRt").show() : "";
+                    },
+                    complete: function () {
+                        seaDataTimer = setTimeout(getSeaDataFn, 60 * 1000);
                     }
                 });
-                seaDataTimer = setTimeout(getSeaDataFn, 60000);
+
             };
 
             // 右侧-仪表盘数据
