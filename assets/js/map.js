@@ -27,22 +27,21 @@ layui.define(["http", "getFn"], function (e) {
     // };
 
     $("#toFn").click(function () {
-        window.location.href = '../pages/home.html';
+        window.location.href = './home.html';
     });
     $("#user").click(function () {
         var isUser = getFn.isUserFn();
-        isUser ? alrFn('./user.html', '个人中心管理', '600px', '480px') : alrFn('./users.html', '个人中心管理',
-            '600px', '380px');
+        isUser ? layAlertFn('./home/user.html', '个人中心管理', '600px', '480px') : layAlertFn('./home/users.html', '个人中心管理', '600px', '380px');
     });
 
     var layUrl = {
         layHomes: {
             layHeight: "650px",
-            content: "../pages/layHomes.html"
+            content: "./home/layHomes.html"
         },
         layHome: {
             layHeight: "480px",
-            content: "../pages/layHome.html"
+            content: "./home/layHome.html"
         }
     };
 
@@ -72,8 +71,47 @@ layui.define(["http", "getFn"], function (e) {
         }
     };
 
+    // 添加选中的圈
+    var latlog = [];
+    var setImgFn = function () {
+
+        var c = myChart.convertToPixel('geo', latlog);
+        var l = c[0] - 30;
+        var t = c[1] - 30;
+        $("#sele").css({
+            "left": l + 'px',
+            "top": t + 'px'
+        });
+
+        // var c = myChart.convertToPixel('geo', latlog);
+        // var w = Math.ceil(zoom * 0.6),
+        //     h = Math.ceil(zoom * 0.6);
+
+        // var w = w < 30 ? 30 : w,
+        //     h = h < 30 ? 30 : h;
+
+        // var ew = Math.ceil(w / 2);
+        // var eh = Math.ceil(h / 2);
+
+        // var mw = c[0],
+        //     mh = c[1];
+
+        // var l = mw - ew;
+        // var t = mh - eh;
+
+        // $("#sele").css({
+        //     "width": w + 'px',
+        //     "height": h + 'px',
+        //     "left": l + 'px',
+        //     "top": t + 'px',
+        // });
+    };
+    $("#sele").on("click", function () {
+        clickFn();
+    });
+
     // 获取默认站点
-    var xm, siteId, latlog = [];
+    var xm, siteId;
 
     function initXmFn() {
         http({
@@ -96,10 +134,28 @@ layui.define(["http", "getFn"], function (e) {
                     },
                     filterable: true,
                     data: data,
-                    on: (e) => {
+                    on: function (e) {
                         siteId = e.change[0].id;
                         getEchartsFn();
-                        getDetaFn();
+                        // getDetaFn();
+
+                        http({
+                            url: urls.sitedeta,
+                            type: 'post',
+                            data: {
+                                id: siteId
+                            },
+                            success: function (res) {
+                                var data = res.data.fields;
+                                latlog = [data.lon, data.lat];
+                                myChart.setOption({
+                                    geo: {
+                                        center: latlog
+                                    }
+                                });
+                                setImgFn();
+                            }
+                        });
                         clickFn();
                     }
                 });
@@ -126,6 +182,7 @@ layui.define(["http", "getFn"], function (e) {
                 id: siteId
             },
             success: function (res) {
+                console.log(res)
                 var data = res.data.fields;
                 latlog = [data.lon, data.lat];
                 setImgFn();
@@ -324,35 +381,7 @@ layui.define(["http", "getFn"], function (e) {
         };
         return temp;
     };
-    // 添加选中的圈
-    function setImgFn() {
 
-        var c = myChart.convertToPixel('geo', latlog);
-        var w = Math.ceil(zoom * 0.6),
-            h = Math.ceil(zoom * 0.6);
-
-        var w = w < 30 ? 30 : w,
-            h = h < 30 ? 30 : h;
-
-        var ew = Math.ceil(w / 2);
-        var eh = Math.ceil(h / 2);
-
-        var mw = c[0],
-            mh = c[1];
-
-        var l = mw - ew;
-        var t = mh - eh;
-
-        $("#sele").css({
-            "width": w + 'px',
-            "height": h + 'px',
-            "left": l + 'px',
-            "top": t + 'px',
-        });
-    };
-    $("#sele").on("click", function () {
-        clickFn();
-    });
     // 左侧报警
     var rollTime, rollTimeout, rollSh = 40,
         rollSpeed = 30;
@@ -931,51 +960,45 @@ layui.define(["http", "getFn"], function (e) {
     inspFn();
 
     // 点击站点
-    var layDeta;
     function clickFn() {
-        layDeta ? layer.close(layDeta, function () {
-            layerFn();
-        }) : layerFn();
-    };
-
-    function layerFn() {
-        http({
-            url: urls.homeclock,
-            data: {
-                id: siteId
-            },
-            success: function (res) {
-                var data = res.data, type = res.type, title = data.station;
-                // var layHeight = type < 0 ? "480px" : "650px";
-                // var content = type < 0 ? '../pages/layHome.html?id=' + siteId :
-                //     '../pages/layHomes.html?id=' + siteId;
-                // var layHeight = "650px", content = '../pages/layHomes.html?is=1&id=' + siteId;
-                // if (type < 0) {
-                //     layHeight = "480px"; content = '../pages/layHome.html?id=' + siteId;
-                // };
-                var layItem = type < 0 ? layUrl.layHome : layUrl.layHomes;
-                var layHeight = layItem.layHeight,
-                    content = layItem.content + "?id=" + siteId;
-                layDeta = layer.open({
-                    type: 2,
-                    shade: 0,
-                    resize: false,
-                    title: title,
-                    area: ["355px", layHeight],
-                    skin: 'drop-demo lay-drop',
-                    offset: "150px",
-                    id: "drop-demo",
-                    content: content,
-                    success: function () {
-                        clearTimeout(inspTime);
-                    },
-                    cancel: function () {
-                        inspTime = setTimeout(inspFn, 500);
-                        layDeta = null
-                    }
-                });
-            }
-        })
+        layer.closeAll(function () {
+            http({
+                url: urls.homeclock,
+                data: {
+                    id: siteId
+                },
+                success: function (res) {
+                    var data = res.data, type = res.type, title = data.station;
+                    // var layHeight = type < 0 ? "480px" : "650px";
+                    // var content = type < 0 ? '../pages/layHome.html?id=' + siteId :
+                    //     '../pages/layHomes.html?id=' + siteId;
+                    // var layHeight = "650px", content = '../pages/layHomes.html?is=1&id=' + siteId;
+                    // if (type < 0) {
+                    //     layHeight = "480px"; content = '../pages/layHome.html?id=' + siteId;
+                    // };
+                    var layItem = type < 0 ? layUrl.layHome : layUrl.layHomes;
+                    var layHeight = layItem.layHeight,
+                        content = layItem.content + "?id=" + siteId;
+                    layer.open({
+                        type: 2,
+                        shade: 0,
+                        resize: false,
+                        title: title,
+                        area: ["355px", layHeight],
+                        skin: 'drop-demo lay-drop',
+                        offset: "150px",
+                        id: "drop-demo",
+                        content: content,
+                        success: function () {
+                            clearTimeout(inspTime);
+                        },
+                        cancel: function () {
+                            inspTime = setTimeout(inspFn, 500);
+                        }
+                    });
+                }
+            })
+        });
     };
 
     // 点击月报下载
@@ -1075,19 +1098,23 @@ layui.define(["http", "getFn"], function (e) {
 
     $("#layuiIcon").click(function () {
         var url = "./line.html?id=" + siteId;
-        alrFn(url, "数据折线图");
+        layAlertFn(url, "数据折线图");
     });
 
     // 弹出页面调取封装的
-    window.alrFn = function (u, t, w, h) {
-        var url = u || '',
-            title = t || !1,
-            width = w || "100%",
-            height = h || "635px";
-        layAlertFn(url, title, width, height);
-    };
+    // window.layAlertFn = function (u, t, w, h) {
+    //     var url = u || '',
+    //         title = t || !1,
+    //         width = w || "100%",
+    //         height = h || "635px";
+    //     layAlertFn(url, title, width, height);
+    // };
     // 弹出页面封装
-    function layAlertFn(url, title, width, height) {
+    window.layAlertFn = function (url, title, width, height) {
+        var url = url || '',
+            title = title || !1,
+            width = width || "100%",
+            height = height || "635px";
         layer.closeAll(function () {
             layer.open({
                 type: 2,

@@ -1,0 +1,96 @@
+.layui-table-view {
+    border-color: #131a5f !important;
+}
+
+.layui-table-view * {
+    border-color: #131a5f !important;
+    background-color: rgba(8, 19, 44, 1) !important;
+}
+
+.layui-table-view .layui-table tr,
+.layui-table-view .layui-table td {
+    background-color: rgba(0, 0, 0, 0) !important;
+}
+
+.layui-table thead tr {
+    color: #fff !important;
+    background-color: #0e1e44;
+}
+
+.layui-table {
+    color: #fff;
+    background-color: rgba(8, 19, 44, 1);
+}
+
+.layui-table-cell {
+    height: 32px;
+    line-height: 32px;
+    text-align: center;
+}
+
+.layui-table tbody tr:hover,
+.layui-table-hover {
+    background-color: rgba(8, 19, 44, 1);
+}
+
+.layui-icon-down {
+    background-color: #fff !important;
+}
+
+.layui-table-page {
+    text-align: right;
+}
+
+.layui-laypage input {
+    color: #fff !important;
+    border: 1px solid #131a5f !important;
+}
+
+.layui-laypage .layui-input:hover {
+    border-color: #131a5f !important;
+}
+
+.layui-laypage button {
+    color: #fff !important;
+    background-color: #5a98de;
+}
+
+.layui-laypage .layui-laypage-btn {
+    color: #fff !important;
+    background-color: #5a98de !important;
+}
+
+.layui-laypage a,
+.layui-laypage-count {
+    color: #fff !important;
+}
+
+.layui-laypage .layui-laypage-curr .layui-laypage-em,
+.layui-laypage .layui-laypage-curr em {
+    background-color: #5a98de !important;
+}
+
+.layui-laypage .layui-laypage-limits {
+    display: none !important;
+}
+
+.layui-table-view .layui-table-total .layui-table td {
+    background-color: #0e1e44 !important;
+}
+
+.layui-table-view .layui-btn {
+    background-color: #009688 !important;
+    margin-left: 5px;
+}
+
+.layui-table-view .layui-btn-normal {
+    background-color: #1e9fff !important;
+}
+
+.layui-table-view .layui-btn-warm {
+    background-color: #ffb800 !important;
+}
+
+.layui-table-view .layui-btn-danger {
+    background-color: #ff5722 !important;
+}

@@ -1,0 +1,27 @@
+body {
+    overflow: hidden;
+}
+
+.layui-fluid {
+    padding: 0px;
+}
+
+.layui-input {
+    color: #fff;
+    border: none;
+    background-color: #112350;
+}
+
+/* tab1*/
+.layui-form {
+    color: #fff;
+    box-sizing: border-box;
+}
+
+.userForm {
+    padding: 37px 10px;
+}
+
+.userForm .subbtn {
+    margin-left: 30px;
+}

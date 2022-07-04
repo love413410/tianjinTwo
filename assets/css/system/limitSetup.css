@@ -1,0 +1,84 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+html,
+body {
+    width: 100%;
+    height: 100%;
+}
+
+body {
+    padding: 15px;
+    box-sizing: border-box;
+    box-shadow: 0px 0px 15px 0px #005ca0 inset;
+    background-color: #08132c;
+    overflow: hidden;
+}
+
+.layui-form .layui-form-item {
+    color: #fff;
+    margin-bottom: 8px;
+}
+
+.layui-form .layui-form-label {
+    width: 60px;
+    padding: 9px 0;
+}
+
+.layui-form .layui-input-block {
+    margin-left: 60px;
+}
+
+.layui-form .layui-input {
+    color: #fff;
+    border: none;
+    background-color: #112350;
+}
+
+.tree {
+    width: 310px;
+    height: 230px;
+    border: 1px solid #131a5f;
+    box-sizing: border-box;
+    overflow: hidden;
+}
+
+.elemTree {
+    width: 330px;
+    height: 230px;
+    overflow: hidden;
+    overflow-y: auto;
+}
+
+.check {
+    width: 310px;
+    height: 100px;
+    padding: 0 20px;
+    border: 1px solid #131a5f;
+    box-sizing: border-box;
+    overflow: hidden;
+}
+
+#check,
+#checks {
+    width: 328px;
+    height: 100px;
+    overflow: hidden;
+    overflow-y: auto;
+}
+.check_item{
+    width: 268px;
+}
+
+#check .layui-inline,
+#checks .layui-inline {
+    display: inline-block;
+    width: 40%;
+    margin-right: 0px;
+    margin-bottom: 0;
+}
+.layui-form-checkbox[lay-skin="primary"] span{
+    color: #fff;
+}

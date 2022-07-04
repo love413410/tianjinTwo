@@ -79,7 +79,7 @@
                 各站故障信息
             </p>
             <p class="sub-rt">
-                <button type="button" class="layui-btn" onclick="alrFn('./fault_r.html','实时故障统计')">
+                <button type="button" class="layui-btn" onclick="layAlertFn('./fault/fault_r.html','实时故障统计')">
                     查看更多
                 </button>
             </p>
@@ -161,7 +161,7 @@
                         <img src="../static/h1.png">
                         <p>海区实时文件到报显示</p>
                         <p style="display: none;" class="sub-rt" id="subRt">
-                            <button class="layui-btn" onclick="alrFn('./ring.html','数据到报显示','1320px')">
+                            <button class="layui-btn" onclick="layAlertFn('./ring.html','台站观测数据文件到报显示','1320px')">
                                 查看更多
                             </button>
                         </p>
@@ -278,19 +278,19 @@
         <div class="menu_btn">
             <p>故障查询</p>
             <div class="menu_hide">
-                <p onclick="alrFn('./fault_r.html','实时故障统计')">实时故障统计</p>
-                <p onclick="alrFn('./fault_d.html','历史故障统计')">历史故障统计</p>
+                <p onClick="layAlertFn('./fault/fault_r.html','实时故障统计')">实时故障统计</p>
+                <p onClick="layAlertFn('./fault/fault_d.html','历史故障统计')">历史故障统计</p>
             </div>
         </div>
         <div class="menu_btn">
             <p>数据查询</p>
             <div class="menu_hide">
-                <p onclick="alrFn('./rate.html','台站查询')">台站查询</p>
-                <p onclick="alrFn('./buoy.html','浮标查询')">浮标查询</p>
-                <p onclick="alrFn('./radar.html','雷达查询')">雷达查询</p>
-                <p onclick="alrFn('./gps.html','GNSS查询')">GNSS查询</p>
-                <p onclick="alrFn('./ship.html','志愿船查询')">志愿船查询</p>
-                <p onclick="alrFn('./petr.html','石油平台查询')">石油平台查询</p>
+                <p onClick="layAlertFn('./query/rate.html','台站查询')">台站查询</p>
+                <p onClick="layAlertFn('./query/buoy.html','浮标查询')">浮标查询</p>
+                <p onClick="layAlertFn('./query/radar.html','雷达查询')">雷达查询</p>
+                <p onClick="layAlertFn('./query/gps.html','GNSS查询')">GNSS查询</p>
+                <p onClick="layAlertFn('./query/ship.html','志愿船查询')">志愿船查询</p>
+                <p onClick="layAlertFn('./query/petr.html','石油平台查询')">石油平台查询</p>
             </div>
         </div>
 
@@ -300,11 +300,11 @@
         <div class="menu_btn" id="uniHide">
             <p>系统设置</p>
             <div class="menu_hide">
-                <p name="level2" onclick="alrFn('./site.html','站点信息','','680px')">站点信息</p>
-                <p onclick="alrFn('./info.html','人员信息','','680px')">人员信息</p>
-                <p name="level2" onclick="alrFn('./limit.html','权限管理','','680px')">权限管理</p>
-                <p name="level2" onclick="alrFn('./confs.html','传输配置','1320px','680px')">传输配置</p>
-                <p name="level2" onClick="alrFn('./log.html','操作日志','1320px')">操作日志</p>
+                <p name="level2" onClick="layAlertFn('./system/site.html','站点信息','','680px')">站点信息</p>
+                <p onClick="layAlertFn('./system/info.html','人员信息','','680px')">人员信息</p>
+                <p name="level2" onClick="layAlertFn('./system/limit.html','权限管理','','680px')">权限管理</p>
+                <p name="level2" onClick="layAlertFn('./confs.html','传输配置','1320px','680px')">传输配置</p>
+                <p name="level2" onClick="layAlertFn('./system/log.html','操作日志','1320px')">操作日志</p>
             </div>
         </div>
     </div>
@@ -362,7 +362,6 @@
             </button>
         </div>
     </form>
-
 </body>
 <script src="../assets/lib/layui/layui.js"></script>
 <script src="../assets/lib/xmselect.js"></script>

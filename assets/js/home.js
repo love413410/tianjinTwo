@@ -32,11 +32,11 @@ layui.define(["http", "getFn"], function (exports) {
             var layUrl = {
                 layHomes: {
                     layHeight: "650px",
-                    content: "../pages/layHomes.html"
+                    content: "./home/layHomes.html"
                 },
                 layHome: {
                     layHeight: "480px",
-                    content: "../pages/layHome.html"
+                    content: "./home/layHome.html"
                 }
             };
 
@@ -90,6 +90,7 @@ layui.define(["http", "getFn"], function (exports) {
             };
             getInspFn();
 
+
             // 初始化xmselect
             var siteId, map, zoom = 6, center;
             var xm;
@@ -106,8 +107,23 @@ layui.define(["http", "getFn"], function (exports) {
                             filterable: true, data: data,
                             on: function (e) {
                                 siteId = e.change[0].id;
+
+                                http({
+                                    url: urls.sitedeta,
+                                    type: 'post',
+                                    data: { id: siteId },
+                                    async: false,
+                                    success: function (res) {
+                                        var mapItem = res.data.fields;
+
+                                        var point = new Point([mapItem.lon, mapItem.lat]);
+                                        console.log(mapItem)
+                                        map.centerAndZoom(point);
+                                    }
+                                });
+
                                 getEchartsFn();
-                                clickFn()
+                                clickFn();
                             }
                         });
                         http({
@@ -124,35 +140,30 @@ layui.define(["http", "getFn"], function (exports) {
             };
             initXmFn();
 
-            var layDeta;
             function clickFn() {
-                layDeta ? layer.close(layDeta, function () {
-                    layerFn()
-                }) : layerFn();
-            };
-
-            function layerFn() {
-                http({
-                    url: urls.homeclock,
-                    data: { id: siteId },
-                    success: function (res) {
-                        var data = res.data, type = res.type, title = data.station;
-                        // var layHeight = "650px", content = '../pages/layHomes.html?id=' + siteId;
-                        // if (type < 0) {
-                        //     layHeight = "480px"; content = '../pages/layHome.html?id=' + siteId;
-                        // };
-                        var layItem = type < 0 ? layUrl.layHome : layUrl.layHomes;
-                        var layHeight = layItem.layHeight,
-                            content = layItem.content + "?id=" + siteId;
-                        layDeta = layer.open({
-                            type: 2, shade: 0, resize: false,
-                            title: title, area: ["355px", layHeight],
-                            skin: 'drop-demo lay-drop', offset: "150px",
-                            id: "drop-demo", content: content,
-                            success: function () { clearInterval(inspTimer); },
-                            cancel: function () { setTimeout(getInspFn, 500); layDeta = null }
-                        });
-                    }
+                layer.closeAll(function () {
+                    http({
+                        url: urls.homeclock,
+                        data: { id: siteId },
+                        success: function (res) {
+                            var data = res.data, type = res.type, title = data.station;
+                            var layItem = type < 0 ? layUrl.layHome : layUrl.layHomes;
+                            var layHeight = layItem.layHeight,
+                                content = layItem.content + "?id=" + siteId;
+                            layer.open({
+                                type: 2, shade: 0, resize: false,
+                                title: title, area: ["355px", layHeight],
+                                skin: 'drop-demo lay-drop', offset: "150px",
+                                id: "drop-demo", content: content,
+                                success: function () {
+                                    clearInterval(inspTimer);
+                                },
+                                cancel: function () {
+                                    setTimeout(getInspFn, 500);
+                                }
+                            });
+                        }
+                    });
                 });
             };
 
@@ -169,7 +180,6 @@ layui.define(["http", "getFn"], function (exports) {
                 map.on("zoom-end", function (e) {
                     clearTimeout(mapTimer);
                     zoom = e.level;
-                    console.log(zoom)
                     mapTimer = setTimeout(mapDataFn, 500);
                 });
                 getTypeFn();
@@ -605,14 +615,12 @@ layui.define(["http", "getFn"], function (exports) {
                 var url = "./line.html?id=" + siteId;
                 layAlertFn(url, "数据折线图");
             };
-
-
             window.toFn = function () {
-                window.location.href = '../pages/map.html';
+                window.location.href = './map.html';
             };
             window.userFn = function () {
                 var isUser = getFn.isUserFn();
-                isUser ? layAlertFn('./user.html', '个人中心管理', '600px', '480px') : layAlertFn('./users.html', '个人中心管理', '600px', '380px');
+                isUser ? layAlertFn('./home/user.html', '个人中心管理', '600px', '480px') : layAlertFn('./home/users.html', '个人中心管理', '600px', '380px');
             };
             window.outFn = function () {
                 window.location.href = '../index.html'

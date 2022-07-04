@@ -1,0 +1,60 @@
+* {
+    margin: 0;
+    padding: 0;
+    /* font-size: 16px; */
+}
+
+.lt {
+    float: left;
+}
+
+.rt {
+    float: right;
+}
+
+dl,
+li {
+    list-style: none;
+}
+
+i {
+    font-style: normal;
+}
+
+/* 检索框 */
+.retr {
+    height: 40px;
+    text-align: center;
+}
+
+.retr .layui-form-item {
+    margin-bottom: 0;
+}
+
+.retr .layui-inline {
+    margin: 0;
+}
+
+.retr .layui-input-inline {
+    width: auto;
+    margin-right: 0;
+}
+
+.retr .retr_time {
+    width: 200px;
+}
+
+.retr .retr_select {
+    width: 150px;
+}
+
+.retr .retr_count {
+    height: 40px;
+    text-align: left;
+}
+
+.retr .layui-input {
+    color: #fff;
+    border: none;
+    background-color: #112350;
+}

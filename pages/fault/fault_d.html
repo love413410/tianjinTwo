@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8" />
+    <title>故障统计</title>
+    <link rel="stylesheet" href="../../assets/lib/layui/css/layui.css" />
+    <link rel="stylesheet" href="../../assets/css/lib.css" />
+    <style>
+        .retr .lay_sele {
+            width: 120px;
+        }
+
+        .xmSele {
+            width: 150px !important;
+        }
+
+        .xmSele xm-select {
+            color: #fff;
+            border: none;
+            background-color: #112350;
+            text-align: left;
+        }
+
+        .lay-ipt {
+            width: 100px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="layui-fluid">
+        <div class="layui-row layui-form retr">
+            <div class="layui-form-item">
+                <input type="hidden" value="duration" name="style" />
+                <div class="layui-inline">
+                    <div class="layui-input-inline lay_sele lay_bg_color">
+                        <select id="sele" lay-filter="layFilt">
+                            <option value="1">国家</option>
+                            <option value="2">地方</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <div class="layui-input-inline lay_sele lay_bg_color">
+                        <select id="oneId" name="type"></select>
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <div class="layui-input-inline lay_sele lay_bg_color">
+                        <select id="twoId" name="ofCenter"></select>
+                    </div>
+                </div>
+
+                <div class="layui-inline">
+                    <div class="layui-input-inline lay_sele lay_bg_color">
+                        <select id="faultType" name="faultType"></select>
+                    </div>
+                </div>
+
+                <div class="layui-inline">
+                    <div class="layui-input-inline lay_bg_color">
+                        <div class="layui-input-inline lay_time lay_bg_color">
+                            <!-- <input type="text" id="date" name="date" required lay-verify="date" autocomplete="off"
+							placeholder="请选择日期范围" class="layui-input" /> -->
+                            <input type="text" id="date" name="date" readonly class="layui-input" />
+                        </div>
+                    </div>
+                </div>
+
+                <div class="layui-inline">
+                    <div class="layui-input-inline lay_bg_color xmSele">
+                        <div id="xmSelect"></div>
+                    </div>
+                </div>
+
+                <!-- <div class="layui-inline">
+						<div class="layui-input-inline lay_bg_color">
+							<input type="text" name="name" autocomplete="off" placeholder="请输入站名" class="layui-input lay-ipt" />
+						</div>
+					</div> -->
+                <div class="layui-inline">
+                    <div class="layui-input-inline lay_bg_color">
+                        <input type="text" name="time" lay-verify="time" autocomplete="off" placeholder="持续时长"
+                            title="持续时长" class="layui-input lay-ipt" />
+                    </div>
+                </div>
+
+                <div class="layui-inline">
+                    <div class="layui-input-inline">
+                        <button class="layui-btn subbtn" lay-submit lay-filter="subBtn">
+                            查询
+                        </button>
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <div class="layui-input-inline">
+                        <button class="layui-btn subbtn" lay-submit lay-filter="expBtn">
+                            导出
+                        </button>
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <div class="layui-input-inline">
+                        <button class="layui-btn subbtn" id="deleBtn">清除</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="layui-hide" id="table" lay-filter="table"></div>
+
+        <script type="text/html" id="toolbar">
+        <a class="btn" lay-event="1">
+          <img src="../../static/2.png" title="修改信息" />
+        </a>
+        {{#if(d.fields.state!=2){}}
+        <a class="btn" lay-event="2">
+          <img src="../../static/4.png" title="删除" />
+        </a>
+        {{#}}}
+      </script>
+    </div>
+</body>
+<script src="../../assets/lib/layui/layui.js"></script>
+<script src="../../assets/lib/xmselect.js"></script>
+<script>
+    layui.config({
+        base: "../../assets/",
+    }).extend({
+        http: "api/http",
+        load: "api/load",
+        getFn: "lib/getFn",
+        fault_d: "js/fault/fault_d",
+    }).use("fault_d");
+</script>
+
+</html>

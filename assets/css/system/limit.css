@@ -1,0 +1,94 @@
+body {
+    width: 100%;
+    height: 100%;
+    padding: 0 15px;
+    box-sizing: border-box;
+    background-color: #08132c;
+}
+
+.layui-icon {
+    color: #fff;
+    cursor: pointer;
+}
+
+/* 分配权限 */
+body .lay-drops .layui-layer-title {
+    background: #5a98de;
+}
+
+#limitForm {
+    display: none;
+}
+
+.limit-form {
+    height: 560px;
+    padding: 10px;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+.limit-form .layui-form-item {
+    margin-bottom: 8px;
+}
+
+.limit-form .layui-form-label {
+    width: 60px;
+    padding: 9px 0;
+}
+
+.limit-form .layui-input-block {
+    margin-left: 60px;
+}
+
+.tree {
+    height: 230px;
+    border: 1px solid #e6e6e6;
+    box-sizing: border-box;
+    overflow: hidden;
+}
+
+#elemTree {
+    height: 230px;
+    padding-right: 20px;
+    box-sizing: border-box;
+    overflow: hidden;
+    overflow-y: auto;
+}
+
+.check {
+    height: 100px;
+    border: 1px solid #e6e6e6;
+    box-sizing: border-box;
+    overflow: hidden;
+}
+
+#check,
+#checks {
+    width: 340px;
+    height: 130px;
+    padding-left: 10px;
+    padding-right: 20px;
+
+    box-sizing: border-box;
+    overflow: hidden;
+    overflow-y: auto;
+}
+
+#check .layui-inline,
+#checks .layui-inline {
+    width: 50%;
+    margin-right: 0px;
+}
+
+.obtain {
+    width: 60px;
+    background-color: #5a98de;
+    margin: 10px 0 0 15px;
+}
+
+.toolbar_img {
+    width: 16px;
+    height: 16px;
+    margin: 0 3px;
+}

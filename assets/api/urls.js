@@ -1,6 +1,6 @@
 layui.define(function (exports) {
 	var baseUrl = 'http://192.168.1.178:8004';
-	// var baseUrl = window.location.origin;
+	// var baseUrl = 'http://41.3.0.24:8008';
 	exports('urls', {
 		login: baseUrl + '/limit/login/',
 

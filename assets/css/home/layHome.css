@@ -1,0 +1,48 @@
+html,
+body {
+    width: 355px;
+    height: 100%;
+}
+
+body {
+    padding: 10px 0;
+    box-sizing: border-box;
+    overflow: hidden;
+}
+
+.layui-form {
+    width: 375px;
+    height: 420px;
+    overflow-y: auto;
+}
+
+.layui-form .layui-form-item {
+    width: 355px;
+    padding: 0 12px;
+    box-sizing: border-box;
+    margin-bottom: 7px;
+}
+
+.layui-form .layui-form-label {
+    width: 90px;
+    padding: 9px 5px;
+    color: #fff;
+}
+
+.layui-form .layui-input-block {
+    width: 220px;
+    min-height: 30px;
+    font-size: 14px;
+    margin-left: 100px;
+}
+
+.layui-form .layui-input {
+    line-height: 38px;
+    color: #fff;
+    border: none;
+    overflow: hidden;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    background: #112350;
+}

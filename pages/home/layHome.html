@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="../../assets/lib/layui/css/layui.css" />
+    <link rel="stylesheet" type="text/css" href="../../assets/css/home/layHome.css" />
+</head>
+
+<body>
+    <div class="layui-form" id="content">
+        <div class="layui-form-item">
+            <label class="layui-form-label">站名:</label>
+            <div class="layui-input-block">
+                <input type="text" id="station" name="station" disabled class="layui-input" />
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">位置:</label>
+            <div class="layui-input-block">
+                <input type="text" id="seat" name="seat" disabled class="layui-input" />
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">IP信息:</label>
+            <div class="layui-input-block">
+                <input type="text" id="ip" name="ip" disabled class="layui-input" />
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">数据到报时间:</label>
+            <div class="layui-input-block">
+                <input type="text" id="newTime" name="newTime" disabled class="layui-input" />
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">分钟数据文件:</label>
+            <div class="layui-input-block">
+                <input type="text" id="minuteFile" name="minuteFile" disabled class="layui-input" />
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">整点数据文件:</label>
+            <div class="layui-input-block">
+                <input type="text" id="hourFile" name="hourFile" disabled class="layui-input" />
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">正点数据文件:</label>
+            <div class="layui-input-block">
+                <input type="text" id="punctualityFile" name="punctualityFile" disabled class="layui-input" />
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">最新状态时间:</label>
+            <div class="layui-input-block">
+                <input type="text" id="linkTime" name="linkTime" disabled class="layui-input" />
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">最新状态时间:</label>
+            <div class="layui-input-block">
+                <input type="text" id="linkTime" name="linkTime" disabled class="layui-input" />
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">最新状态时间:</label>
+            <div class="layui-input-block">
+                <input type="text" id="linkTime" name="linkTime" disabled class="layui-input" />
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">备注:</label>
+            <div class="layui-input-block">
+                <input type="text" id="description" name="description" disabled class="layui-input" />
+            </div>
+        </div>
+    </div>
+
+</body>
+<script src="../../assets/lib/layui/layui.js"></script>
+<script>
+    layui.config({
+        base: "../../assets/",
+    }).extend({
+        http: "api/http",
+        getFn: "lib/getFn",
+        layHome: "js/home/layHome",
+    }).use("layHome");
+</script>
+
+</html>

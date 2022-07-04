@@ -35,17 +35,8 @@ layui.extend({
             },
             error: function (err) {
                 var status = err.status;
-                if (status == 400) {
-                    val.error && val.error(status);
-                    layer.msg(err.responseJSON.msg);
-                    return false;
-                } else if (status == 404) {
-                    val.error && val.error(status);
-                    layer.msg("请求地址不存在");
-                    return false;
-                } else if (status == 502) {
-                    // var url = window.location.origin + '/static/dist/index.html';
-					var url = window.location.origin + '/dist/index.html';
+                if (status == 502) {
+                    var url = window.location.origin + '/dist/index.html';
                     window.top.location.href = url;
                 } else {
                     val.error && val.error(status);

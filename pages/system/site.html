@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8" />
+    <title>站点信息</title>
+    <link rel="stylesheet" href="../../assets/lib/layui/css/layui.css" />
+    <link rel="stylesheet" href="../../assets/css/lib.css" />
+    <link rel="stylesheet" href="../../assets/css/common/layer.css" />
+    <link rel="stylesheet" href="../../assets/css/system/site.css" />
+</head>
+
+<body>
+    <div class="layui-fluid">
+        <div class="layui-row layui-form retr">
+            <div class="layui-form-item">
+                <div class="layui-inline">
+                    <div class="layui-input-inline lay_sele lay_bg_color">
+                        <select id="sele" lay-filter="layFilt">
+                            <option value="1">国家</option>
+                            <option value="2">地方</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="layui-inline">
+                    <div class="layui-input-inline lay_sele lay_bg_color">
+                        <select id="oneId" name="type" lay-filter="layOneFilt"></select>
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <div class="layui-input-inline lay_sele lay_bg_color">
+                        <select id="twoId" name="ofAreaCenter" lay-filter="layTwoFilt"></select>
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <div class="layui-input-inline lay_sele lay_bg_color">
+                        <select id="threeId" name="ofArea" lay-filter="layThrFilt"></select>
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <div class="layui-input-inline lay_sele lay_bg_color">
+                        <select id="fourId" name="ofCenter"></select>
+                    </div>
+                </div>
+
+                <!-- <div class="layui-inline">
+					<div class="layui-input-inline lay_sele">
+						<select id="fiveId" name="mtype"></select>
+					</div>
+				</div> -->
+
+                <div class="layui-inline">
+                    <div class="layui-input-inline lay_sele lay_bg_color">
+                        <input type="text" name="name" autocomplete="off" placeholder="请输入站点名" class="layui-input" />
+                    </div>
+                </div>
+
+
+                <div class="layui-inline">
+                    <div class="layui-input-inline">
+                        <button class="layui-btn subbtn" lay-submit lay-filter="subBtn">
+                            查询
+                        </button>
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <div class="layui-input-inline">
+                        <button class="layui-btn subbtn" lay-submit lay-filter="expBtn">
+                            导出
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="layui-row lay-count">
+            <button class="layui-btn subbtn" onclick="addData()">
+                添加站点
+            </button>
+            <button class="layui-btn subbtn" onclick="impFn()">
+                上传数据类型
+            </button>
+        </div>
+
+        <div class="layui-hide" id="table" lay-filter="table"></div>
+    </div>
+</body>
+
+<script type="text/html" id="toolbar">
+    {{#if(d.fields.default==1){}}
+    <img src="../../static/51.png" title="默认站点" class="toolbar_img"/>
+    {{#}if(d.fields.default !=1){}}
+    <img src="../../static/52.png" title="设置默认站点" lay-event="setup" class="toolbar_img"/>
+    {{#}}}
+    <img src="../../static/2.png" title="修改站点" lay-event="change" class="toolbar_img"/>
+    <img src="../../static/4.png" title="删除站点" lay-event="delete" class="toolbar_img"/>
+</script>
+
+<!-- 上传数据类型 -->
+<div id="impDemo">
+    <i class="layui-icon"></i>
+    <p>点击上传EXCEL文件</p>
+</div>
+
+<script src="../../assets/lib/layui/layui.js"></script>
+<script>
+    layui.config({
+        base: "../../assets/",
+    }).extend({
+        http: "api/http",
+        load: "api/load",
+        site: "js/system/site",
+    }).use("site");
+</script>
+
+</html>

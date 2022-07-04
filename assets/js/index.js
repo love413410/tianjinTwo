@@ -1,7 +1,29 @@
 layui.define(["http"], function (e) {
     var http = layui.http,
         urls = layui.urls;
+
     var form = layui.form;
+
+
+    form.on('submit(login)', function (data) {
+        data = data.field;
+        http({
+            url: urls.login,
+            type: 'post',
+            data: {
+                userName: data.username,
+                passWord: data.password
+            },
+            success: function (res) {
+                sessionStorage.clear();
+                sessionStorage.user = data.username;
+                sessionStorage.token = res.token;
+                sessionStorage.limit = res.limit;
+                window.location.href = './pages/home.html';
+            }
+        });
+        return false;
+    });
 
     function trimFn(name) {
         var reg = /\S/;
@@ -12,25 +34,6 @@ layui.define(["http"], function (e) {
             return reg.test(name);
         }
     };
-    form.on('submit(login)', function (data) {
-        http({
-            url: urls.login,
-            type: 'post',
-            data: {
-                userName: data.field.user,
-                passWord: data.field.pass
-            },
-            success: function (res) {
-                sessionStorage.clear();
-                sessionStorage.user = data.field.user;
-                sessionStorage.token = res.token;
-                sessionStorage.limit = res.limit;
-                window.location.href = './pages/home.html';
-            }
-        });
-        return false;
-    });
-
     form.verify({
         user: function (val) {
             if (!trimFn(val)) {

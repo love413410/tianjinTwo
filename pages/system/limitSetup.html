@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8" />
+    <title>权限分配</title>
+    <link rel="stylesheet" href="../../assets/lib/layui/css/layui.css" />
+    <link rel="stylesheet" href="../../assets/lib/dtree/dtree.css">
+    <link rel="stylesheet" href="../../assets/lib/dtree/font/dtreefont.css">
+    <link rel="stylesheet" href="../../assets/css/system/limitSetup.css" />
+</head>
+
+<body>
+    <div class="layui-form" lay-filter="limitForm">
+        <input type="hidden" id="id" name="id">
+        <div class="layui-form-item">
+            <label class="layui-form-label">账号:</label>
+            <div class="layui-input-block">
+                <input type="text" disabled name="userName" class="layui-input" />
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">分配站点:</label>
+            <div class="layui-input-block tree">
+                <div class="elemTree">
+                    <div id="elemTree">
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">国家:</label>
+            <div class="layui-input-block check">
+                <div id="checks">
+                    <!-- <div class="check_item">
+							<div class="layui-inline">
+								<input type="checkbox" name="like1[write]" lay-skin="primary" title="写作" checked="">
+							</div>
+							<div class="layui-inline">
+								<input type="checkbox" name="like1[write]" lay-skin="primary" title="写作" checked="">
+							</div>
+						</div>   -->
+                </div>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">地方:</label>
+            <div class="layui-input-block check">
+                <div id="check">
+                    <!-- <div class="check_item">
+							<div class="layui-inline">
+								<input type="checkbox" name="like1[write]" lay-skin="primary" title="写作" checked="">
+							</div>
+							<div class="layui-inline">
+								<input type="checkbox" name="like1[write]" lay-skin="primary" title="写作" checked="">
+							</div>
+						</div>   -->
+                </div>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <button class="layui-btn layui-btn-sm layui-btn-normal" lay-submit lay-filter="elBtn">
+                确定
+            </button>
+        </div>
+    </div>
+</body>
+<script src="../../assets/lib/layui/layui.js"></script>
+<script>
+    layui.config({
+        base: "../../assets/",
+    }).extend({
+        http: "api/http",
+        getFn: "lib/getFn",
+        dtree: "lib/dtree/dtree",
+        limitSetup: "js/system/limitSetup",
+    }).use("limitSetup");
+</script>
+
+</html>
